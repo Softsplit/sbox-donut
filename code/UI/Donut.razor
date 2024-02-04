@@ -1,0 +1,91 @@
+@using System
+@using static System.Math
+@using System.Text
+@using System.Threading.Tasks
+@using Sandbox
+@inherits PanelComponent
+@namespace Softsplit.Donut
+
+<root>
+    @DonutOutput
+</root>
+
+@code
+{
+    private StringBuilder DonutOutput { get; set; } = new();
+
+    protected override void OnEnabled()
+    {
+        base.OnEnabled();
+
+        _ = RefreshDonut();
+    }
+
+    protected override int BuildHash() => HashCode.Combine(RealTime.Now);
+
+    private async Task RefreshDonut()
+    {
+        while (true)
+        {
+            StateHasChanged();
+
+            DonutOutput = await RenderDonut();
+
+            StateHasChanged();
+
+            await Task.DelayRealtimeSeconds(0.05f);
+        }
+    }
+
+    private int k;
+    private double A = 0, B = 0, i, j;
+    private double[] z = new double[1760];
+    private char[] b = new char[1760];
+    private StringBuilder output = new StringBuilder();
+
+    private Task<StringBuilder> RenderDonut()
+    {
+        for (k = 0; k < 1760; k++)
+        {
+            z[k] = 0;
+            b[k] = ' ';
+        }
+
+        for (j = 0; PI * 2 > j; j += 0.07)
+        {
+            for (i = 0; PI * 2 > i; i += 0.02)
+            {
+                double sini = Sin(i), 
+                       cosj = Cos(j), 
+                       sinA = Sin(A), 
+                       sinj = Sin(j), 
+                       cosA = Cos(A), 
+                       cosj2 = cosj + 2, 
+                       mess = 1 / (sini * cosj2 * sinA + sinj * cosA + 5), 
+                       cosi = Cos(i), 
+                       cosB = Cos(B), 
+                       sinB = Sin(B), 
+                       t = sini * cosj2 * cosA - sinj * sinA;
+                
+                int x = (int)(40 + 30 * mess * (cosi * cosj2 * cosB - t * sinB)), 
+                    y = (int)(12 + 15 * mess * (cosi * cosj2 * sinB + t * cosB)), 
+                    o = x + 80 * y, 
+                    N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj * Sin(B)));
+
+                if (22 > y && y > 0 && x > 0 && 80 > x && mess > z[o])
+                {
+                    z[o] = mess;
+                    b[o] = ".,-~:;=!*#$@"[N > 0 ? N : 0];
+                }
+            }
+        }
+        output.Clear();
+
+        for (k = 0; k < 1761; k++)
+            output.Append(k % 80 != 0 ? b[k] : '\n');
+
+        A += 0.07; B += 0.03;
+
+        return Task.FromResult(output);
+    }
+}
