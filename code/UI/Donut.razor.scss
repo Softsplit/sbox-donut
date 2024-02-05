@@ -16,7 +16,6 @@ Donut {
     height: fit-content;
     font-family: "Public Pixel";
     font-size: 2.25vh;
-    margin-bottom: 50px;
     counter-reset: line-numbering;
     white-space: pre;
     word-break: inherit;
@@ -36,7 +35,7 @@ Donut {
     display: flex;
     flex-direction: column;
     white-space: pre;
-    width: fit-content;
+    width: 500px;
     height: fit-content;
     font-family: "Public Pixel";
     margin-top: 50px;
