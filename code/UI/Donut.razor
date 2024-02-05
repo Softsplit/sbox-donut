@@ -7,21 +7,23 @@
 
 <root>
     <div class="donut-canvas">@DonutOutput</div>
-
-    <div class="counter">@Counter</div>
-
-    <div class="infobox">
-        <div class="credits">
-            Based on the original donut.c by Andy Sloane
-            <br>
-            Ported by Asphaltian
-            <br>
-            Music by Jogeir Liljedahl
-        </div>
-        <div class="instructions">
-            Hold ESC to quit
-        </div>
+    <div class="leaderboard">
+        @if (Leaderboard is not null)
+        {
+            <h1>Leaderboard</h1>
+            <div class="entries">
+                @foreach (var entry in Leaderboard.Entries)
+                {
+                    <div class="entry @IsMe(entry)">
+                        <div class="rank">@entry.Rank.</div>
+                        <div class="name">@entry.DisplayName:</div>
+                        <div class="value">@entry.FormattedValue</div>
+                    </div>
+                }
+            </div>
+        }
     </div>
+    <div class="counter">@Counter</div>
 </root>
 
 @code
@@ -34,6 +36,7 @@
     {
         base.OnEnabled();
 
+        FetchLeaderboardInfo();
         RefreshDonut();
         UpdateCounter();
     }
@@ -52,6 +55,27 @@
 
             await Task.DelayRealtimeSeconds(0.025f);
         }
+    }
+
+    private Sandbox.Services.Leaderboards.Board Leaderboard;
+
+    private async Task FetchLeaderboardInfo()
+    {
+        Leaderboard = Sandbox.Services.Leaderboards.Get("time");
+        Leaderboard.MaxEntries = 10;
+        await Leaderboard.Refresh();
+        foreach (var entry in Leaderboard.Entries)
+        {
+            if (entry.SteamId == Game.SteamId)
+            {
+                Time = (long)entry.Value;
+            }
+        }
+    }
+
+    string IsMe(Sandbox.Services.Leaderboards.Entry entry)
+    {
+        return entry.Me ? "me" : "";
     }
 
     private int hours;
@@ -79,7 +103,7 @@
             Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
             Time = (hours * 3600) + (minutes * 60) + seconds;
 
-            Sandbox.Services.Stats.SetValue("timewasted", Time);
+            Sandbox.Services.Stats.SetValue("time", Time);
 
             StateHasChanged();
 

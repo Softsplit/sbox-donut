@@ -16,7 +16,7 @@ Donut {
     height: fit-content;
     font-family: "Public Pixel";
     font-size: 2.25vh;
-    margin-bottom: 10vh;
+    margin-bottom: 50px;
     counter-reset: line-numbering;
     white-space: pre;
     word-break: inherit;
@@ -28,38 +28,57 @@ Donut {
     width: fit-content;
     height: fit-content;
     font-family: "Public Pixel";
-    font-size: 24px;
+    font-size: 18px;
+    margin-top: 50px;
   }
 
-  .infobox {
+  .leaderboard {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     white-space: pre;
     width: fit-content;
     height: fit-content;
     font-family: "Public Pixel";
-    font-size: 15px;
-    margin-top: 5vh;
-    margin-right: 175px;
+    margin-top: 50px;
+    margin-right: 0px;
+    justify-content: center;
+    align-items: center;
 
-    .credits {
-      display: flex;
-      flex-direction: column;
-      width: fit-content;
-      height: fit-content;
-      font-family: "Public Pixel";
-      font-size: 15px;
-      gap: -10px;
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
     }
 
-    .instructions {
-      display: flex;
+    .entries {
       flex-direction: column;
-      width: fit-content;
-      height: fit-content;
-      font-family: "Public Pixel";
-      font-size: 15px;
-      gap: -10px;
+      width: 100%;
+      font-size: 18px;
+
+      .entry {
+        justify-content: space-between;
+        gap: 8px;
+        width: 100%;
+        padding: 4px 8px;
+
+        .rank {
+          justify-content: flex-end;
+        }
+
+        .name {
+          flex-grow: 1;
+          gap: 8px;
+
+          label {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 200px;
+          }
+        }
+
+        &.me {
+          background-color: rgba(white, 0.1);
+        }
+      }
     }
   }
 }
