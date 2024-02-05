@@ -4,75 +4,62 @@ Donut {
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: 60px;
+  padding: 0;
   background-color: black;
   color: white;
   justify-content: center;
   align-items: center;
   pointer-events: all;
 
-  .leaderboard {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 45vh;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 450px;
-    height: fit-content;
-    font-family: "Public Pixel";
-
-    h1 {
-      font-size: 24px;
-    }
-
-    .entries {
-      flex-direction: column;
-      align-items: center;
-      width: 85%;
-
-      .entry {
-        justify-content: space-between;
-        gap: 8px;
-        width: 100%;
-        padding: 4px 8px;
-
-        .rank {
-          justify-content: flex-end;
-        }
-
-        .name {
-          flex-grow: 1;
-          gap: 8px;
-
-          label {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            max-width: 200px;
-          }
-        }
-      }
-    }
-  }
-
   .donut-canvas {
     width: fit-content;
     height: fit-content;
     font-family: "Public Pixel";
-    font-size: 2vh;
-    margin-right: 20vw;
+    font-size: 2.25vh;
     margin-bottom: 10vh;
     counter-reset: line-numbering;
     white-space: pre;
     word-break: inherit;
     word-wrap: inherit;
+    overflow: scroll;
   }
 
   .counter {
     width: fit-content;
     height: fit-content;
     font-family: "Public Pixel";
-    font-size: 20px;
+    font-size: 24px;
+  }
+
+  .infobox {
+    display: flex;
+    flex-direction: row;
+    white-space: pre;
+    width: fit-content;
+    height: fit-content;
+    font-family: "Public Pixel";
+    font-size: 15px;
+    margin-top: 5vh;
+    margin-right: 175px;
+
+    .credits {
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
+      height: fit-content;
+      font-family: "Public Pixel";
+      font-size: 15px;
+      gap: -10px;
+    }
+
+    .instructions {
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
+      height: fit-content;
+      font-family: "Public Pixel";
+      font-size: 15px;
+      gap: -10px;
+    }
   }
 }

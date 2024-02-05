@@ -6,29 +6,22 @@
 @namespace Softsplit.Donut
 
 <root>
-    <div class="leaderboard">
-        @if (Leaderboard is not null)
-        {
-            <h1>Leaderboard</h1>
-
-            <div class="entries">
-                @foreach(var entry in Leaderboard.Entries)
-				{
-					<div class="entry">
-					    <div class="rank">@entry.Rank</div>
-
-					    <div class="name">@entry.DisplayName</div>
-
-					    <div class="value">@entry.FormattedValue</div>
-				    </div>
-				}
-            </div>
-        }
-    </div>
-
     <div class="donut-canvas">@DonutOutput</div>
 
     <div class="counter">@Counter</div>
+
+    <div class="infobox">
+        <div class="credits">
+            Based on the original donut.c by Andy Sloane
+            <br>
+            Ported by Asphaltian
+            <br>
+            Music by Jogeir Liljedahl
+        </div>
+        <div class="instructions">
+            Hold ESC to quit
+        </div>
+    </div>
 </root>
 
 @code
@@ -41,30 +34,11 @@
     {
         base.OnEnabled();
 
-        FetchLeaderboardInfo();
         RefreshDonut();
         UpdateCounter();
     }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.Now);
-
-    private Sandbox.Services.Leaderboards.Board Leaderboard;
-
-    private async Task FetchLeaderboardInfo()
-    {
-        Leaderboard = Sandbox.Services.Leaderboards.Get("timewasted");
-        Leaderboard.MaxEntries = 10;
-
-        await Leaderboard.Refresh();
-
-        foreach (var entry in Leaderboard.Entries)
-        {
-            if (entry.SteamId == Game.SteamId)
-            {
-                Time = (long)entry.Value;
-            }
-        }
-    }
 
     private async Task RefreshDonut()
     {
@@ -146,7 +120,8 @@
                 int x = (int)(40 + 30 * mess * (cosi * cosj2 * cosB - t * sinB)),
                 y = (int)(12 + 15 * mess * (cosi * cosj2 * sinB + t * cosB)),
                 o = x + 80 * y,
-                N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj * Math.Sin(B)));
+                N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj *
+                Math.Sin(B)));
 
                 if (22 > y && y > 0 && x > 0 && 80 > x && mess > z[o])
                 {
