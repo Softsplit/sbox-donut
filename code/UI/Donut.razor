@@ -63,13 +63,24 @@
     {
         Leaderboard = Sandbox.Services.Leaderboards.Get("time");
         Leaderboard.MaxEntries = 10;
-        await Leaderboard.Refresh();
+
         foreach (var entry in Leaderboard.Entries)
         {
             if (entry.SteamId == Game.SteamId)
             {
                 Time = (long)entry.Value;
             }
+        }
+
+        while (true)
+        {
+            StateHasChanged();
+
+            await Leaderboard.Refresh();
+
+            StateHasChanged();
+
+            await Task.DelayRealtimeSeconds(1f);
         }
     }
 
