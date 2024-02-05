@@ -1,5 +1,4 @@
 @using System
-@using static System.Math
 @using System.Text
 @using System.Threading.Tasks
 @using Sandbox
@@ -7,21 +6,65 @@
 @namespace Softsplit.Donut
 
 <root>
-    @DonutOutput
+    <div class="leaderboard">
+        @if (Leaderboard is not null)
+        {
+            <h1>Leaderboard</h1>
+
+            <div class="entries">
+                @foreach(var entry in Leaderboard.Entries)
+				{
+					<div class="entry">
+					    <div class="rank">@entry.Rank</div>
+
+					    <div class="name">@entry.DisplayName</div>
+
+					    <div class="value">@entry.FormattedValue</div>
+				    </div>
+				}
+            </div>
+        }
+    </div>
+
+    <div class="donut-canvas">@DonutOutput</div>
+
+    <div class="counter">@Counter</div>
 </root>
 
 @code
 {
-    private StringBuilder DonutOutput { get; set; } = new();
+    private StringBuilder DonutOutput { get; set; }
+    private string Counter { get; set; }
+    private long Time { get; set; }
 
     protected override void OnEnabled()
     {
         base.OnEnabled();
 
-        _ = RefreshDonut();
+        FetchLeaderboardInfo();
+        RefreshDonut();
+        UpdateCounter();
     }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.Now);
+
+    private Sandbox.Services.Leaderboards.Board Leaderboard;
+
+    private async Task FetchLeaderboardInfo()
+    {
+        Leaderboard = Sandbox.Services.Leaderboards.Get("timewasted");
+        Leaderboard.MaxEntries = 10;
+
+        await Leaderboard.Refresh();
+
+        foreach (var entry in Leaderboard.Entries)
+        {
+            if (entry.SteamId == Game.SteamId)
+            {
+                Time = (long)entry.Value;
+            }
+        }
+    }
 
     private async Task RefreshDonut()
     {
@@ -34,6 +77,39 @@
             StateHasChanged();
 
             await Task.DelayRealtimeSeconds(0.025f);
+        }
+    }
+
+    private int hours;
+    private int minutes;
+    private int seconds;
+
+    private async Task UpdateCounter()
+    {
+        while (true)
+        {
+            StateHasChanged();
+
+            seconds++;
+            if (seconds == 60)
+            {
+                seconds = 0;
+                minutes++;
+            }
+            if (minutes == 60)
+            {
+                minutes = 0;
+                hours++;
+            }
+
+            Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
+            Time = (hours * 3600) + (minutes * 60) + seconds;
+
+            Sandbox.Services.Stats.SetValue("timewasted", Time);
+
+            StateHasChanged();
+
+            await Task.DelayRealtimeSeconds(1f);
         }
     }
 
@@ -51,26 +127,26 @@
             b[k] = ' ';
         }
 
-        for (j = 0; PI * 2 > j; j += 0.07)
+        for (j = 0; Math.PI * 2 > j; j += 0.07)
         {
-            for (i = 0; PI * 2 > i; i += 0.02)
+            for (i = 0; Math.PI * 2 > i; i += 0.02)
             {
-                double sini = Sin(i),
-                cosj = Cos(j),
-                sinA = Sin(A),
-                sinj = Sin(j),
-                cosA = Cos(A),
+                double sini = Math.Sin(i),
+                cosj = Math.Cos(j),
+                sinA = Math.Sin(A),
+                sinj = Math.Sin(j),
+                cosA = Math.Cos(A),
                 cosj2 = cosj + 2,
                 mess = 1 / (sini * cosj2 * sinA + sinj * cosA + 5),
-                cosi = Cos(i),
-                cosB = Cos(B),
-                sinB = Sin(B),
+                cosi = Math.Cos(i),
+                cosB = Math.Cos(B),
+                sinB = Math.Sin(B),
                 t = sini * cosj2 * cosA - sinj * sinA;
 
                 int x = (int)(40 + 30 * mess * (cosi * cosj2 * cosB - t * sinB)),
                 y = (int)(12 + 15 * mess * (cosi * cosj2 * sinB + t * cosB)),
                 o = x + 80 * y,
-                N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj * Sin(B)));
+                N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj * Math.Sin(B)));
 
                 if (22 > y && y > 0 && x > 0 && 80 > x && mess > z[o])
                 {
