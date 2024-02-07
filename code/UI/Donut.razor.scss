@@ -10,11 +10,11 @@ Donut {
   justify-content: center;
   align-items: center;
   pointer-events: all;
+  font-family: "Perfect DOS VGA 437 Win";
 
   .donut-canvas {
     width: fit-content;
     height: fit-content;
-    font-family: "Public Pixel";
     font-size: 2.25vh;
     counter-reset: line-numbering;
     white-space: pre;
@@ -26,9 +26,8 @@ Donut {
   .counter {
     width: fit-content;
     height: fit-content;
-    font-family: "Public Pixel";
-    font-size: 18px;
-    margin-top: 50px;
+    font-size: 32px;
+    margin-top: 20px;
   }
 
   .leaderboard {
@@ -37,21 +36,20 @@ Donut {
     white-space: pre;
     width: 600px;
     height: fit-content;
-    font-family: "Public Pixel";
-    margin-top: 50px;
+    margin-top: 20px;
     margin-right: 0px;
     justify-content: center;
     align-items: center;
 
     h1 {
-      font-size: 28px;
+      font-size: 32px;
       margin-bottom: 20px;
     }
 
     .entries {
       flex-direction: column;
       width: 100%;
-      font-size: 18px;
+      font-size: 24px;
 
       .entry {
         justify-content: space-between;
@@ -70,7 +68,7 @@ Donut {
           label {
             white-space: nowrap;
             text-overflow: ellipsis;
-            max-width: 200px;
+            max-width: fit-content;
           }
         }
 
