@@ -10,7 +10,7 @@
     <div class="leaderboard">
         @if (Leaderboard is not null)
         {
-            <h1>Leaderboard</h1>
+            <h1>Longest Time Wasted</h1>
             <div class="entries">
                 @foreach (var entry in Leaderboard.Entries)
                 {
@@ -38,7 +38,7 @@
 
         FetchLeaderboardInfo();
         RefreshDonut();
-        UpdateCounter();
+        UpdateTime();
     }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.Now);
@@ -93,7 +93,7 @@
     private int minutes;
     private int seconds;
 
-    private async Task UpdateCounter()
+    private async Task UpdateTime()
     {
         while (true)
         {
@@ -112,7 +112,7 @@
             }
 
             Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
-            Time = (hours * 3600) + (minutes * 60) + seconds;
+            Time = hours * 3600 + minutes * 60 + seconds;
 
             Sandbox.Services.Stats.SetValue("time", Time);
 
