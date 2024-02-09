@@ -36,9 +36,9 @@
     {
         base.OnEnabled();
 
-        FetchLeaderboardInfo();
-        RefreshDonut();
-        UpdateTime();
+        _ = FetchLeaderboardInfo();
+        _ = RefreshDonut();
+        _ = UpdateTime();
     }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.Now);
