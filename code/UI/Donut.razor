@@ -8,11 +8,11 @@
 <root>
     <div class="donut-canvas">@DonutOutput</div>
     <div class="leaderboard">
-        @if (Leaderboard is not null)
+        @if (leaderboard is not null)
         {
-            <h1>Longest Time Wasted</h1>
+            <h1>Most Time Wasted</h1>
             <div class="entries">
-                @foreach (var entry in Leaderboard.Entries)
+                @foreach (var entry in leaderboard.Entries)
                 {
                     <div class="entry @IsMe(entry)">
                         <div class="rank">@entry.Rank.</div>
@@ -30,20 +30,19 @@
 {
     private StringBuilder DonutOutput { get; set; }
     private string Counter { get; set; }
-    private long Time { get; set; }
 
     protected override void OnEnabled()
     {
         base.OnEnabled();
 
-        _ = FetchLeaderboardInfo();
-        _ = RefreshDonut();
+        _ = UpdateLeaderboardInfo();
+        _ = UpdateDonut();
         _ = UpdateTime();
     }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.Now);
 
-    private async Task RefreshDonut()
+    private async Task UpdateDonut()
     {
         while (true)
         {
@@ -57,30 +56,22 @@
         }
     }
 
-    private Sandbox.Services.Leaderboards.Board Leaderboard;
+    private Sandbox.Services.Leaderboards.Board leaderboard;
 
-    private async Task FetchLeaderboardInfo()
+    private async Task UpdateLeaderboardInfo()
     {
-        Leaderboard = Sandbox.Services.Leaderboards.Get("time");
-        Leaderboard.MaxEntries = 10;
-
-        foreach (var entry in Leaderboard.Entries)
-        {
-            if (entry.SteamId == Game.SteamId)
-            {
-                Time = (long)entry.Value;
-            }
-        }
+        leaderboard = Sandbox.Services.Leaderboards.Get("time");
+        leaderboard.MaxEntries = 10;
 
         while (true)
         {
             StateHasChanged();
 
-            await Leaderboard.Refresh();
+            await leaderboard.Refresh();
 
             StateHasChanged();
 
-            await Task.DelayRealtimeSeconds(1f);
+            await Task.FixedUpdate();
         }
     }
 
@@ -112,9 +103,8 @@
             }
 
             Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
-            Time = hours * 3600 + minutes * 60 + seconds;
 
-            Sandbox.Services.Stats.SetValue("time", Time);
+            Sandbox.Services.Stats.Increment("time", 1);
 
             StateHasChanged();
 
@@ -155,8 +145,7 @@
                 int x = (int)(40 + 30 * mess * (cosi * cosj2 * cosB - t * sinB)),
                 y = (int)(12 + 15 * mess * (cosi * cosj2 * sinB + t * cosB)),
                 o = x + 80 * y,
-                N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj *
-                Math.Sin(B)));
+                N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj * Math.Sin(B)));
 
                 if (22 > y && y > 0 && x > 0 && 80 > x && mess > z[o])
                 {
