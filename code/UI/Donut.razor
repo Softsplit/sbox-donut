@@ -30,6 +30,7 @@
 {
     private StringBuilder DonutOutput { get; set; }
     private string Counter { get; set; }
+    private long Time { get; set; }
 
     protected override void OnEnabled()
     {
@@ -71,7 +72,7 @@
 
             StateHasChanged();
 
-            await Task.FixedUpdate();
+            await Task.DelayRealtimeSeconds(1f);
         }
     }
 
@@ -103,8 +104,9 @@
             }
 
             Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
+            Time = hours * 3600 + minutes * 60 + seconds;
 
-            Sandbox.Services.Stats.Increment("time", 1);
+            Sandbox.Services.Stats.SetValue("time", Time);
 
             StateHasChanged();
 
