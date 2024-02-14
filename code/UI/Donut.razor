@@ -202,31 +202,35 @@
         }
     }
 
-    private string[] songs = new string[] { "addiction", "signia" }; 
+    private string[] songs = new string[] { "addiction", "signia" };
+    private int currentIndex = 0;
 
     private async Task UpdateMusic()
     {
         while (true)
         {
-            int n = songs.Length;
-            while (n > 1)
+            if (currentIndex == 0)
             {
-                n--;
-                int k = Game.Random.Next(n + 1);
-                string value = songs[k];
-                songs[k] = songs[n];
-                songs[n] = value;
-            }
-
-            foreach (string song in songs)
-            {
-                SoundHandle handle = Sound.Play(song);
-
-                while (handle.IsPlaying)
+                int n = songs.Length;
+                while (n > 1)
                 {
-                    await Task.FixedUpdate();
+                    n--;
+                    int k = Game.Random.Next(n + 1);
+                    string value = songs[k];
+                    songs[k] = songs[n];
+                    songs[n] = value;
                 }
             }
+
+            SoundHandle handle = Sound.Play(songs[currentIndex]);
+
+            while (handle.IsPlaying)
+            {
+                await Task.FixedUpdate();
+            }
+
+            // Move to the next song in the shuffled list
+            currentIndex = (currentIndex + 1) % songs.Length;
         }
     }
 }
