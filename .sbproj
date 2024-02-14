@@ -34,7 +34,38 @@
       "Gamepad": true
     },
     "InputSettings": {
-      "Actions": []
+      "Actions": [
+        {
+          "Name": "IncreaseRotationSpeedA",
+          "KeyboardCode": "RIGHTARROW",
+          "GamepadCode": "DpadNorth",
+          "GroupName": ""
+        },
+        {
+          "Name": "DecreaseRotationSpeedA",
+          "KeyboardCode": "LEFTARROW",
+          "GamepadCode": "DpadSouth",
+          "GroupName": ""
+        },
+        {
+          "Name": "ResetRotationSpeed",
+          "KeyboardCode": "E",
+          "GamepadCode": "X",
+          "GroupName": ""
+        },
+        {
+          "Name": "IncreaseRotationSpeedB",
+          "KeyboardCode": "UPARROW",
+          "GamepadCode": "DpadWest",
+          "GroupName": ""
+        },
+        {
+          "Name": "DecreaseRotationSpeedB",
+          "KeyboardCode": "DOWNARROW",
+          "GamepadCode": "DpadEast",
+          "GroupName": ""
+        }
+      ]
     },
     "Compiler": {
       "RootNamespace": "Donut",

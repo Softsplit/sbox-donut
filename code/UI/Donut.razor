@@ -36,6 +36,8 @@
     {
         base.OnEnabled();
 
+        _ = UpdateMusic();
+        _ = UpdateInput();
         _ = UpdateLeaderboardInfo();
         _ = UpdateDonut();
         _ = UpdateTime();
@@ -53,7 +55,7 @@
 
             StateHasChanged();
 
-            await Task.DelayRealtimeSeconds(0.03f);
+            await Task.DelayRealtimeSeconds(0.02f);
         }
     }
 
@@ -72,7 +74,7 @@
 
             StateHasChanged();
 
-            await Task.DelayRealtimeSeconds(1f);
+            await Task.FixedUpdate();
         }
     }
 
@@ -115,7 +117,7 @@
     }
 
     private int k;
-    private double A = 0, B = 0, i, j;
+    private double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02, i, j;
     private double[] z = new double[1760];
     private char[] b = new char[1760];
     private StringBuilder output = new StringBuilder();
@@ -161,8 +163,70 @@
         for (k = 0; k < 1761; k++)
             output.Append(k % 80 != 0 ? b[k] : '\n');
 
-        A += 0.07; B += 0.03;
+        A += DELTA_A; B += DELTA_B;
 
         return Task.FromResult(output);
+    }
+
+    private async Task UpdateInput()
+    {
+        while (true)
+        {
+            if (Input.Pressed("IncreaseRotationSpeedA"))
+            {
+                DELTA_A += 0.0025;
+            }
+
+            if (Input.Pressed("DecreaseRotationSpeedA"))
+            {
+                DELTA_A -= 0.0025;
+            }
+
+            if (Input.Pressed("IncreaseRotationSpeedB"))
+            {
+                DELTA_B += 0.0025;
+            }
+
+            if (Input.Pressed("DecreaseRotationSpeedB"))
+            {
+                DELTA_B -= 0.0025;
+            }
+
+            if (Input.Pressed("ResetRotationSpeed"))
+            {
+                DELTA_A = 0.04;
+                DELTA_B = 0.02;
+            }
+
+            await Task.FixedUpdate();
+        }
+    }
+
+    private string[] songs = new string[] { "addiction", "signia" }; 
+
+    private async Task UpdateMusic()
+    {
+        while (true)
+        {
+            int n = songs.Length;
+            while (n > 1)
+            {
+                n--;
+                int k = Game.Random.Next(n + 1);
+                string value = songs[k];
+                songs[k] = songs[n];
+                songs[n] = value;
+            }
+
+            foreach (string song in songs)
+            {
+                SoundHandle handle = Sound.Play(song);
+
+                while (handle.IsPlaying)
+                {
+                    await Task.FixedUpdate();
+                }
+            }
+        }
     }
 }
