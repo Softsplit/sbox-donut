@@ -229,7 +229,7 @@
                 await Task.FixedUpdate();
             }
 
-            currentIndex = (currentIndex + 1);
+            currentIndex = (currentIndex + 1) % songs.Length;
         }
     }
 }
