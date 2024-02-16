@@ -64,6 +64,12 @@
           "KeyboardCode": "DOWNARROW",
           "GamepadCode": "DpadEast",
           "GroupName": ""
+        },
+        {
+          "Name": "Chat",
+          "KeyboardCode": "ENTER",
+          "GamepadCode": "Y",
+          "GroupName": ""
         }
       ]
     },

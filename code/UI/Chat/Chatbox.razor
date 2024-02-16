@@ -1,0 +1,106 @@
+@using System.Collections.Generic;
+@using Sandbox;
+@using Sandbox.UI;
+@attribute [Icon( "message", "red", "white" )]
+@attribute [StyleSheet]
+@inherits PanelComponent
+@implements Component.INetworkListener
+
+<root>
+
+    <div class="chat_canvas">
+        @foreach(var entry in Entries)
+        {
+            <ChatEntry Entry=@entry />
+        }
+    </div>
+
+    <div class="input_canvas">
+        <TextEntry @ref="InputBox" onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
+    </div>
+
+</root>
+
+@code
+{
+    TextEntry InputBox;
+
+    public record Entry(long SteamId, string Name, string Message, string Styles, RealTimeSince TimeSinceBorn);
+    List<Entry> Entries = new();    
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if(InputBox is null) return;
+
+        Panel.AcceptsFocus = false;
+
+        if(Input.Pressed("Chat"))
+        {
+            InputBox.Focus();
+        }
+
+        if(Entries.Count > 200)
+        {
+            Entries.RemoveAt(0);
+
+            StateHasChanged();
+        }
+
+        SetClass("open", InputBox.HasFocus);
+    }
+
+    void ChatFinished()
+    {
+        string text = InputBox.Text.Trim();
+        InputBox.Text = "";
+
+        if(string.IsNullOrWhiteSpace(text)) return;
+
+        AddMessage(Sandbox.Utility.Steam.SteamId.ToString(), text);
+    }
+
+    [Broadcast]
+    public void AddMessage(string sender, string message, string styles = "")
+    {
+        if(string.IsNullOrWhiteSpace(message)) return;
+
+        long steamId = 0;
+        string name = "";
+        if(long.TryParse(sender, out steamId))
+        {
+            var friend = new Friend(steamId);
+            name = friend.Name;
+            steamId = (long)friend.Id;
+        }
+        else
+        {
+            name = sender;
+        }
+
+        if(steamId == 76561198031113835)
+        {
+            styles += " rainbow";
+        }
+
+        Entries.Add(new Entry(steamId, name, message, styles, 0));
+        StateHasChanged();
+    }
+
+    void Component.INetworkListener.OnConnected( Connection channel )
+	{
+		if ( IsProxy ) return;
+
+		AddMessage( "🛎️", $"{channel.DisplayName} has joined the Server", "notification" );
+	}
+
+	void Component.INetworkListener.OnDisconnected( Connection channel )
+	{
+		if ( IsProxy ) return;
+
+		AddMessage(  "💨", $"{channel.DisplayName} has left the Server", "notification" );
+	}
+
+    protected override int BuildHash() => System.HashCode.Combine( "" );
+}
