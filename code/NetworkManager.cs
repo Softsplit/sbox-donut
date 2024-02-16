@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Sandbox;
-using Sandbox.Network;
 using System.Linq;
 
 public sealed class NetworkManager : Component, Component.INetworkListener

@@ -11,12 +11,12 @@
     <div class="chat_canvas">
         @foreach (var entry in Entries)
         {
-                <ChatEntry Entry=@entry />
+            <ChatEntry Entry=@entry />
         }
     </div>
 
     <div class="input_canvas">
-        <TextEntry @ref="InputBox" onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
+        <TextEntry @ref="InputBox" placeholder="Press ENTER/Y to start typing..." onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
     </div>
 
 </root>
