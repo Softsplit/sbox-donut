@@ -7,8 +7,6 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 {
     public static NetworkManager Instance { get; private set; }
 
-    public LobbyInformation Lobby { get; set; }
-
     public List<Connection> Connections = new();
     public Connection Host = null;
     [Sync] public long HostSteamId { get; set; }
