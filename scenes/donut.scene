@@ -43,6 +43,17 @@
           "__type": "Chatbox"
         }
       ]
+    },
+    {
+      "Id": "784216d9-82aa-40ee-92f8-6f7994c0a990",
+      "Name": "Network Manager",
+      "Position": "300,0,0",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NetworkManager"
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -68,6 +79,6 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-02-16T15:15:15.8145617\u002B08:00",
+  "LastSaved": "2024-02-16T17:29:47.0136616\u002B08:00",
   "__references": []
 }
