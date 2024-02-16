@@ -19,15 +19,5 @@
 
 @code
 {
-    public Chatbox.Entry Entry { get; set; }
-
-    public override void Tick()
-    {
-        base.Tick();
-
-        if(Entry.TimeSinceBorn > 10 && !HasClass("fade"))
-        {
-            AddClass("fade");
-        }
-    }   
+    public Chatbox.Entry Entry { get; set; }  
 }

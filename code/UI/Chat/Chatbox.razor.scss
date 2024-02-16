@@ -64,7 +64,7 @@ Chatbox
 	width: 500px;
 	font-family: "Perfect DOS VGA 437 Win";
 	font-weight: 900;
-	font-size: 14px;
+	font-size: 24px;
 	padding: 10px;
 	max-height: 400px;
 	height: 400px;
@@ -99,37 +99,12 @@ Chatbox
 			background-color: black;
 			color: white;
 			background-color: rgba( black, 0 );
-			font-size: 14px;
+			font-size: 24px;
 			// flex-shrink: 0;
 			// flex-grow: 1;
 			width: 450px;
 			font-family: "Perfect DOS VGA 437 Win";
 			padding: 4px;
-		}
-
-		.btn-settings
-		{
-			opacity: 0;
-			top: -2px;
-			left: 4px;
-			text-align: center;
-			justify-content: center;
-			align-items: center;
-			font-size: 24px;
-			transition: transform 0.5s ease-out;
-
-			&:hover
-			{
-				background-color: rgba(0, 0, 0, 0);
-				text-shadow: 0 0 8px rgba(white, 0.8);
-				sound-in: ui.button.over;
-			}
-
-			&:active
-			{
-				transition: transform 0s ease-out;
-				transform: scale( 0.9 );
-			}
 		}
 	}
 
@@ -180,24 +155,10 @@ Chatbox
 			}
 		}
 
-		.input_canvas
-		{
-			.btn-settings
-			{
-				opacity: 1;
-			}
-		}
-
 		ChatCommandPanel
 		{
 			opacity: 1;
 		}
-
-		ChatSettings
-		{
-			opacity: 1;
-		}
-
 	}
 
 	&.hide-avatars
@@ -297,61 +258,4 @@ ChatEntry
         }
     
     }
-}
-
-ChatSettings
-{
-	opacity: 0;
-	position: absolute;
-	left: 100%;
-	top: 0;
-	height: 100%;
-	width: 0px;
-	overflow: hidden;
-	background-color: rgba(black, 0.5);
-	transition: width 0.4s ease-out;
-	flex-direction: column;
-	padding-top: 12px;
-
-    .settings
-    {
-        flex-direction: column;
-        gap: 16px;
-    }
-
-	.setting
-	{
-		width: 100%;
-		justify-content: space-between;
-
-		label
-		{
-            max-height: 24px;
-			color: white;
-			font-size: 16px;
-			justify-content: center;
-			align-items: center;
-			overflow: hidden;
-			text-overflow: ellipsis;
-            flex-grow: 1;
-		}
-
-        SwitchControl
-        {
-            flex-shrink: 1;
-            flex-grow: 0;
-            width: 70px;
-        }
-
-		// .button.popupbutton.dropdown
-		// {
-		// 	overflow: hidden;
-		// 	text-overflow: ellipsis;
-		// }
-	}
-
-	&.open
-	{
-		width: 200px;
-	}
 }
