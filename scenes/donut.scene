@@ -27,6 +27,7 @@
     {
       "Id": "031c2cc5-bece-4fc2-ab69-354c8063d3db",
       "Name": "Screen",
+      "Networked": true,
       "Enabled": true,
       "Components": [
         {
@@ -48,6 +49,7 @@
       "Id": "784216d9-82aa-40ee-92f8-6f7994c0a990",
       "Name": "Network Manager",
       "Position": "300,0,0",
+      "Networked": true,
       "Enabled": true,
       "Components": [
         {
@@ -79,6 +81,6 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-02-16T17:29:47.0136616\u002B08:00",
+  "LastSaved": "2024-02-16T18:42:54.1142987\u002B08:00",
   "__references": []
 }
