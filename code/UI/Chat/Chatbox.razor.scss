@@ -102,7 +102,7 @@ Chatbox
 			font-size: 24px;
 			// flex-shrink: 0;
 			// flex-grow: 1;
-			width: 450px;
+			width: 500px;
 			font-family: "Perfect DOS VGA 437 Win";
 			padding: 4px;
 		}
@@ -160,27 +160,6 @@ Chatbox
 			opacity: 1;
 		}
 	}
-
-	&.hide-avatars
-	{
-		.chat_canvas
-		{
-			ChatEntry
-			{
-				padding: 4px;
-
-				image
-				{
-					display: none;
-				}
-
-				.name
-				{
-					align-self: flex-start;
-				}
-			}
-		}
-	}
 }
 
 ChatEntry
@@ -195,6 +174,7 @@ ChatEntry
 	padding: 6px;
 //	min-height: 47px;
 	width: 100%;
+	gap: 10px;
 	transform: scale( 1 );
 
 	align-items: center;
@@ -217,10 +197,10 @@ ChatEntry
 
 	.avatar
 	{
-		height: 32px;
-		min-height: 32px;
-		width: 32px;
-		min-width: 32px;
+		height: 52px;
+		min-height: 52px;
+		width: 52px;
+		min-width: 52px;
 		border-radius: 100%;
 		text-shadow: 0 0 4px black;
 		
