@@ -9,6 +9,11 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 {
     public static NetworkManager Instance { get; private set; }
 
+    /// <summary>
+	/// Create a server (if we're not joining one)
+	/// </summary>
+	[Property] public bool StartServer { get; set; } = true;
+
     public LobbyInformation Lobby { get; set; }
 
     public List<Connection> Connections = new();
@@ -23,28 +28,17 @@ public sealed class NetworkManager : Component, Component.INetworkListener
     }
 
     protected override async Task OnLoad()
-    {
-        if ( Scene.IsEditor )
-            return;
+	{
+		if (Scene.IsEditor)
+			return;
 
-        if ( !GameNetworkSystem.IsActive )
-        {
-            var lobbies = (await GameNetworkSystem.QueryLobbies())
-                .Where( l => l.Members < l.MaxMembers && l.Name == "S&box Donut" )
-                .OrderByDescending( l => l.Members );
-
-            if ( lobbies.Count() > 0 )
-            {
-                Lobby = lobbies.First();
-                GameNetworkSystem.Connect( Lobby.LobbyId );
-            }
-            else
-            {
-                GameNetworkSystem.CreateLobby();
-            }
-        }
-    }
-
+		if (StartServer && !GameNetworkSystem.IsActive)
+		{
+			LoadingScreen.Title = "Creating Lobby";
+			await Task.DelayRealtimeSeconds(0.1f);
+			GameNetworkSystem.CreateLobby();
+		}
+	}
 
     /// <summary>
     /// A client is fully connected to the server. This is called on the host.
