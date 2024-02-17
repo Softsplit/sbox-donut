@@ -91,14 +91,14 @@
     {
         if (IsProxy) return;
 
-        AddMessage("🛎️", $"{channel.DisplayName} has joined the Server", "notification");
+        AddMessage("🛎️", $"{channel.DisplayName} has started the simulation!", "notification");
     }
 
     void Component.INetworkListener.OnDisconnected(Connection channel)
     {
         if (IsProxy) return;
 
-        AddMessage("💨", $"{channel.DisplayName} has left the Server", "notification");
+        AddMessage("💨", $"{channel.DisplayName} has snapped back to reality!", "notification");
     }
     protected override int BuildHash() => System.HashCode.Combine("");
 }
