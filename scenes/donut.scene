@@ -48,7 +48,6 @@
     {
       "Id": "784216d9-82aa-40ee-92f8-6f7994c0a990",
       "Name": "Network Manager",
-      "Position": "300,0,0",
       "Networked": true,
       "Enabled": true,
       "Components": [
@@ -81,6 +80,6 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-02-16T18:42:54.1142987\u002B08:00",
+  "LastSaved": "2024-02-18T14:32:20.3652208\u002B08:00",
   "__references": []
 }

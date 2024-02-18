@@ -5,7 +5,6 @@
 @inherits Panel
 
 <root class="@(Entry.Styles)">
-
     @if(Entry.SteamId != 0)
     {
         <img class="avatar" src="@($"avatar:{Entry.SteamId}")" />
@@ -14,7 +13,6 @@
     <div class="message-content">
         <p class="message">@Entry.Message</p>
     </div>
-
 </root>
 
 @code

@@ -7,7 +7,6 @@
 @implements Component.INetworkListener
 
 <root>
-
     <div class="chat_canvas">
         @foreach (var entry in Entries)
         {
@@ -18,7 +17,6 @@
     <div class="input_canvas">
         <TextEntry @ref="InputBox" placeholder="Press ENTER/Y to start typing..." onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
     </div>
-
 </root>
 
 @code
