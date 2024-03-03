@@ -3,7 +3,7 @@
   "Type": "game",
   "Org": "softsplit",
   "Ident": "donut",
-  "Tags": "2d ui donut",
+  "Tags": "2d ui donut lobby multiplayer",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
