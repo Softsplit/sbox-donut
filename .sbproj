@@ -89,6 +89,6 @@
       "DistinctAssemblyReferences": []
     },
     "MapStartupScene": null,
-    "LaunchMode": "QuickPlay"
+    "LaunchMode": "Normal"
   }
 }
