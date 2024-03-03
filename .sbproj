@@ -3,7 +3,7 @@
   "Type": "game",
   "Org": "softsplit",
   "Ident": "donut",
-  "Tags": "2d ui donut lobby multiplayer",
+  "Tags": "2d ui donut multiplayer lobby",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
@@ -69,6 +69,12 @@
           "Name": "Chat",
           "KeyboardCode": "ENTER",
           "GamepadCode": "Y",
+          "GroupName": ""
+        },
+        {
+          "Name": "Voice",
+          "KeyboardCode": "V",
+          "GamepadCode": "B",
           "GroupName": ""
         }
       ]

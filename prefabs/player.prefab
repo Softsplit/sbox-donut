@@ -1,0 +1,37 @@
+{
+  "RootObject": {
+    "Id": "f2e9cf2c-3ea9-4883-a904-4e4718029446",
+    "Name": "player",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "PlayerController"
+      }
+    ],
+    "Children": [
+      {
+        "Id": "d0f70135-0732-44ee-83bf-798f580a3852",
+        "Name": "Voice",
+        "Position": "149.995,149.995,-212.125",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Voice",
+            "Loopback": false,
+            "Mode": "PushToTalk",
+            "MorphScale": 3,
+            "MorphSmoothTime": 0.1,
+            "PushToTalkInput": "Voice",
+            "Renderer": null,
+            "Volume": 1,
+            "WorldspacePlayback": true
+          }
+        ]
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "__references": []
+}

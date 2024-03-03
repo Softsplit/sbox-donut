@@ -42,6 +42,9 @@
         },
         {
           "__type": "Chatbox"
+        },
+        {
+          "__type": "DonutHud"
         }
       ]
     },
@@ -52,7 +55,12 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "NetworkManager"
+          "__type": "NetworkManager",
+          "PlayerPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/player.prefab"
+          },
+          "StartServer": true
         }
       ]
     }
@@ -80,6 +88,6 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-02-18T14:32:20.3652208\u002B08:00",
+  "LastSaved": "2024-03-03T18:03:06.4220925\u002B08:00",
   "__references": []
 }

@@ -1,0 +1,31 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Donut.UI
+
+<root>
+	<div class="left">
+	</div>
+	<div class="right">
+		<div class="player-list">
+			@foreach (var player in NetworkManager.Instance.Players)
+			{
+				var voice = player.Components.Get<Voice>(FindMode.EnabledInSelfAndChildren);
+				if (voice is null) continue;
+				<div class="player-entry">
+					<img src=@($"avatar:{player.SteamId}") class="avatar" />
+					<label class="name">@player.GameObject.Name</label>
+					@if ((NetworkManager.Instance.Host?.SteamId ?? 0) == (ulong)player.SteamId)
+					{
+						<i>verified</i>
+					}
+				</div>
+			}
+		</div>
+	</div>
+</root>
+
+@code
+{
+	protected override int BuildHash() => System.HashCode.Combine(Time.Now);
+}
