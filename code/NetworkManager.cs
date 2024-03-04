@@ -10,11 +10,6 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 {
     public static NetworkManager Instance { get; private set; }
 
-    /// <summary>
-	/// Create a server (if we're not joining one)
-	/// </summary>
-	[Property] public bool StartServer { get; set; } = true;
-
 	/// <summary>
 	/// The prefab to spawn for the player to control.
 	/// </summary>
@@ -32,19 +27,6 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 
         Instance = this;
     }
-
-    protected override async Task OnLoad()
-	{
-		if (Scene.IsEditor)
-			return;
-
-		if (StartServer && !GameNetworkSystem.IsActive)
-		{
-			LoadingScreen.Title = "Creating Lobby";
-			await Task.DelayRealtimeSeconds(0.1f);
-			GameNetworkSystem.CreateLobby();
-		}
-	}
 
     /// <summary>
     /// A client is fully connected to the server. This is called on the host.
