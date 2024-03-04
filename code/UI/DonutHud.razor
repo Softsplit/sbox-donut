@@ -14,7 +14,7 @@
 				if (voice is null) continue;
 				<div class="player-entry">
 					<img src=@($"avatar:{player.SteamId}") class="avatar" />
-					<label class="name">@player.GameObject.Name - @Sandbox.Services.Stats.GetLocalPlayerStats("softsplit.donut").Get("time").ValueString</label>
+					<label class="name">@player.GameObject.Name - @Sandbox.Services.Stats.GetPlayerStats("softsplit.donut", player.SteamId).Get("time").ValueString</label>
 					@if ((NetworkManager.Instance.Host?.SteamId ?? 0) == (ulong)player.SteamId)
 					{
 						<i>verified</i>
