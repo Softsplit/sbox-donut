@@ -22,7 +22,8 @@ Donut {
     display: flex;
     flex-direction: column;
     width: 600px;
-    justify-content: center;
+    height: 400px;
+    overflow-y: scroll;
     align-items: center;
     background-color: blue;
     border-width: 2px;
@@ -30,24 +31,31 @@ Donut {
 
     h1 {
       font-size: 32px;
+      flex-shrink: 0;
+      flex-grow: 1;
     }
 
     .entries {
       flex-direction: column;
       width: 100%;
       font-size: 24px;
+      flex-shrink: 0;
+      flex-grow: 1;
 
       .entry {
         justify-content: space-between;
         gap: 5px;
         width: 100%;
         padding: 2.5px;
+        flex-shrink: 0;
+        flex-grow: 1;
 
         .rank {
           justify-content: flex-end;
         }
 
         .name {
+          flex-shrink: 0;
           flex-grow: 1;
           gap: 5px;
 

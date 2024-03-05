@@ -65,7 +65,7 @@
     private async Task UpdateLeaderboardInfo()
     {
         leaderboard = Sandbox.Services.Leaderboards.Get("time");
-        leaderboard.MaxEntries = 10;
+        leaderboard.MaxEntries = 100;
 
         while (true)
         {

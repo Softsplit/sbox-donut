@@ -60,6 +60,7 @@ Chatbox {
 
   .chat_canvas {
     flex-direction: column;
+    justify-content: flex-end;
     flex-grow: 1;
     height: 100px;
     overflow: scroll;
@@ -73,7 +74,6 @@ Chatbox {
 
   .input_canvas {
     flex-direction: row;
-    margin-top: 10px;
 
     textentry {
       background-color: black;
@@ -85,7 +85,6 @@ Chatbox {
       white-space: pre-line;
       width: 500px;
       font-family: "Perfect DOS VGA 437 Win";
-      padding: 4px;
     }
   }
 
