@@ -1,16 +1,34 @@
 DonutHud {
   position: absolute;
+  font-family: "Perfect DOS VGA 437 Win";
   width: 100%;
-  height: 90%;
+  height: 100%;
   z-index: 100;
   justify-content: space-between;
   font-smooth: never;
+
+  > .left {
+    flex-direction: row;
+    align-items: flex-end;
+    flex-shrink: 0;
+    width: 500px;
+    padding: 20px;
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: white;
+
+    > .current-song {
+      flex-direction: column;
+      align-content: center;
+    }
+  }
 
   > .right {
     flex-direction: column;
     flex-shrink: 0;
     width: 500px;
     padding: 10px;
+    height: 90%;
     gap: 8px;
 
     > .player-list {
@@ -59,7 +77,6 @@ DonutHud {
           font-weight: 500;
           margin-left: 10px;
           flex-grow: 1;
-          font-family: "Perfect DOS VGA 437 Win";
         }
       }
     }

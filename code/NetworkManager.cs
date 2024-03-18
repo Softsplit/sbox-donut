@@ -3,7 +3,6 @@ using Sandbox;
 using System.Linq;
 using Sandbox.Network;
 using System.Threading.Tasks;
-using System;
 namespace Donut;
 
 public sealed class NetworkManager : Component, Component.INetworkListener
@@ -24,7 +23,7 @@ public sealed class NetworkManager : Component, Component.INetworkListener
     public Connection Host = null;
     [Sync] public long HostSteamId { get; set; }
 
-    public List<PlayerController> Players => GameManager.ActiveScene.Components.GetAll<PlayerController>(FindMode.EnabledInSelfAndDescendants).ToList();
+    public List<PlayerController> Players => Game.ActiveScene.Components.GetAll<PlayerController>(FindMode.EnabledInSelfAndDescendants).ToList();
 
     protected override void OnAwake()
     {

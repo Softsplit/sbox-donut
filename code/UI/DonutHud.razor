@@ -5,6 +5,10 @@
 
 <root>
 	<div class="left">
+		<div class="current-song">
+			<div class="name">@($"{Donut.songs[Donut.currentIndex]}.mod")</div>
+			<div class="artist">by Jogeir Liljedahl</div>
+		</div>
 	</div>
 	<div class="right">
 		<div class="player-list">
@@ -14,7 +18,7 @@
 				if (voice is null) continue;
 				<div class="player-entry">
 					<img src=@($"avatar:{player.SteamId}") class="avatar" />
-					<label class="name">@player.GameObject.Name - @Sandbox.Services.Stats.GetPlayerStats("softsplit.donut", player.SteamId).Get("time").ValueString</label>
+					<label class="name">@player.GameObject.Name - @player.Time</label>
 					@if ((NetworkManager.Instance.Host?.SteamId ?? 0) == (ulong)player.SteamId)
 					{
 						<i>verified</i>

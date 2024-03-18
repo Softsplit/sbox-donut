@@ -3,6 +3,7 @@
 @using System.Threading.Tasks
 @using Sandbox
 @using Sandbox.Network
+@using Sandbox.Services
 @inherits PanelComponent
 @namespace Donut.UI
 
@@ -60,11 +61,11 @@
         }
     }
 
-    private Sandbox.Services.Leaderboards.Board leaderboard;
+    private Leaderboards.Board leaderboard;
 
     private async Task UpdateLeaderboardInfo()
     {
-        leaderboard = Sandbox.Services.Leaderboards.Get("time");
+        leaderboard = Leaderboards.Get("time");
         leaderboard.MaxEntries = 100;
 
         while (true)
@@ -79,7 +80,7 @@
         }
     }
 
-    string IsMe(Sandbox.Services.Leaderboards.Entry entry)
+    string IsMe(Leaderboards.Entry entry)
     {
         return entry.Me ? "me" : "";
     }
@@ -109,7 +110,7 @@
             Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
             Time = hours * 3600 + minutes * 60 + seconds;
 
-            Sandbox.Services.Stats.SetValue("time", Time);
+            Stats.SetValue("time", Time);
 
             StateHasChanged();
 
@@ -203,8 +204,8 @@
         }
     }
 
-    private string[] songs = new string[] { "addiction", "signia", "nearly_there", "nes-tea_peach", "oro_incenso", "physical_presence" };
-    private int currentIndex = 0;
+    public static string[] songs = new string[] { "addiction", "signia", "nearly_there", "nes-tea_peach", "oro_incenso", "physical_presence" };
+    public static int currentIndex = 0;
 
     private async Task UpdateMusic()
     {
