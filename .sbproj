@@ -5,11 +5,7 @@
   "Ident": "donut",
   "Tags": "2d ui donut multiplayer lobby",
   "Schema": 1,
-  "HasAssets": true,
-  "AssetsPath": "",
-  "Resources": "/fonts/*\n/UI/*\n/sounds/*",
-  "HasCode": true,
-  "CodePath": "/code/",
+  "Resources": "*",
   "PackageReferences": [],
   "EditorReferences": null,
   "Metadata": {

@@ -1,8 +1,5 @@
-@using System.Collections.Generic;
-@using Sandbox;
-@using Sandbox.UI;
+@using Sandbox.UI
 @attribute [Icon("message", "red", "white")]
-@attribute [StyleSheet]
 @inherits PanelComponent
 @implements Component.INetworkListener
 @namespace Donut.UI
@@ -23,21 +20,18 @@
 @code
 {
     TextEntry InputBox;
-    public record Entry(long SteamId, string Name, string Message, string Styles, RealTimeSince TimeSinceBorn);
     List<Entry> Entries = new();
+
+    public record Entry(long SteamId, string Name, string Message, string Styles, RealTimeSince TimeSinceBorn);
 
     protected override void OnUpdate()
     {
-        base.OnUpdate();
-
         if (InputBox is null) return;
 
         Panel.AcceptsFocus = false;
 
         if (Input.Pressed("Chat"))
-        {
             InputBox.Focus();
-        }
 
         if (Entries.Count > 200)
         {
@@ -56,7 +50,7 @@
 
         if (string.IsNullOrWhiteSpace(text)) return;
 
-        AddMessage(Sandbox.Utility.Steam.SteamId.ToString(), text);
+        AddMessage(Game.SteamId.ToString(), text);
     }
 
     [Broadcast]
@@ -90,14 +84,15 @@
     {
         if (IsProxy) return;
 
-        AddMessage("🛎️", $"{channel.DisplayName} has started the simulation!", "notification");
+        AddMessage("👋", $"{channel.DisplayName} has started the simulation!", "notification");
     }
 
     void Component.INetworkListener.OnDisconnected(Connection channel)
     {
         if (IsProxy) return;
 
-        AddMessage("💨", $"{channel.DisplayName} has snapped back to reality!", "notification");
+        AddMessage("👋", $"{channel.DisplayName} has snapped back to reality!", "notification");
     }
+
     protected override int BuildHash() => System.HashCode.Combine("");
 }

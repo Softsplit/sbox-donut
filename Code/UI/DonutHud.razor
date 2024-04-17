@@ -1,5 +1,5 @@
-@using Sandbox;
-@using Sandbox.UI;
+﻿@using Sandbox.UI
+@using System
 @inherits PanelComponent
 @namespace Donut.UI
 
@@ -7,18 +7,16 @@
 	<div class="left">
 		<div class="current-song">
 			<div class="name">@($"{Donut.songs[Donut.currentIndex]}.mod")</div>
-			<div class="artist">by Jogeir Liljedahl</div>
+			<div class="artist">#music.artist</div>
 		</div>
 	</div>
 	<div class="right">
 		<div class="player-list">
 			@foreach (var player in NetworkManager.Instance.Players)
 			{
-				var voice = player.Components.Get<Voice>(FindMode.EnabledInSelfAndChildren);
-				if (voice is null) continue;
 				<div class="player-entry">
 					<img src=@($"avatar:{player.SteamId}") class="avatar" />
-					<label class="name">@player.GameObject.Name - @player.Time</label>
+                    <label class="name">@player.GameObject.Name @($"\u2500") @player.Time</label>
 					@if ((NetworkManager.Instance.Host?.SteamId ?? 0) == (ulong)player.SteamId)
 					{
 						<i>verified</i>
@@ -31,5 +29,5 @@
 
 @code
 {
-	protected override int BuildHash() => System.HashCode.Combine(Time.Now);
+    protected override int BuildHash() => HashCode.Combine(RealTime.GlobalNow);
 }

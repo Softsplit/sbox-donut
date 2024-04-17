@@ -1,7 +1,6 @@
 @using System
 @using System.Text
 @using System.Threading.Tasks
-@using Sandbox
 @using Sandbox.Network
 @using Sandbox.Services
 @inherits PanelComponent
@@ -12,7 +11,7 @@
     <div class="leaderboard">
         @if (leaderboard is not null)
         {
-            <h1>Most Time Wasted</h1>
+            <h1>#leaderboard.title</h1>
             <div class="entries">
                 @foreach (var entry in leaderboard.Entries)
                 {
@@ -31,33 +30,38 @@
 @code
 {
     private StringBuilder DonutOutput { get; set; }
-    public string Counter { get; set; }
-    private long Time { get; set; }
+    private string Counter { get; set; }
 
-    protected override void OnEnabled()
+    protected override void OnStart()
     {
-        base.OnEnabled();
-
-        _ = UpdateMusic();
-        _ = UpdateInput();
-        _ = UpdateLeaderboardInfo();
-        _ = UpdateDonut();
-        _ = UpdateTime();
+        leaderboard = Leaderboards.Get("newtime");
+        leaderboard.MaxEntries = 100;
     }
 
-    protected override int BuildHash() => HashCode.Combine(RealTime.Now);
-
-    private async Task UpdateDonut()
+    protected override void OnUpdate()
     {
-        while (true)
+        UpdateInput();
+        UpdateLeaderboardInfo();
+        UpdateDonut();
+        UpdateTime();
+        UpdateMusic();
+    }
+
+    protected override int BuildHash() => HashCode.Combine(RealTime.GlobalNow);
+
+    RealTimeUntil donutDelay;
+
+    private void UpdateDonut()
+    {
+        if (donutDelay)
         {
-            StateHasChanged();
-
-            DonutOutput = await RenderDonut();
+            donutDelay = 0.02f;
 
             StateHasChanged();
 
-            await Task.DelayRealtimeSeconds(0.02f);
+            DonutOutput = RenderDonut();
+
+            StateHasChanged();
         }
     }
 
@@ -65,19 +69,11 @@
 
     private async Task UpdateLeaderboardInfo()
     {
-        leaderboard = Leaderboards.Get("time");
-        leaderboard.MaxEntries = 100;
+        StateHasChanged();
 
-        while (true)
-        {
-            StateHasChanged();
+        await leaderboard.Refresh();
 
-            await leaderboard.Refresh();
-
-            StateHasChanged();
-
-            await Task.FixedUpdate();
-        }
+        StateHasChanged();
     }
 
     string IsMe(Leaderboards.Entry entry)
@@ -88,11 +84,14 @@
     private int hours;
     private int minutes;
     private int seconds;
+    RealTimeUntil timeDelay;
 
-    private async Task UpdateTime()
+    private void UpdateTime()
     {
-        while (true)
+        if (timeDelay)
         {
+            timeDelay = 1f;
+
             StateHasChanged();
 
             seconds++;
@@ -108,25 +107,23 @@
             }
 
             Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
-            Time = hours * 3600 + minutes * 60 + seconds;
 
-            Stats.SetValue("time", Time);
+            if (PlayerController.Local.IsValid()) PlayerController.Local.Time = $"{hours}h{minutes}m{seconds}s";
+            
+            Stats.Increment("time2", 1f);
 
             StateHasChanged();
-
-            await Task.DelayRealtimeSeconds(1f);
         }
     }
 
-    private int k;
-    private double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02, i, j;
-    private double[] z = new double[1760];
-    private char[] b = new char[1760];
-    private StringBuilder output = new StringBuilder();
+    double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02, i, j;
+    double[] z = new double[1760];
+    char[] b = new char[1760];
+    StringBuilder output = new StringBuilder();
 
-    private Task<StringBuilder> RenderDonut()
+    private StringBuilder RenderDonut()
     {
-        for (k = 0; k < 1760; k++)
+        for (int k = 0; k < 1760; k++)
         {
             z[k] = 0;
             b[k] = ' ';
@@ -162,76 +159,58 @@
         }
         output.Clear();
 
-        for (k = 0; k < 1761; k++)
+        for (int k = 0; k < 1761; k++)
             output.Append(k % 80 != 0 ? b[k] : '\n');
 
         A += DELTA_A; B += DELTA_B;
 
-        return Task.FromResult(output);
+        return output;
     }
 
-    private async Task UpdateInput()
+    private void UpdateInput()
     {
-        while (true)
+        if (Input.Pressed("IncreaseRotationSpeedA"))
         {
-            if (Input.Pressed("IncreaseRotationSpeedA"))
-            {
-                DELTA_A += 0.0025;
-            }
+            DELTA_A += 0.0025;
+        }
 
-            if (Input.Pressed("DecreaseRotationSpeedA"))
-            {
-                DELTA_A -= 0.0025;
-            }
+        if (Input.Pressed("DecreaseRotationSpeedA"))
+        {
+            DELTA_A -= 0.0025;
+        }
 
-            if (Input.Pressed("IncreaseRotationSpeedB"))
-            {
-                DELTA_B += 0.0025;
-            }
+        if (Input.Pressed("IncreaseRotationSpeedB"))
+        {
+            DELTA_B += 0.0025;
+        }
 
-            if (Input.Pressed("DecreaseRotationSpeedB"))
-            {
-                DELTA_B -= 0.0025;
-            }
+        if (Input.Pressed("DecreaseRotationSpeedB"))
+        {
+            DELTA_B -= 0.0025;
+        }
 
-            if (Input.Pressed("ResetRotationSpeed"))
-            {
-                DELTA_A = 0.04;
-                DELTA_B = 0.02;
-            }
-
-            await Task.FixedUpdate();
+        if (Input.Pressed("ResetRotationSpeed"))
+        {
+            DELTA_A = 0.04;
+            DELTA_B = 0.02;
         }
     }
 
-    public static string[] songs = new string[] { "addiction", "signia", "nearly_there", "nes-tea_peach", "oro_incenso", "physical_presence" };
+    public static string[] songs = new string[] { "addiction", "signia", "nearly_there", "nestea", "oro_incenso", "physical_presence" };
     public static int currentIndex = 0;
+    MusicPlayer player;
 
-    private async Task UpdateMusic()
+    private void UpdateMusic()
     {
-        while (true)
+        if (player == null)
         {
-            if (currentIndex == 0)
-            {
-                int n = songs.Length;
-                while (n > 1)
-                {
-                    n--;
-                    int k = Game.Random.Next(n + 1);
-                    string value = songs[k];
-                    songs[k] = songs[n];
-                    songs[n] = value;
-                }
-            }
-
-            SoundHandle handle = Sound.Play(songs[currentIndex]);
-
-            while (handle.IsPlaying)
-            {
-                await Task.FixedUpdate();
-            }
-
-            currentIndex = (currentIndex + 1) % songs.Length;
+            currentIndex = Game.Random.Next(0, songs.Length);
+            player = MusicPlayer.Play(FileSystem.Mounted, $"sounds/music/{songs[currentIndex]}.mp3");
         }
+
+        player.OnFinished = () =>
+        {
+            player = null;
+        };
     }
 }
