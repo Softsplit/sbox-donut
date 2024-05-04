@@ -1,13 +1,16 @@
 {
-  "Id": "7bc1797e-1a7f-4fdb-89c4-4dbe825db595",
+  "__guid": "7bc1797e-1a7f-4fdb-89c4-4dbe825db595",
   "GameObjects": [
     {
-      "Id": "3ee1c9f4-07be-4e0b-8b23-67bee2d8ec8a",
+      "__guid": "3ee1c9f4-07be-4e0b-8b23-67bee2d8ec8a",
       "Name": "Camera",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "CameraComponent",
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "4494ba80-9718-4806-b045-2ee5e6e7c10b",
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
           "FieldOfView": 60,
@@ -25,37 +28,45 @@
       ]
     },
     {
-      "Id": "031c2cc5-bece-4fc2-ab69-354c8063d3db",
+      "__guid": "031c2cc5-bece-4fc2-ab69-354c8063d3db",
       "Name": "Screen",
-      "Networked": true,
       "Enabled": true,
+      "NetworkMode": 1,
+      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "ScreenPanel",
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "39cfb0c9-a11e-48da-bfbb-1cce1138c44c",
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
           "ZIndex": 100
         },
         {
-          "__type": "Donut"
+          "__type": "Donut.UI.Donut",
+          "__guid": "2027ff88-73e6-46cf-acc1-116398c25ffa"
         },
         {
-          "__type": "Chatbox"
+          "__type": "Donut.UI.Chatbox",
+          "__guid": "20863dd6-64fd-441c-a8c4-0c9f0c01e623"
         },
         {
-          "__type": "DonutHud"
+          "__type": "Donut.UI.DonutHud",
+          "__guid": "a48a4443-a4d3-4a53-9206-c85f63fe3262",
+          "Pass": "resources/donator.gamepass"
         }
       ]
     },
     {
-      "Id": "784216d9-82aa-40ee-92f8-6f7994c0a990",
+      "__guid": "784216d9-82aa-40ee-92f8-6f7994c0a990",
       "Name": "Network Manager",
-      "Networked": true,
       "Enabled": true,
+      "NetworkMode": 1,
+      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "NetworkManager",
+          "__type": "Donut.NetworkManager",
+          "__guid": "da927e73-7d41-4dc5-942a-69b87ae12537",
           "PlayerPrefab": {
             "_type": "gameobject",
             "prefab": "prefabs/player.prefab"
@@ -67,9 +78,9 @@
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -88,6 +99,8 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-03-03T18:03:06.4220925\u002B08:00",
+  "LastSaved": "2024-05-05T04:53:25.5717999\u002B08:00",
+  "ResourceVersion": 1,
+  "__version": 1,
   "__references": []
 }

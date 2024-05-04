@@ -1,4 +1,5 @@
 ﻿@using Sandbox.UI
+@using Sandbox.Services
 @using System
 @inherits PanelComponent
 @namespace Donut.UI
@@ -24,10 +25,15 @@
 				</div>
 			}
 		</div>
+        <div class="button" onclick=@( () => Monetization.Purchase(Pass) )>
+            Donate? (Test)
+        </div>
 	</div>
 </root>
 
 @code
 {
+    [Property] GamePass Pass { get; set; }
+
     protected override int BuildHash() => HashCode.Combine(RealTime.GlobalNow);
 }
