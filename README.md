@@ -5,5 +5,5 @@
 ## Credits
 
 Based on the original donut.c by Andy Sloane\
-Programming by Asphaltian\
-Music by Jogeir Liljedahl
+Music provided by The Mod Archive\
+Programming by Asphaltian
