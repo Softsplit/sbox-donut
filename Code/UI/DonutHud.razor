@@ -6,18 +6,17 @@
 <root>
 	<div class="left">
 		<div class="current-song">
-			<div class="name">@($"{Donut.songs[Donut.currentIndex]}.mod")</div>
-			<div class="artist">#music.artist</div>
+            @($"Now playing: {Donut.player?.Title}")
 		</div>
 	</div>
 	<div class="right">
 		<div class="player-list">
-			@foreach (var player in NetworkManager.Instance.Players)
+			@foreach (var player in NetworkManager.Players)
 			{
 				<div class="player-entry">
-					<img src=@($"avatar:{player.SteamId}") class="avatar" />
-                    <label class="name">@player.GameObject.Name @($"\u2500") @player.Time</label>
-					@if ((NetworkManager.Instance.Host?.SteamId ?? 0) == (ulong)player.SteamId)
+					<img src=@($"avatar:{player?.SteamId}") class="avatar" />
+                    <label class="name">@player?.GameObject.Name @($"\u2500") @player?.Time</label>
+					@if ((NetworkManager.Instance?.Host?.SteamId ?? 0) == (ulong)player?.SteamId)
 					{
 						<i>verified</i>
 					}

@@ -11,7 +11,7 @@
     <div class="leaderboard">
         @if (leaderboard is not null)
         {
-            <h1>#leaderboard.title</h1>
+            <h1>@leaderboard.DisplayName</h1>
             <div class="entries">
                 @foreach (var entry in leaderboard.Entries)
                 {
@@ -32,7 +32,7 @@
     private StringBuilder DonutOutput { get; set; }
     private string Counter { get; set; }
 
-    protected override void OnStart()
+    protected override void OnAwake()
     {
         leaderboard = Leaderboards.Get("newtime");
         leaderboard.MaxEntries = 100;
@@ -40,8 +40,9 @@
 
     protected override void OnUpdate()
     {
+        _ = UpdateLeaderboardInfo();
+
         UpdateInput();
-        UpdateLeaderboardInfo();
         UpdateDonut();
         UpdateTime();
         UpdateMusic();
@@ -196,9 +197,22 @@
         }
     }
 
-    public static string[] songs = new string[] { "addiction", "signia", "nearly_there", "nestea", "oro_incenso", "physical_presence" };
+    public static string[] songs = new string[] { 
+        "addiction",
+        "dead_lock", 
+        "space_debris", 
+        "unreal", 
+        "guitar_slinger", 
+        "aryx", 
+        "yuki_satellites",
+        "celestial_fantasia",
+        "funky_stars",
+        "elysium",
+        "winds_of_fjords"
+    };
+
     public static int currentIndex = 0;
-    MusicPlayer player;
+    public static MusicPlayer player;
 
     private void UpdateMusic()
     {

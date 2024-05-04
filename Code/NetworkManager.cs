@@ -22,7 +22,7 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 
 	[Sync] public long HostSteamId { get; set; }
 
-	public List<PlayerController> Players => Game.ActiveScene.Components.GetAll<PlayerController>( FindMode.EnabledInSelfAndDescendants ).ToList();
+	public static List<PlayerController> Players => Game.ActiveScene.Components.GetAll<PlayerController>( FindMode.EnabledInSelfAndDescendants ).ToList();
 
 	protected override void OnUpdate()
 	{

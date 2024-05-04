@@ -2,7 +2,7 @@ namespace Donut;
 
 public sealed class PlayerController : Component
 {
-	public static PlayerController Local => NetworkManager.Instance.Players.FirstOrDefault( x => x.SteamId == Game.SteamId );
+	public static PlayerController Local => NetworkManager.Players?.FirstOrDefault( x => x.SteamId == Game.SteamId );
 
 	[Sync] public long SteamId { get; set; }
 	[Sync] public string Time { get; set; }
