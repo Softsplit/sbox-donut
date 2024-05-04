@@ -6,7 +6,8 @@
 <root>
 	<div class="left">
 		<div class="current-song">
-            @($"Now playing: {Donut.player?.Title}")
+            <div class="name">Now playing:</div>
+			<div class="artist">@Donut.player.Title</div>
 		</div>
 	</div>
 	<div class="right">
