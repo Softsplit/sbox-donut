@@ -1,7 +1,7 @@
 {
-  "Ident": null,
+  "Ident": "donator_perk",
   "Cost": 100,
-  "Title": "Spawn Box",
+  "Title": "Donator Perk",
   "Icon": "https://i.imgur.com/uPfTvLn.png",
   "ResourceVersion": 0,
   "__version": 0,
