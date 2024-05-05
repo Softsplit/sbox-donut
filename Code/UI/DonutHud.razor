@@ -34,17 +34,26 @@
 
 @code
 {
-    [Property] GamePass Pass { get; set; }
+    public static DonutHud Instance;
+
+    protected override void OnUpdate()
+    {
+        Instance = this;
+    }
 
     private void Donate()
     {
         if (!Game.ActiveScene.Components.TryGet<ScreenPanel>(out var panel) && panel?.GetPanel()?.ElementName != "monetization")
         {
-            // if (Monetization.Has(Pass)) return; doesn't work for now
+            if (PlayerController.Local.DonatorPerk.Has())
+            {
+                Chatbox.Instance.AddLocalMessage("😔", $"You already own the donator perk!", "notification"); 
+                return;
+            }
 
             foreach (PanelComponent panelcomp in Game.ActiveScene.Components.GetAll<PanelComponent>().ToArray()) panelcomp.Panel.Style.PointerEvents = PointerEvents.None;
 
-            Monetization.Purchase(Pass);
+            PlayerController.Local.DonatorPerk.Purchase();
         }
         else
         {

@@ -1,28 +1,34 @@
 {
   "RootObject": {
-    "Id": "f2e9cf2c-3ea9-4883-a904-4e4718029446",
+    "__guid": "e1ef5242-e52f-4d9e-af19-fb7dc7b127ee",
     "Name": "player",
     "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
     "Components": [
       {
-        "__type": "PlayerController"
+        "__type": "Donut.PlayerController",
+        "__guid": "0b29839c-2901-484a-857a-27896f0f20a4",
+        "DonatorPerk": "resources/donator.gamepass"
       }
     ],
     "Children": [
       {
-        "Id": "d0f70135-0732-44ee-83bf-798f580a3852",
+        "__guid": "acc054d6-1bbc-40c8-a075-1b1b841f0cf4",
         "Name": "Voice",
         "Position": "149.995,149.995,-212.125",
         "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
         "Components": [
           {
-            "__type": "Voice",
+            "__type": "Sandbox.Voice",
+            "__guid": "9a54b44f-9085-46df-8100-923e8dbac2e6",
             "Loopback": false,
             "Mode": "PushToTalk",
             "MorphScale": 3,
             "MorphSmoothTime": 0.1,
             "PushToTalkInput": "Voice",
-            "Renderer": null,
             "Volume": 1,
             "WorldspacePlayback": true
           }
@@ -33,5 +39,7 @@
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__version": 1,
   "__references": []
 }
