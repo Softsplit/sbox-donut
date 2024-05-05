@@ -1,6 +1,7 @@
 ﻿@using Sandbox.UI
 @using Sandbox.Services
 @using System
+@using System.Threading.Tasks
 @inherits PanelComponent
 @namespace Donut.UI
 
@@ -25,7 +26,7 @@
 				</div>
 			}
 		</div>
-        <div class="button" onclick=@( () => Monetization.Purchase(Pass) )>
+        <div class="button" onclick=@( () => Donate() )>
             Donate? (Test)
         </div>
 	</div>
@@ -34,6 +35,22 @@
 @code
 {
     [Property] GamePass Pass { get; set; }
+
+    private void Donate()
+    {
+        if (!Game.ActiveScene.Components.TryGet<ScreenPanel>(out var panel) && panel?.GetPanel()?.ElementName != "monetization")
+        {
+            // if (Monetization.Has(Pass)) return; doesn't work for now
+
+            foreach (PanelComponent panelcomp in Game.ActiveScene.Components.GetAll<PanelComponent>().ToArray()) panelcomp.Panel.Style.PointerEvents = PointerEvents.None;
+
+            Monetization.Purchase(Pass);
+        }
+        else
+        {
+            return;
+        }
+    }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.GlobalNow);
 }
