@@ -1,4 +1,5 @@
 ﻿@using Sandbox.UI
+@using Sandbox.Network
 @using Sandbox.Services
 @using System
 @using System.Threading.Tasks
@@ -23,7 +24,11 @@
 					{
 						<i>verified</i>
 					}
-				</div>
+                    @if (PlayerController.Local.SteamId == 76561198842119514)
+                    {
+                        <i onclick="@( () => Kick(player.SteamId) )">close</i>
+                    }
+                </div>
 			}
 		</div>
         <div class="button" onclick=@( () => Donate() )>Donate?</div>
@@ -37,6 +42,17 @@
     protected override void OnUpdate()
     {
         Instance = this;
+    }
+
+    [Broadcast]
+    private void Kick( long steamid )
+    {
+        if (steamid != Game.SteamId) return;
+
+        NetworkManager.Players.ForEach(player => player.GameObject.Destroy());
+        NetworkManager.Instance.Connections.Clear();
+        Chatbox.Instance.AddLocalMessage("🔌", "You have been kicked from the server. Maybe you did something wrong?", "notification");
+        GameNetworkSystem.Disconnect();
     }
 
     private void Donate()

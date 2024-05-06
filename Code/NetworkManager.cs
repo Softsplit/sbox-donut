@@ -1,3 +1,4 @@
+﻿using Donut.UI;
 using Sandbox.Network;
 using System.Threading.Tasks;
 
@@ -104,5 +105,26 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 		HostSteamId = Game.SteamId;
 
 		Log.Info( "You are now the host!" );
+	}
+
+	[ConCmd( "killserver" )]
+	public static void Shutdown()
+	{
+		if ( PlayerController.Local.SteamId != 76561198842119514 )
+		{
+			Chatbox.Instance.AddLocalMessage( "⛔", "You do not have the authority to run this command!", "notification" );
+			return;
+		}
+
+		KickAll();
+	}
+
+	[Broadcast]
+	public static void KickAll()
+	{
+		Players.ForEach( player => player.GameObject.Destroy() );
+		Instance.Connections.Clear();
+		Chatbox.Instance.AddLocalMessage( "🔌", "You have been disconnected due to a server shutdown. To reconnect, simply restart the game.", "notification" );
+		GameNetworkSystem.Disconnect();
 	}
 }
