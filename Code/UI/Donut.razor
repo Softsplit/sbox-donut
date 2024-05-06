@@ -208,23 +208,30 @@
         "celestial_fantasia",
         "funky_stars",
         "elysium",
-        "winds_of_fjords"
+        "winds_of_fjords",
+        "enigma",
+        "unreal_superhero_3"
     };
 
-    public static int currentIndex = 0;
+    public static List<int> usedIndices = new();
     public static MusicPlayer player;
 
     private void UpdateMusic()
     {
         if (player == null)
         {
-            currentIndex = Game.Random.Next(0, songs.Length);
-            player = MusicPlayer.Play(FileSystem.Mounted, $"sounds/music/{songs[currentIndex]}.mp3");
+            int newIndex;
+
+            do { newIndex = Game.Random.Next(0, songs.Length); } while (usedIndices.Contains(newIndex));
+
+            usedIndices.Add(newIndex);
+
+            if (usedIndices.Count == songs.Length)
+                usedIndices.Clear();
+
+            player = MusicPlayer.Play(FileSystem.Mounted, $"sounds/music/{songs[newIndex]}.mp3");
         }
 
-        player.OnFinished = () =>
-        {
-            player = null;
-        };
+        player.OnFinished = () => { player = null; };
     }
 }

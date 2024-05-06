@@ -7,4 +7,4 @@
 Based on the original donut.c by Andy Sloane\
 Music provided by The Mod Archive\
 Programming by Asphaltian\
-s&bux API by badandbest
+S&bux API by badandbest
