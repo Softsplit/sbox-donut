@@ -14,7 +14,8 @@
     </div>
 
     <div class="input_canvas">
-        <TextEntry @ref="InputBox" placeholder="Press ENTER/Y to start typing..." onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
+        <TextEntry @ref="InputBox" placeholder="Press ENTER/Y to start typing..." onsubmit=@ChatFinished
+                   AllowEmojiReplace=@(true) />
     </div>
 </root>
 
@@ -56,12 +57,12 @@
 
         if (string.IsNullOrWhiteSpace(text)) return;
 
-        if ( PlayerController.Local.DonatorPerk.Has() ) 
+        if (PlayerController.Local.DonatorPerk.Has())
         {
             styles += " rainbow";
         }
 
-        AddMessage( Game.SteamId.ToString(), text, styles );
+        AddMessage(Game.SteamId.ToString(), text, styles);
     }
 
     public void AddLocalMessage(string sender, string message, string styles = "")

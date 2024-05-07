@@ -110,7 +110,7 @@
             Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
 
             if (PlayerController.Local.IsValid()) PlayerController.Local.Time = $"{hours}h{minutes}m{seconds}s";
-            
+
             Stats.Increment("time2", 1f);
 
             StateHasChanged();
@@ -149,7 +149,8 @@
                 int x = (int)(40 + 30 * mess * (cosi * cosj2 * cosB - t * sinB)),
                 y = (int)(12 + 15 * mess * (cosi * cosj2 * sinB + t * cosB)),
                 o = x + 80 * y,
-                N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj * Math.Sin(B)));
+                N = (int)(8 * ((sinj * sinA - sini * cosj * cosA) * cosB - sini * cosj * sinA - sinj * cosA - cosi * cosj *
+                Math.Sin(B)));
 
                 if (22 > y && y > 0 && x > 0 && 80 > x && mess > z[o])
                 {
@@ -197,20 +198,20 @@
         }
     }
 
-    public static string[] songs = new string[] { 
-        "addiction",
-        "dead_lock", 
-        "space_debris", 
-        "unreal", 
-        "guitar_slinger", 
-        "aryx", 
-        "yuki_satellites",
-        "celestial_fantasia",
-        "funky_stars",
-        "elysium",
-        "winds_of_fjords",
-        "hyperbased",
-        "unreal_superhero_3"
+    public static string[] songs = new string[] {
+    "addiction",
+    "dead_lock",
+    "space_debris",
+    "unreal",
+    "guitar_slinger",
+    "aryx",
+    "yuki_satellites",
+    "celestial_fantasia",
+    "funky_stars",
+    "elysium",
+    "winds_of_fjords",
+    "hyperbased",
+    "unreal_superhero_3"
     };
 
     public static List<int> usedIndices = new();

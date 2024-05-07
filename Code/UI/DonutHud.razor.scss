@@ -91,7 +91,8 @@ DonutHud {
                 color: white;
                 flex-shrink: 0;
 
-                IconPanel, i {
+                IconPanel,
+                i {
                     font-size: 28px;
                 }
 
@@ -125,25 +126,31 @@ DonutHud {
 }
 
 @keyframes rainbow-background {
-  0% {
-    background-color: mix(#ff0000, black, 0.8);
-  }
-  16.666% {
-    background-color: mix(#ff7f00, black, 0.8);
-  }
-  33.333% {
-    background-color: mix(#ffff00, black, 0.8);
-  }
-  50% {
-    background-color: mix(#00ff00, black, 0.8);
-  }
-  66.666% {
-    background-color: mix(#0000ff, black, 0.8);
-  }
-  83.333% {
-    background-color: mix(#4b0082, black, 0.8);
-  }
-  100% {
-    background-color: mix(#8f00ff, black, 0.8);
-  }
+    0% {
+        background-color: mix(#ff0000, black, 0.8);
+    }
+
+    16.666% {
+        background-color: mix(#ff7f00, black, 0.8);
+    }
+
+    33.333% {
+        background-color: mix(#ffff00, black, 0.8);
+    }
+
+    50% {
+        background-color: mix(#00ff00, black, 0.8);
+    }
+
+    66.666% {
+        background-color: mix(#0000ff, black, 0.8);
+    }
+
+    83.333% {
+        background-color: mix(#4b0082, black, 0.8);
+    }
+
+    100% {
+        background-color: mix(#8f00ff, black, 0.8);
+    }
 }

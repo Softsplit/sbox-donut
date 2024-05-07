@@ -3,7 +3,7 @@
 @namespace Donut.UI
 
 <root class="@(Entry.Styles)">
-    @if(Entry.SteamId != 0)
+    @if (Entry.SteamId != 0)
     {
         <img class="avatar" src="@($"avatar:{Entry.SteamId}")" />
     }
@@ -15,5 +15,5 @@
 
 @code
 {
-    public Chatbox.Entry Entry { get; set; }  
+    public Chatbox.Entry Entry { get; set; }
 }
