@@ -6,7 +6,9 @@
   "Tags": "2d ui donut multiplayer lobby",
   "Schema": 1,
   "Resources": "*",
-  "PackageReferences": [],
+  "PackageReferences": [
+    "sbux.api"
+  ],
   "EditorReferences": null,
   "Metadata": {
     "MaxPlayers": 64,
