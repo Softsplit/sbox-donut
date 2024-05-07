@@ -51,11 +51,17 @@
     void ChatFinished()
     {
         string text = InputBox.Text.Trim();
+        string styles = "";
         InputBox.Text = "";
 
         if (string.IsNullOrWhiteSpace(text)) return;
 
-        AddMessage(Game.SteamId.ToString(), text);
+        if ( PlayerController.Local.DonatorPerk.Has() ) 
+        {
+            styles += " rainbow";
+        }
+
+        AddMessage( Game.SteamId.ToString(), text, styles );
     }
 
     public void AddLocalMessage(string sender, string message, string styles = "")
@@ -82,11 +88,6 @@
         else
         {
             name = sender;
-        }
-
-        if ((PlayerController.Local.DonatorPerk.Has()))
-        {
-            styles += " rainbow";
         }
 
         Entries.Add(new Entry(steamId, name, message, styles, 0));

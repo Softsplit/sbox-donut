@@ -55,7 +55,7 @@
         GameNetworkSystem.Disconnect();
     }
 
-    private void Donate()
+    private async void Donate()
     {
         if (!Game.ActiveScene.Components.TryGet<ScreenPanel>(out var panel) && panel?.GetPanel()?.ElementName != "monetization")
         {
@@ -67,7 +67,9 @@
 
             foreach (PanelComponent panelcomp in Game.ActiveScene.Components.GetAll<PanelComponent>().ToArray()) panelcomp.Panel.Style.PointerEvents = PointerEvents.None;
 
-            PlayerController.Local.DonatorPerk.Purchase();
+            await PlayerController.Local.DonatorPerk.Purchase();
+	        
+            foreach (PanelComponent panelcomp in Game.ActiveScene.Components.GetAll<PanelComponent>().ToArray()) panelcomp.Panel.Style.PointerEvents = PointerEvents.All;
         }
         else
         {
