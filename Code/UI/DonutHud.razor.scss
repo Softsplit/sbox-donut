@@ -12,14 +12,12 @@ DonutHud {
         flex-direction: row;
         align-items: flex-end;
         flex-shrink: 0;
-        width: 500px;
+        width: 400px;
         padding: 20px;
-        margin-bottom: 10px;
         font-size: 24px;
         color: white;
 
         > .current-song {
-            width: 50%;
             flex-direction: column;
             align-content: center;
         }
@@ -28,47 +26,46 @@ DonutHud {
     > .right {
         flex-direction: column;
         flex-shrink: 0;
-        width: 500px;
+        width: 400px;
         padding: 20px;
-        margin-bottom: 10px;
         font-size: 24px;
         gap: 8px;
 
-        > .button {
+        > .misc-row {
             position: absolute;
-            background-color: blue;
-            border-width: 2px;
+            flex-direction: row;
+            overflow: scroll;
+            flex-grow: 1;
             color: white;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 50%;
-            flex-direction: column;
-            transition: all 0.2s ease-out;
-            flex-shrink: 0;
-            text-align: center;
             bottom: 20px;
             right: 20px;
 
-            .title {
-                font-weight: bold;
-                font-size: 20px;
+            > .settings {
+                font-size: 32px;
+                padding: 8px;
             }
 
-            .meta {
-                font-size: 16px;
-
-                .map {
-                    flex-grow: 1;
-                }
-
-                .count {
-                    white-space: nowrap;
-                }
+            > .credits {
+                font-size: 32px;
+                padding: 8px;
             }
 
-            &:hover {
-                background-color: #333;
+            > .button {
+                margin-right: 8px;
+                background-color: blue;
+                border-width: 2px;
+                padding: 10px;
+                border-radius: 8px;
+                cursor: pointer;
+                width: 200px;
+                flex-direction: column;
+                transition: all 0.2s ease-out;
+                text-align: center;
+                justify-content: center;
+
+                &:hover {
+                    background-color: #333;
+                }
             }
         }
 
@@ -91,8 +88,9 @@ DonutHud {
                 color: white;
                 flex-shrink: 0;
 
-                IconPanel, i {
-                    font-size: 28px;
+                IconPanel,
+                i {
+                    font-size: 24px;
                 }
 
                 &:intro {
@@ -114,7 +112,7 @@ DonutHud {
                 }
 
                 .name {
-                    font-size: 28px;
+                    font-size: 24px;
                     font-weight: 500;
                     margin-left: 10px;
                     flex-grow: 1;
@@ -125,25 +123,31 @@ DonutHud {
 }
 
 @keyframes rainbow-background {
-  0% {
-    background-color: mix(#ff0000, black, 0.8);
-  }
-  16.666% {
-    background-color: mix(#ff7f00, black, 0.8);
-  }
-  33.333% {
-    background-color: mix(#ffff00, black, 0.8);
-  }
-  50% {
-    background-color: mix(#00ff00, black, 0.8);
-  }
-  66.666% {
-    background-color: mix(#0000ff, black, 0.8);
-  }
-  83.333% {
-    background-color: mix(#4b0082, black, 0.8);
-  }
-  100% {
-    background-color: mix(#8f00ff, black, 0.8);
-  }
+    0% {
+        background-color: mix(#ff0000, black, 0.8);
+    }
+
+    16.666% {
+        background-color: mix(#ff7f00, black, 0.8);
+    }
+
+    33.333% {
+        background-color: mix(#ffff00, black, 0.8);
+    }
+
+    50% {
+        background-color: mix(#00ff00, black, 0.8);
+    }
+
+    66.666% {
+        background-color: mix(#0000ff, black, 0.8);
+    }
+
+    83.333% {
+        background-color: mix(#4b0082, black, 0.8);
+    }
+
+    100% {
+        background-color: mix(#8f00ff, black, 0.8);
+    }
 }

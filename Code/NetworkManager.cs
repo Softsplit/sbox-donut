@@ -1,7 +1,6 @@
 ﻿using Donut.UI;
 using Sandbox.Network;
 using System.Threading.Tasks;
-
 namespace Donut;
 
 public sealed class NetworkManager : Component, Component.INetworkListener
@@ -18,12 +17,12 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 	/// </summary>
 	[Property] public GameObject PlayerPrefab { get; set; }
 
-	public List<Connection> Connections = new();
-	public Connection Host = null;
-
 	[Sync] public long HostSteamId { get; set; }
 
-	public static List<PlayerController> Players => Game.ActiveScene.Components.GetAll<PlayerController>( FindMode.EnabledInSelfAndDescendants ).ToList();
+	public static List<Player> Players => Game.ActiveScene.Components.GetAll<Player>( FindMode.EnabledInSelfAndDescendants ).ToList();
+
+	public List<Connection> Connections = new();
+	public Connection Host = null;
 
 	protected override void OnUpdate()
 	{
@@ -32,8 +31,7 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 
 	protected override async Task OnLoad()
 	{
-		if ( Scene.IsEditor )
-			return;
+		if ( Scene.IsEditor ) return;
 
 		if ( StartServer && !GameNetworkSystem.IsActive )
 		{
@@ -58,8 +56,7 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 			HostSteamId = (long)channel.SteamId;
 		}
 
-		if ( PlayerPrefab is null )
-			return;
+		if ( PlayerPrefab is null ) return;
 
 		SpawnPlayer( channel );
 	}
@@ -74,19 +71,14 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 		var player = PlayerPrefab.Clone( startLocation, name: $"Player - {channel.DisplayName}" );
 		player.NetworkSpawn( channel );
 
-		var playerController = player.Components.Get<PlayerController>( FindMode.EverythingInSelfAndDescendants );
+		var playerController = player.Components.Get<Player>( FindMode.EverythingInSelfAndDescendants );
 		playerController.SetName( channel.DisplayName );
 	}
 
 	public void OnDisconnected( Connection channel )
 	{
 		foreach ( var player in Players )
-		{
-			if ( player.SteamId == (long)channel.SteamId )
-			{
-				player.GameObject.Destroy();
-			}
-		}
+			if ( player.SteamId == (long)channel.SteamId ) player.GameObject.Destroy();
 
 		Connections.Remove( channel );
 	}
@@ -94,12 +86,7 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 	public void OnBecameHost( Connection previousHost )
 	{
 		foreach ( var player in Players )
-		{
-			if ( player.SteamId == (long)previousHost.SteamId )
-			{
-				player.GameObject.Destroy();
-			}
-		}
+			if ( player.SteamId == (long)previousHost.SteamId ) player.GameObject.Destroy();
 
 		Host = Connections.FirstOrDefault( x => x.SteamId == (ulong)Game.SteamId );
 		HostSteamId = Game.SteamId;
@@ -110,7 +97,7 @@ public sealed class NetworkManager : Component, Component.INetworkListener
 	[ConCmd( "killserver" )]
 	public static void Shutdown()
 	{
-		if ( PlayerController.Local.SteamId != 76561198842119514 )
+		if ( Player.Local.SteamId != 76561198842119514 )
 		{
 			Chatbox.Instance.AddLocalMessage( "⛔", "You do not have the authority to run this command!", "notification" );
 			return;

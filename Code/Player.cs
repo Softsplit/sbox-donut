@@ -1,21 +1,19 @@
 using Sandbox.Services;
-
 namespace Donut;
 
-public sealed class PlayerController : Component
+public sealed class Player : Component
 {
-	public static PlayerController Local => NetworkManager.Players?.FirstOrDefault( x => x.SteamId == Game.SteamId );
+	[Property] public GamePass DonatorPerk { get; set; }
 
 	[Sync] public long SteamId { get; set; }
 	[Sync] public string Time { get; set; }
-	[Property] public GamePass DonatorPerk { get; set; }
+
+	public static Player Local => NetworkManager.Players?.FirstOrDefault( x => x.SteamId == Game.SteamId );
 
 	protected override void OnUpdate()
 	{
 		if ( !IsProxy )
-		{
 			SteamId = Game.SteamId;
-		}
 	}
 
 	[Broadcast]

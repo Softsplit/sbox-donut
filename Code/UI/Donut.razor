@@ -1,13 +1,11 @@
 @using System
 @using System.Text
-@using System.Threading.Tasks
-@using Sandbox.Network
 @using Sandbox.Services
 @inherits PanelComponent
 @namespace Donut.UI
 
 <root>
-    <div class="donut-canvas">@DonutOutput</div>
+    <div class="donut-canvas">@output</div>
     <div class="leaderboard">
         @if (leaderboard is not null)
         {
@@ -24,13 +22,29 @@
             </div>
         }
     </div>
-    <div class="counter">@Counter</div>
 </root>
 
-@code
-{
-    private StringBuilder DonutOutput { get; set; }
-    private string Counter { get; set; }
+@code {
+    public static MusicPlayer MusicPlayer { get; private set; }
+    public static string[] Songs { get; set; } = new string[] {
+    "addiction",
+    "point_of_departure",
+    "stardust_memories",
+    "dead_lock",
+    "space_debris",
+    "unreal",
+    "guitar_slinger",
+    "aryx",
+    "yuki_satellites",
+    "celestial_fantasia",
+    "funky_stars",
+    "elysium",
+    "winds_of_fjords",
+    "hyperbased",
+    "unreal_superhero_3"
+    };
+
+    private Leaderboards.Board leaderboard;
 
     protected override void OnAwake()
     {
@@ -40,17 +54,14 @@
 
     protected override void OnUpdate()
     {
-        _ = UpdateLeaderboardInfo();
-
+        UpdateLeaderboard();
         UpdateInput();
         UpdateDonut();
         UpdateTime();
         UpdateMusic();
     }
 
-    protected override int BuildHash() => HashCode.Combine(RealTime.GlobalNow);
-
-    RealTimeUntil donutDelay;
+    private RealTimeUntil donutDelay;
 
     private void UpdateDonut()
     {
@@ -60,24 +71,29 @@
 
             StateHasChanged();
 
-            DonutOutput = RenderDonut();
+            RenderDonut();
 
             StateHasChanged();
         }
     }
 
-    private Leaderboards.Board leaderboard;
+    private RealTimeUntil leaderboardDelay;
 
-    private async Task UpdateLeaderboardInfo()
+    private async void UpdateLeaderboard()
     {
-        StateHasChanged();
+        if (leaderboardDelay)
+        {
+            leaderboardDelay = 10f;
 
-        await leaderboard.Refresh();
+            StateHasChanged();
 
-        StateHasChanged();
+            await leaderboard.Refresh();
+
+            StateHasChanged();
+        }
     }
 
-    string IsMe(Leaderboards.Entry entry)
+    private string IsMe(Leaderboards.Entry entry)
     {
         return entry.Me ? "me" : "";
     }
@@ -85,7 +101,7 @@
     private int hours;
     private int minutes;
     private int seconds;
-    RealTimeUntil timeDelay;
+    private RealTimeUntil timeDelay;
 
     private void UpdateTime()
     {
@@ -107,22 +123,21 @@
                 hours++;
             }
 
-            Counter = $"Time currently wasted: {hours} hours, {minutes} minutes, {seconds} seconds";
+            if (Player.Local.IsValid())
+                Player.Local.Time = $"{hours}h{minutes}m{seconds}s";
 
-            if (PlayerController.Local.IsValid()) PlayerController.Local.Time = $"{hours}h{minutes}m{seconds}s";
-            
             Stats.Increment("time2", 1f);
 
             StateHasChanged();
         }
     }
 
-    double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02, i, j;
-    double[] z = new double[1760];
-    char[] b = new char[1760];
-    StringBuilder output = new StringBuilder();
+    private double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02, i, j;
+    private double[] z = new double[1760];
+    private char[] b = new char[1760];
+    private StringBuilder output = new StringBuilder();
 
-    private StringBuilder RenderDonut()
+    private void RenderDonut()
     {
         for (int k = 0; k < 1760; k++)
         {
@@ -158,14 +173,13 @@
                 }
             }
         }
+
         output.Clear();
 
         for (int k = 0; k < 1761; k++)
             output.Append(k % 80 != 0 ? b[k] : '\n');
 
         A += DELTA_A; B += DELTA_B;
-
-        return output;
     }
 
     private void UpdateInput()
@@ -197,41 +211,24 @@
         }
     }
 
-    public static string[] songs = new string[] { 
-        "addiction",
-        "dead_lock", 
-        "space_debris", 
-        "unreal", 
-        "guitar_slinger", 
-        "aryx", 
-        "yuki_satellites",
-        "celestial_fantasia",
-        "funky_stars",
-        "elysium",
-        "winds_of_fjords",
-        "hyperbased",
-        "unreal_superhero_3"
-    };
-
-    public static List<int> usedIndices = new();
-    public static MusicPlayer player;
+    private List<int> usedIndices = new();
 
     private void UpdateMusic()
     {
-        if (player == null)
+        if (MusicPlayer == null)
         {
             int newIndex;
 
-            do { newIndex = Game.Random.Next(0, songs.Length); } while (usedIndices.Contains(newIndex));
+            do { newIndex = Game.Random.Next(0, Songs.Length); } while (usedIndices.Contains(newIndex));
 
             usedIndices.Add(newIndex);
 
-            if (usedIndices.Count == songs.Length)
+            if (usedIndices.Count == Songs.Length)
                 usedIndices.Clear();
 
-            player = MusicPlayer.Play(FileSystem.Mounted, $"sounds/music/{songs[newIndex]}.mp3");
+            MusicPlayer = MusicPlayer.Play(FileSystem.Mounted, $"sounds/music/{Songs[newIndex]}.mp3");
         }
 
-        player.OnFinished = () => { player = null; };
+        MusicPlayer.OnFinished = () => { MusicPlayer = null; };
     }
 }

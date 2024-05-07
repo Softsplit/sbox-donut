@@ -2,42 +2,45 @@
 @using Sandbox.Network
 @using Sandbox.Services
 @using System
-@using System.Threading.Tasks
 @inherits PanelComponent
 @namespace Donut.UI
 
 <root>
-	<div class="left">
-		<div class="current-song">
-            <div class="name">Now playing:</div>
-			<div class="artist">@Donut.player.Title</div>
-		</div>
-	</div>
-	<div class="right">
-		<div class="player-list">
-			@foreach (var player in NetworkManager.Players)
-			{
-				<div class="player-entry">
-					<img src=@($"avatar:{player?.SteamId}") class="avatar" />
-                    <label class="name">@player?.GameObject.Name @($"\u2500") @player?.Time</label>
-					@if ((NetworkManager.Instance?.Host?.SteamId ?? 0) == (ulong)player?.SteamId)
-					{
-						<i>verified</i>
-					}
-                    @if (PlayerController.Local.SteamId == 76561198842119514)
+    <div class="left">
+        <div class="current-song">
+            <div>Now playing:</div>
+            <div>@Donut.MusicPlayer.Title</div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="player-list">
+            @foreach (var player in NetworkManager.Players)
+            {
+                <div class="player-entry">
+                    <img src=@($"avatar:{player?.SteamId}") class="avatar" />
+                    <label class="name">@($"{player?.GameObject.Name} \u2500 {player?.Time}")</label>
+                    @if ((NetworkManager.Instance?.Host?.SteamId ?? 0) == (ulong)player?.SteamId)
                     {
-                        <i onclick="@( () => Kick(player.SteamId) )">close</i>
+                        <i>verified</i>
+                    }
+                    @if (Player.Local.SteamId == 76561198842119514)
+                    {
+                        <i onclick=@( () => Kick(player.SteamId) )>close</i>
                     }
                 </div>
-			}
-		</div>
-        <div class="button" onclick=@( () => Donate() )>Donate?</div>
-	</div>
+            }
+        </div>
+        <div class="misc-row"> 
+            <div class="button" onclick=@( () => Donate() )>Donate?</div>
+            <i class="credits">info</i>
+            <i class="settings">settings</i> 
+        </div>
+    </div>
 </root>
 
 @code
 {
-    public static DonutHud Instance;
+    public static DonutHud Instance { get; private set; }
 
     protected override void OnUpdate()
     {
@@ -45,7 +48,7 @@
     }
 
     [Broadcast]
-    private void Kick( long steamid )
+    private void Kick(long steamid)
     {
         if (steamid != Game.SteamId) return;
 
@@ -57,23 +60,25 @@
 
     private async void Donate()
     {
-        if (!Game.ActiveScene.Components.TryGet<ScreenPanel>(out var panel) && panel?.GetPanel()?.ElementName != "monetization")
+        if (!Game.ActiveScene.Components.TryGet<ScreenPanel>(out var panel) && panel?.GetPanel().ElementName != "monetization")
         {
-            if (PlayerController.Local.DonatorPerk.Has())
+            if (Player.Local.DonatorPerk.Has())
             {
-                Chatbox.Instance.AddLocalMessage("😔", $"You already own the donator perk!", "notification"); 
+                Chatbox.Instance.AddLocalMessage("😔", $"You already own the donator perk!", "notification");
                 return;
             }
 
-            foreach (PanelComponent panelcomp in Game.ActiveScene.Components.GetAll<PanelComponent>().ToArray()) panelcomp.Panel.Style.PointerEvents = PointerEvents.None;
+            // thing we have to do until pointer event orders are fixed
+            // https://github.com/Facepunch/sbox-issues/issues/5462
+            Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.None);
 
-            await PlayerController.Local.DonatorPerk.Purchase();
-	        
-            foreach (PanelComponent panelcomp in Game.ActiveScene.Components.GetAll<PanelComponent>().ToArray()) panelcomp.Panel.Style.PointerEvents = PointerEvents.All;
-        }
-        else
-        {
-            return;
+            await Player.Local.DonatorPerk.Purchase();
+
+            // ditto
+            Game.ActiveScene.Components.Get<ScreenPanel>().GetPanel().DeletionToken.Register(() =>
+            {
+                Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.All);
+            });
         }
     }
 

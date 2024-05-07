@@ -8,10 +8,10 @@
 *.csproj
 obj/*
 Properties/*
+Libraries/*
 code/obj/*
 code/Properties/*
 *.sln
-/Libraries
 
 # Editor Projects
 code/Editor/obj/*

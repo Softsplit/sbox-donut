@@ -12,20 +12,19 @@
             <ChatEntry Entry=@entry />
         }
     </div>
-
     <div class="input_canvas">
-        <TextEntry @ref="InputBox" placeholder="Press ENTER/Y to start typing..." onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
+        <TextEntry @ref="InputBox" placeholder="Press ENTER/Y to chat..." onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
     </div>
 </root>
 
 @code
 {
-    public static Chatbox Instance;
-
-    TextEntry InputBox;
-    List<Entry> Entries = new();
+    public static Chatbox Instance { get; private set; }
 
     public record Entry(long SteamId, string Name, string Message, string Styles, RealTimeSince TimeSinceBorn);
+
+    private TextEntry InputBox;
+    private List<Entry> Entries = new();
 
     protected override void OnUpdate()
     {
@@ -56,12 +55,10 @@
 
         if (string.IsNullOrWhiteSpace(text)) return;
 
-        if ( PlayerController.Local.DonatorPerk.Has() ) 
-        {
+        if (Player.Local.DonatorPerk.Has())
             styles += " rainbow";
-        }
 
-        AddMessage( Game.SteamId.ToString(), text, styles );
+        AddMessage(Game.SteamId.ToString(), text, styles);
     }
 
     public void AddLocalMessage(string sender, string message, string styles = "")
@@ -79,6 +76,7 @@
 
         long steamId = 0;
         string name = "";
+
         if (long.TryParse(sender, out steamId))
         {
             var friend = new Friend(steamId);
