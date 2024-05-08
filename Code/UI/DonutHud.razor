@@ -69,7 +69,12 @@
 
             await PlayerController.Local.DonatorPerk.Purchase();
 
-            foreach (PanelComponent panelcomp in Game.ActiveScene.Components.GetAll<PanelComponent>().ToArray()) panelcomp.Panel.Style.PointerEvents = PointerEvents.All;
+            // thing we have to do until pointer event orders are fixed
+            // https://github.com/Facepunch/sbox-issues/issues/5462
+            Game.ActiveScene.Components.Get<ScreenPanel>().GetPanel().DeletionToken.Register( () =>
+            {
+                foreach (PanelComponent panelcomp in Game.ActiveScene.Components.GetAll<PanelComponent>().ToArray()) panelcomp.Panel.Style.PointerEvents = PointerEvents.All;
+            } );
         }
         else
         {
