@@ -26,7 +26,7 @@
 
 @code {
     public static MusicPlayer MusicPlayer { get; private set; }
-    public static string[] Songs { get; set; } = new string[] {
+    public static string[] Songs { get; set; } = new[] {
     "addiction",
     "point_of_departure",
     "stardust_memories",
@@ -79,15 +79,15 @@
 
     private RealTimeUntil leaderboardDelay;
 
-    private async void UpdateLeaderboard()
+    private void UpdateLeaderboard()
     {
         if (leaderboardDelay)
         {
-            leaderboardDelay = 10f;
+            leaderboardDelay = 30f;
 
             StateHasChanged();
 
-            await leaderboard.Refresh();
+            leaderboard.Refresh();
 
             StateHasChanged();
         }
@@ -135,7 +135,7 @@
     private double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02, i, j;
     private double[] z = new double[1760];
     private char[] b = new char[1760];
-    private StringBuilder output = new StringBuilder();
+    private StringBuilder output = new();
 
     private void RenderDonut()
     {
@@ -227,6 +227,7 @@
                 usedIndices.Clear();
 
             MusicPlayer = MusicPlayer.Play(FileSystem.Mounted, $"sounds/music/{Songs[newIndex]}.mp3");
+            MusicPlayer.Volume = 0.5f;
         }
 
         MusicPlayer.OnFinished = () => { MusicPlayer = null; };

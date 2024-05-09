@@ -3,6 +3,7 @@
 @using Sandbox.Services
 @using System
 @inherits PanelComponent
+@implements Component.INetworkListener
 @namespace Donut.UI
 
 <root>
@@ -14,72 +15,64 @@
     </div>
     <div class="right">
         <div class="player-list">
-            @foreach (var player in NetworkManager.Players)
+            @if (GameNetworkSystem.IsActive)
             {
-                <div class="player-entry">
-                    <img src=@($"avatar:{player?.SteamId}") class="avatar" />
-                    <label class="name">@($"{player?.GameObject.Name} \u2500 {player?.Time}")</label>
-                    @if ((NetworkManager.Instance?.Host?.SteamId ?? 0) == (ulong)player?.SteamId)
-                    {
-                        <i>verified</i>
-                    }
-                    @if (Player.Local.SteamId == 76561198842119514)
-                    {
-                        <i onclick=@( () => Kick(player.SteamId) )>close</i>
-                    }
-                </div>
+                @foreach (var player in Game.ActiveScene.GetAllComponents<Player>())
+                {
+                    <div class="player-entry">
+                        <img src=@($"avatar:{player?.Network.OwnerConnection.SteamId}") class="avatar" />
+                        <label class="name">@($"{player?.Network.OwnerConnection.DisplayName} \u2500 {player?.Time}")</label>
+                        @if (Connection.Host == player?.Network.OwnerConnection)
+                        {
+                            <i>verified</i>
+                        }
+                        @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != player?.Network.OwnerConnection)
+                        {
+                            <i onclick=@( () => GameManager.Instance.Kick(player.Network.OwnerConnection) )>close</i>
+                        }
+                    </div>
+                }
             }
         </div>
         <div class="misc-row"> 
             <div class="button" onclick=@( () => Donate() )>Donate?</div>
-            <i class="credits">info</i>
-            <i class="settings">settings</i> 
+            <i class="credits" onclick=@( () => OpenCredits() )>info</i>
+            <i class="settings" onclick=@( () => OpenSettings() )>settings</i>
         </div>
     </div>
 </root>
 
 @code
 {
-    public static DonutHud Instance { get; private set; }
-
-    protected override void OnUpdate()
-    {
-        Instance = this;
-    }
-
-    [Broadcast]
-    private void Kick(long steamid)
-    {
-        if (steamid != Game.SteamId) return;
-
-        NetworkManager.Players.ForEach(player => player.GameObject.Destroy());
-        NetworkManager.Instance.Connections.Clear();
-        Chatbox.Instance.AddLocalMessage("🔌", "You have been kicked from the server. Maybe you did something wrong?", "notification");
-        GameNetworkSystem.Disconnect();
-    }
-
     private async void Donate()
     {
-        if (!Game.ActiveScene.Components.TryGet<ScreenPanel>(out var panel) && panel?.GetPanel().ElementName != "monetization")
+        if (Player.Local.DonatorPerk.Has())
         {
-            if (Player.Local.DonatorPerk.Has())
-            {
-                Chatbox.Instance.AddLocalMessage("😔", $"You already own the donator perk!", "notification");
-                return;
-            }
-
-            // thing we have to do until pointer event orders are fixed
-            // https://github.com/Facepunch/sbox-issues/issues/5462
-            Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.None);
-
-            await Player.Local.DonatorPerk.Purchase();
-
-            // ditto
-            Game.ActiveScene.Components.Get<ScreenPanel>().GetPanel().DeletionToken.Register(() =>
-            {
-                Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.All);
-            });
+            Chatbox.Instance.AddLocalMessage("😔", $"You already own the donator perk!", "notification");
+            return;
         }
+
+        // thing we have to do until pointer event orders are fixed
+        // https://github.com/Facepunch/sbox-issues/issues/5462
+        Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.None);
+
+        await Player.Local.DonatorPerk.Purchase();
+
+        // ditto
+        Game.ActiveScene.Components.Get<ScreenPanel>().GetPanel().DeletionToken.Register(() =>
+        {
+            Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.All);
+        });        
+    }
+
+    private void OpenCredits()
+    {
+
+    }
+
+    private void OpenSettings()
+    {
+        
     }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.GlobalNow);

@@ -93,17 +93,6 @@ DonutHud {
                     font-size: 24px;
                 }
 
-                &:intro {
-                    opacity: 0;
-                    margin-left: 20px;
-                }
-
-                &:outro {
-                    opacity: 0;
-                    margin-left: 20px;
-                    transition: all 0.1s ease-out;
-                }
-
                 .avatar {
                     min-width: 50px;
                     width: 50px;

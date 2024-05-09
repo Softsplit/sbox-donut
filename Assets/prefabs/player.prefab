@@ -1,6 +1,7 @@
 {
   "RootObject": {
-    "__guid": "7e36449f-b4b7-4bb7-b7ae-0045b4ef92b9",
+    "__guid": "7f6053b3-2b10-421c-9d15-87cb2bf26b4b",
+    "Flags": 0,
     "Name": "player",
     "Enabled": true,
     "NetworkMode": 2,
@@ -8,33 +9,22 @@
     "Components": [
       {
         "__type": "Donut.Player",
-        "__guid": "9d543e75-8e37-4eef-a701-07ae997849e4",
+        "__guid": "be2cf5f9-bf57-4881-8248-9fd838ebcaff",
         "DonatorPerk": "resources/donator.gamepass"
+      },
+      {
+        "__type": "Sandbox.Voice",
+        "__guid": "778c37a0-c1a5-4cc8-89ec-2530ef8243d1",
+        "Loopback": false,
+        "Mode": "PushToTalk",
+        "MorphScale": 3,
+        "MorphSmoothTime": 0.1,
+        "PushToTalkInput": "voice",
+        "Volume": 1,
+        "WorldspacePlayback": true
       }
     ],
-    "Children": [
-      {
-        "__guid": "4a5a92d1-3546-4dff-b594-fb109fab3c9b",
-        "Name": "Voice",
-        "Position": "149.995,149.995,-212.125",
-        "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
-        "Components": [
-          {
-            "__type": "Sandbox.Voice",
-            "__guid": "5c53b80a-c976-4f32-b614-4689410ba6fb",
-            "Loopback": false,
-            "Mode": "PushToTalk",
-            "MorphScale": 3,
-            "MorphSmoothTime": 0.1,
-            "PushToTalkInput": "Voice",
-            "Volume": 1,
-            "WorldspacePlayback": true
-          }
-        ]
-      }
-    ]
+    "Children": []
   },
   "ShowInMenu": false,
   "MenuPath": null,

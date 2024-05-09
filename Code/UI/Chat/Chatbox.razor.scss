@@ -87,26 +87,6 @@ Chatbox {
         }
     }
 
-    ChatCommandPanel {
-        opacity: 0;
-        color: lightgrey;
-        text-align: left;
-        margin-top: 10px;
-        gap: 8px;
-        overflow-x: scroll;
-
-        ChatCommandPanelEntry {
-            gap: 4px;
-            flex-shrink: 0;
-            background-color: rgba(black, 0.5);
-            padding: 4px;
-
-            label {
-                gap: 4px;
-            }
-        }
-    }
-
     &.open {
         background-color: rgba(black, 0.5);
 
@@ -128,21 +108,15 @@ Chatbox {
                 }
             }
         }
-
-        ChatCommandPanel {
-            opacity: 1;
-        }
     }
 }
 
 ChatEntry {
-    //background-color: rgba( black, 0.7 );
     color: white;
     font-smooth: never;
     transition: all 0.1s ease-out;
     opacity: 1;
     flex-shrink: 0;
-    //	min-height: 47px;
     gap: 10px;
     padding: 5px;
     transform: scale(1);
