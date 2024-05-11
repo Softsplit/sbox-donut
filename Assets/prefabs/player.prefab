@@ -10,7 +10,7 @@
       {
         "__type": "Donut.Player",
         "__guid": "be2cf5f9-bf57-4881-8248-9fd838ebcaff",
-        "DonatorPerk": "resources/donator.gamepass"
+        "DonatorPerk": "data/donator.gamepass"
       },
       {
         "__type": "Sandbox.Voice",

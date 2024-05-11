@@ -9,11 +9,26 @@ p {
 }
 
 .rainbow {
-    > .name {
+    > > .name {
         animation-name: rainbowcycle;
         animation-duration: 4s;
         animation-iteration-count: infinite;
         animation-timing-function: linear;
+    }
+}
+
+.notification {
+    > > .name {
+        position: relative;
+        padding-left: 4px;
+        padding-right: 5px;
+        flex-shrink: 0;
+        align-self: center;
+        color: #CCF45A;
+    }
+
+    > > .message {
+        white-space: normal;
     }
 }
 
@@ -75,7 +90,7 @@ Chatbox {
     .input_canvas {
         flex-direction: row;
 
-        textentry {  
+        textentry {
             background-color: black;
             color: white;
             background-color: rgba(black, 0);
@@ -145,17 +160,14 @@ ChatEntry {
         text-shadow: 0 0 4px black;
     }
 
-    .name {
-        padding-left: 4px;
-        padding-right: 5px;
-        flex-shrink: 0;
-        align-self: center;
-        max-width: 150px;
-        color: #ccf45a;
-    }
-
     .message-content {
+        .name {
+            position: absolute;
+            color: #ccf45a;
+        }
+
         .message {
+            white-space: pre;
         }
     }
 

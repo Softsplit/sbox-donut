@@ -32,7 +32,7 @@
     "stardust_memories",
     "dead_lock",
     "space_debris",
-    "unreal",
+    "unreal_2",
     "guitar_slinger",
     "aryx",
     "yuki_satellites",
@@ -41,7 +41,9 @@
     "elysium",
     "winds_of_fjords",
     "hyperbased",
-    "unreal_superhero_3"
+    "unreal_superhero_3",
+    "foregone_destruction",
+    "the_great_strategy"
     };
 
     private Leaderboards.Board leaderboard;
@@ -132,7 +134,7 @@
         }
     }
 
-    private double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02, i, j;
+    private double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02;
     private double[] z = new double[1760];
     private char[] b = new char[1760];
     private StringBuilder output = new();
@@ -145,9 +147,9 @@
             b[k] = ' ';
         }
 
-        for (j = 0; Math.PI * 2 > j; j += 0.07)
+        for (double j = 0; Math.PI * 2 > j; j += 0.07)
         {
-            for (i = 0; Math.PI * 2 > i; i += 0.02)
+            for (double i = 0; Math.PI * 2 > i; i += 0.02)
             {
                 double sini = Math.Sin(i),
                 cosj = Math.Cos(j),
@@ -184,27 +186,27 @@
 
     private void UpdateInput()
     {
-        if (Input.Pressed("IncreaseRotationSpeedA"))
+        if (Input.Pressed("Increase Rotation Speed A"))
         {
             DELTA_A += 0.0025;
         }
 
-        if (Input.Pressed("DecreaseRotationSpeedA"))
+        if (Input.Pressed("Decrease Rotation Speed A"))
         {
             DELTA_A -= 0.0025;
         }
 
-        if (Input.Pressed("IncreaseRotationSpeedB"))
+        if (Input.Pressed("Increase Rotation Speed B"))
         {
             DELTA_B += 0.0025;
         }
 
-        if (Input.Pressed("DecreaseRotationSpeedB"))
+        if (Input.Pressed("Decrease Rotation Speed B"))
         {
             DELTA_B -= 0.0025;
         }
 
-        if (Input.Pressed("ResetRotationSpeed"))
+        if (Input.Pressed("Reset Rotation Speed"))
         {
             DELTA_A = 0.04;
             DELTA_B = 0.02;
@@ -227,7 +229,6 @@
                 usedIndices.Clear();
 
             MusicPlayer = MusicPlayer.Play(FileSystem.Mounted, $"sounds/music/{Songs[newIndex]}.mp3");
-            MusicPlayer.Volume = 0.5f;
         }
 
         MusicPlayer.OnFinished = () => { MusicPlayer = null; };

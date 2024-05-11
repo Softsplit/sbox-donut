@@ -7,9 +7,10 @@
     {
         <img class="avatar" src=@($"avatar:{Entry.SteamId}") />
     }
-    <p class="name">@Entry.Name</p>
     <div class="message-content">
-        <p class="message">@Entry.Message</p>
+        <p class="name">@Entry.Name</p>
+        @*HACK: inline is not supported yet, so offset the message with the lenght of the username.*@
+        <p class="message">@( new string( ' ', Entry.Name.Length + 1 ) + Entry.Message )</p>
     </div>
 </root>
 

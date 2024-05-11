@@ -6,9 +6,7 @@
   "Tags": "2d ui donut multiplayer lobby",
   "Schema": 1,
   "Resources": "*",
-  "PackageReferences": [
-    "sbux.api"
-  ],
+  "PackageReferences": [],
   "EditorReferences": null,
   "Metadata": {
     "MaxPlayers": 64,
@@ -33,31 +31,31 @@
     "InputSettings": {
       "Actions": [
         {
-          "Name": "IncreaseRotationSpeedA",
+          "Name": "Increase Rotation Speed A",
           "KeyboardCode": "RIGHTARROW",
           "GamepadCode": "DpadNorth",
           "GroupName": ""
         },
         {
-          "Name": "DecreaseRotationSpeedA",
+          "Name": "Decrease Rotation Speed A",
           "KeyboardCode": "LEFTARROW",
           "GamepadCode": "DpadSouth",
           "GroupName": ""
         },
         {
-          "Name": "ResetRotationSpeed",
+          "Name": "Reset Rotation Speed",
           "KeyboardCode": "E",
           "GamepadCode": "X",
           "GroupName": ""
         },
         {
-          "Name": "IncreaseRotationSpeedB",
+          "Name": "Increase Rotation Speed B",
           "KeyboardCode": "UPARROW",
           "GamepadCode": "DpadWest",
           "GroupName": ""
         },
         {
-          "Name": "DecreaseRotationSpeedB",
+          "Name": "Decrease Rotation Speed B",
           "KeyboardCode": "DOWNARROW",
           "GamepadCode": "DpadEast",
           "GroupName": ""
@@ -74,7 +72,8 @@
           "GamepadCode": "B",
           "GroupName": ""
         }
-      ]
+      ],
+      "__guid": "9e316ac8-550e-4eed-9323-826cb193cc8b"
     },
     "Compiler": {
       "RootNamespace": "Donut",

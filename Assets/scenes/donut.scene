@@ -33,7 +33,7 @@
       "Flags": 0,
       "Name": "Network Helper",
       "Enabled": true,
-      "NetworkMode": 1,
+      "NetworkMode": 2,
       "NetworkInterpolation": true,
       "Components": [
         {
@@ -53,7 +53,7 @@
       "Flags": 0,
       "Name": "Game Manager",
       "Enabled": true,
-      "NetworkMode": 1,
+      "NetworkMode": 2,
       "NetworkInterpolation": true,
       "Components": [
         {
@@ -67,7 +67,7 @@
       "Flags": 0,
       "Name": "Screen",
       "Enabled": true,
-      "NetworkMode": 1,
+      "NetworkMode": 2,
       "NetworkInterpolation": true,
       "Components": [
         {
@@ -116,7 +116,7 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-05-11T11:04:49.4141607\u002B08:00",
+  "LastSaved": "2024-05-14T15:12:00.0728924\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []
