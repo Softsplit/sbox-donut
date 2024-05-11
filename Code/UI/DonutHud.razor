@@ -22,22 +22,31 @@
                     <div class="player-entry">
                         <img src=@($"avatar:{player?.Network.OwnerConnection.SteamId}") class="avatar" />
                         <label class="name">@($"{player?.Network.OwnerConnection.DisplayName} \u2500 {player?.Time}")</label>
+                        @if (player?.Components.Get<Voice>().Amplitude > 0.01f)
+                        {
+                            <i class="voice">mic</i>
+                        }
+                        else
+                        {
+                            <i class="voice">mic_off</i>
+                        }
                         @if (Connection.Host == player?.Network.OwnerConnection)
                         {
-                            <i>verified</i>
-                        }
-                        @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != player?.Network.OwnerConnection)
+                            <i class="host">verified</i>
+                        }     
+                        @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != player.Network.OwnerConnection)
                         {
-                            <i onclick=@( () => GameManager.Instance.Kick(player.Network.OwnerConnection) )>close</i>
+                            <i class="kick" onclick=@(() => GameManager.Kick(player.Network.OwnerConnection.SteamId))>close</i>
                         }
                     </div>
                 }
             }
         </div>
-        <div class="misc-row"> 
-            <div class="button" onclick=@( () => Donate() )>Donate?</div>
-            <i class="credits" onclick=@( () => OpenCredits() )>info</i>
-            <i class="settings" onclick=@( () => OpenSettings() )>settings</i>
+        <div class="bar">
+            <i class="credits" onclick=@(() => Game.Overlay.ShowPackageModal(Game.Ident))>info</i>
+            <div class="discord" onclick=@CopyDiscord />
+            <i class="settings" onclick=@Game.Overlay.ShowBinds>settings</i>
+            <div class="button" onclick=@Donate>Donate?</div>
         </div>
     </div>
 </root>
@@ -62,17 +71,13 @@
         Game.ActiveScene.Components.Get<ScreenPanel>().GetPanel().DeletionToken.Register(() =>
         {
             Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.All);
-        });        
+        });
     }
 
-    private void OpenCredits()
+    private void CopyDiscord()
     {
-
-    }
-
-    private void OpenSettings()
-    {
-        
+        Clipboard.SetText("https://discord.gg/GaGFHFttAC");
+        Chatbox.Instance.AddLocalMessage("😊", $"Discord invite succesfully copied to clipboard!", "notification");
     }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.GlobalNow);
