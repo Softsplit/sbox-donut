@@ -1,0 +1,3 @@
+[submodule "Libraries/sbux.api"]
+	path = Libraries/sbux.api
+	url = https://github.com/s8bux/sbux-api
