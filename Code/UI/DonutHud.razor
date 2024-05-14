@@ -22,7 +22,7 @@
                     <div class="player-entry">
                         <img src=@($"avatar:{player?.Network.OwnerConnection.SteamId}") class="avatar" />
                         <label class="name">@($"{player?.Network.OwnerConnection.DisplayName} \u2500 {player?.Time}")</label>
-                        <i class="voice">@((player?.Components.Get<Voice>().Amplitude > 0.01f) ? "mic" : "mic_off")</i>
+                        <i class="voice">@(player.Components.Get<Voice>().IsListening ? "mic" : "mic_off")</i>
                         @if (Connection.Host == player?.Network.OwnerConnection)
                         {
                             <i class="host">verified</i>
