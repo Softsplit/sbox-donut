@@ -67,7 +67,7 @@
       "Flags": 0,
       "Name": "Screen",
       "Enabled": true,
-      "NetworkMode": 2,
+      "NetworkMode": 1,
       "NetworkInterpolation": true,
       "Components": [
         {
@@ -116,7 +116,7 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-05-14T15:12:00.0728924\u002B08:00",
+  "LastSaved": "2024-05-14T17:24:11.4793822\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []
