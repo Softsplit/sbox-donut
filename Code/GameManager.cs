@@ -1,5 +1,6 @@
 ﻿using Donut.UI;
 using Sandbox.Network;
+
 namespace Donut;
 
 public sealed class GameManager : Component, Component.INetworkListener
@@ -11,16 +12,16 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	public void OnDisconnected( Connection conn )
 	{
-		foreach ( var player in Game.ActiveScene.GetAllComponents<Player>() )
-			if ( player.Network.OwnerConnection == conn ) player.GameObject.Destroy();
+		foreach ( var ply in Game.ActiveScene.GetAllComponents<Player>() )
+			if ( ply.Network.OwnerConnection == conn ) ply.GameObject.Destroy();
 
 		Chatbox.Instance.AddLocalMessage( "👋", $"{conn.DisplayName} has snapped back to reality!", "notification" );
 	}
 
 	public void OnBecameHost( Connection conn )
 	{
-		foreach ( var player in Game.ActiveScene.GetAllComponents<Player>() )
-			if ( player.Network.OwnerConnection == conn ) player.GameObject.Destroy();
+		foreach ( var ply in Game.ActiveScene.GetAllComponents<Player>() )
+			if ( ply.Network.OwnerConnection == conn ) ply.GameObject.Destroy();
 	}
 
 	[Broadcast]

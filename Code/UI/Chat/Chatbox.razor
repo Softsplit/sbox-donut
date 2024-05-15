@@ -56,7 +56,7 @@
 
         if (string.IsNullOrWhiteSpace(text)) return;
 
-        if (Player.Local.DonatorPerk.Has())
+        if (ResourceLibrary.Get<GamePass>("data/donator.gamepass").Has())
             styles += " rainbow";
 
         AddMessage(Game.SteamId.ToString(), text, styles);

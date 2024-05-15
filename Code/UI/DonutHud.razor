@@ -17,19 +17,19 @@
         <div class="player-list">
             @if (GameNetworkSystem.IsActive)
             {
-                @foreach (var player in Game.ActiveScene.GetAllComponents<Player>())
+                @foreach (var ply in Game.ActiveScene.GetAllComponents<Player>())
                 {
                     <div class="player-entry">
-                        <img src=@($"avatar:{player?.Network.OwnerConnection.SteamId}") class="avatar" />
-                        <label class="name">@($"{player?.Network.OwnerConnection.DisplayName} \u2500 {player?.Time}")</label>
-                        <i class="voice">@(player.Components.Get<Voice>().IsListening ? "mic" : "mic_off")</i>
-                        @if (Connection.Host == player?.Network.OwnerConnection)
+                        <img src=@($"avatar:{ply?.Network.OwnerConnection.SteamId}") class="avatar" />
+                        <label class="name">@($"{ply?.Network.OwnerConnection.DisplayName} \u2500 {ply?.Time}")</label>
+                        <i class="voice">@(ply.Components.Get<Voice>().IsListening ? "mic" : "mic_off")</i>
+                        @if (Connection.Host == ply?.Network.OwnerConnection)
                         {
                             <i class="host">verified</i>
                         }     
-                        @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != player.Network.OwnerConnection)
+                        @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != ply.Network.OwnerConnection)
                         {
-                            <i class="kick" onclick=@(() => GameManager.Kick(player.Network.OwnerConnection.SteamId))>close</i>
+                            <i class="kick" onclick=@(() => GameManager.Kick(ply.Network.OwnerConnection.SteamId))>close</i>
                         }
                     </div>
                 }
@@ -48,7 +48,7 @@
 {
     private async void Donate()
     {
-        if (Player.Local.DonatorPerk.Has())
+        if (ResourceLibrary.Get<GamePass>("data/donator.gamepass").Has())
         {
             Chatbox.Instance.AddLocalMessage("😔", $"You already own the donator perk!", "notification");
             return;
@@ -58,7 +58,7 @@
         // https://github.com/Facepunch/sbox-issues/issues/5462
         Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.None);
 
-        await Player.Local.DonatorPerk.Purchase();
+        await ResourceLibrary.Get<GamePass>("data/donator.gamepass").Purchase();
 
         // ditto
         Game.ActiveScene.Components.Get<ScreenPanel>().GetPanel().DeletionToken.Register(() =>
