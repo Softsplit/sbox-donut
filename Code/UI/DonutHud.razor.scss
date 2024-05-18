@@ -24,19 +24,24 @@ DonutHud {
     }
 
     > .center {
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
-        align-items: flex-end;
         flex-shrink: 0;
         width: 600px;
-        padding-top: 20px;
+        margin-top: 50px;
         padding-bottom: 20px;
         font-size: 24px;
         color: white;
 
+        .donut {
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
         .leaderboard {
             flex-direction: column;
-            height: 450px;
+            height: 80%;
             width: 100%;
             overflow-y: scroll;
             align-items: center;
@@ -124,6 +129,7 @@ DonutHud {
             align-items: center;
 
             > .IconPanel, i {
+                position: relative;
                 cursor: pointer;
                 font-size: 32px;
                 padding-left: 14px;
@@ -138,6 +144,45 @@ DonutHud {
                 &:active {
                     sound-in: "select";
                 }
+            }
+
+            .tooltip {
+                flex-direction: column;
+                font-size: 24px;
+                width: 120px;
+                background-color: #555;
+                color: #fff;
+                position: absolute;
+                bottom: 125%;
+                opacity: 0;
+                left: 50%;
+                margin-left: -60px;
+                transition: opacity 0.3s;
+            }
+
+            .settings {
+                z-index: 200;
+
+                .tooltip {
+                    width: 300px;
+                    left: -100%;
+                }
+
+                &:hover .tooltip {
+                    opacity: 1;
+                }
+            }
+
+            .color-picker {
+                z-index: 200;
+
+                &:hover .tooltip {
+                    opacity: 1;
+                }
+            }
+
+            SliderControl {
+                flex-direction: row-reverse;
             }
 
             > .discord {
@@ -246,35 +291,5 @@ DonutHud {
                 }
             }
         }
-    }
-}
-
-@keyframes rainbow-background {
-    0% {
-        background-color: mix(#ff0000, black, 0.8);
-    }
-
-    16.666% {
-        background-color: mix(#ff7f00, black, 0.8);
-    }
-
-    33.333% {
-        background-color: mix(#ffff00, black, 0.8);
-    }
-
-    50% {
-        background-color: mix(#00ff00, black, 0.8);
-    }
-
-    66.666% {
-        background-color: mix(#0000ff, black, 0.8);
-    }
-
-    83.333% {
-        background-color: mix(#4b0082, black, 0.8);
-    }
-
-    100% {
-        background-color: mix(#8f00ff, black, 0.8);
     }
 }

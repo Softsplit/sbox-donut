@@ -17,12 +17,18 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	protected override async void OnAwake()
 	{
+		var gameMixer = Mixer.FindMixerByName( "Game" );
+		gameMixer.Occlusion = 0f;
+		gameMixer.Spacializing = 0f;
+		gameMixer.AirAbsorption = 0f;
+		gameMixer.DistanceAttenuation = 0f;
+
 		LeaderboardSwitching = true;
 
 		Leaderboard = Leaderboards.Get( "newtime" );
 		Leaderboard.MaxEntries = 100;
 
-		await Leaderboard.Refresh();
+		await Leaderboard?.Refresh();
 
 		LeaderboardSwitching = false;
 	}
@@ -31,17 +37,11 @@ public sealed class GameManager : Component, Component.INetworkListener
 	{
 		Instance = this;
 
-		if ( UI.Donut.Instance.yay >= 7 )
-		{
-			UI.Donut.Instance.yay = 0;
-			Stats.Increment( "donuts", 1 );
-			Sound.PlayFile( SoundFile.Load( "sounds/splat.ogg" ), 10 );
-		}
-
 		UpdateMusic();
 		UpdateInput();
 		UpdateLeaderboard();
 		UpdateTime();
+		UpdateDonut();
 	}
 
 	private readonly List<int> songIndices = new();
@@ -61,7 +61,6 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 			MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, $"sounds/music/{Songs[newIndex]}" );
 			MusicPlayer.TargetMixer = Mixer.FindMixerByName( "Music" );
-			MusicPlayer.Volume = 0.5f;
 		}
 
 		MusicPlayer.OnFinished = () => { MusicPlayer = null; };
@@ -69,34 +68,37 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	private void UpdateInput()
 	{
+		if ( UI.Donut.Instance == null )
+			return;
+
 		if ( Input.Pressed( "Increase Rotation Speed" ) )
 		{
 			UI.Donut.Instance.DELTA_A += 0.0025;
 			UI.Donut.Instance.DELTA_B += 0.0025;
-			Sound.PlayFile( SoundFile.Load( "sounds/increase.wav" ), 10 );
+			Sound.PlayFile( SoundFile.Load( "sounds/increase.wav" ) );
 		}
 
 		if ( Input.Pressed( "Decrease Rotation Speed" ) )
 		{
 			UI.Donut.Instance.DELTA_A -= 0.0025;
 			UI.Donut.Instance.DELTA_B -= 0.0025;
-			Sound.PlayFile( SoundFile.Load( "sounds/decrease.wav" ), 10 );
+			Sound.PlayFile( SoundFile.Load( "sounds/decrease.wav" ) );
 		}
 
 		if ( Input.Pressed( "Reset Rotation Speed" ) )
 		{
 			UI.Donut.Instance.DELTA_A = 0.04;
 			UI.Donut.Instance.DELTA_B = 0.02;
-			Sound.PlayFile( SoundFile.Load( "sounds/reset.wav" ), 10 );
+			Sound.PlayFile( SoundFile.Load( "sounds/reset.wav" ) );
 		}
+	}
 
-		if ( Input.Pressed( "Eat" ) )
+	public void Munch()
+	{
+		if ( UI.Donut.Instance.yay < 7 )
 		{
-			if ( UI.Donut.Instance.yay < 7 )
-			{
-				UI.Donut.Instance.yay += 1;
-				Sound.PlayFile( SoundFile.Load( "sounds/munch.wav" ), 10 );
-			}
+			UI.Donut.Instance.yay += 1;
+			Sound.PlayFile( SoundFile.Load( "sounds/munch.wav" ) );
 		}
 	}
 
@@ -111,7 +113,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 		Leaderboard = Leaderboards.Get( leaderboards[currentLeaderboard] );
 		Leaderboard.MaxEntries = 100;
 
-		await Leaderboard.Refresh();
+		await Leaderboard?.Refresh();
 
 		LeaderboardSwitching = false;
 	}
@@ -124,7 +126,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 		{
 			leaderboardDelay = 30f;
 
-			Leaderboard.Refresh();
+			Leaderboard?.Refresh();
 		}
 	}
 
@@ -158,9 +160,22 @@ public sealed class GameManager : Component, Component.INetworkListener
 		}
 	}
 
+	private void UpdateDonut()
+	{
+		if ( UI.Donut.Instance == null )
+			return;
+
+		if ( UI.Donut.Instance.yay >= 7 )
+		{
+			UI.Donut.Instance.yay = 0;
+			Stats.Increment( "donuts", 1 );
+			Sound.PlayFile( SoundFile.Load( "sounds/splat.ogg" ) );
+		}
+	}
+
 	public void OnConnected( Connection conn )
 	{
-		Chatbox.Instance.AddMessage( "👋", $"{conn.DisplayName} has started the simulation!", "notification" );
+		Chatbox.Instance?.AddMessage( "👋", $"{conn.DisplayName} has started the simulation!", "notification" );
 	}
 
 	public void OnDisconnected( Connection conn )
@@ -168,7 +183,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 		foreach ( var ply in Game.ActiveScene.GetAllComponents<Player>() )
 			if ( ply.Network.OwnerConnection == conn ) ply.GameObject.Destroy();
 
-		Chatbox.Instance.AddLocalMessage( "👋", $"{conn.DisplayName} has snapped back to reality!", "notification" );
+		Chatbox.Instance?.AddLocalMessage( "👋", $"{conn.DisplayName} has snapped back to reality!", "notification" );
 	}
 
 	public void OnBecameHost( Connection conn )
@@ -183,14 +198,14 @@ public sealed class GameManager : Component, Component.INetworkListener
 		if ( steamId != Connection.Local.SteamId ) return;
 
 		GameNetworkSystem.Disconnect();
-		Chatbox.Instance.AddLocalMessage( "🔌", "You have been kicked from the server. Maybe you did something wrong?", "notification" );
+		Chatbox.Instance?.AddLocalMessage( "🔌", "You have been kicked from the server. Maybe you did something wrong?", "notification" );
 	}
 
 	[Broadcast]
-	public void KickAll()
+	public static void KickAll()
 	{
 		GameNetworkSystem.Disconnect();
-		Chatbox.Instance.AddLocalMessage( "🔌", "You have been disconnected due to a server shutdown. To reconnect, simply restart the game.", "notification" );
+		Chatbox.Instance?.AddLocalMessage( "🔌", "You have been disconnected due to a server shutdown. To reconnect, simply restart the game.", "notification" );
 	}
 
 	[ConCmd( "killserver" )]
@@ -202,6 +217,6 @@ public sealed class GameManager : Component, Component.INetworkListener
 			return;
 		}
 
-		Instance.KickAll();
+		KickAll();
 	}
 }

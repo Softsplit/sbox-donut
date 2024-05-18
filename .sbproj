@@ -59,12 +59,6 @@
           "KeyboardCode": "V",
           "GamepadCode": "B",
           "GroupName": ""
-        },
-        {
-          "Name": "Eat",
-          "KeyboardCode": "F",
-          "GamepadCode": "A",
-          "GroupName": ""
         }
       ],
       "__guid": "9e316ac8-550e-4eed-9323-826cb193cc8b"
