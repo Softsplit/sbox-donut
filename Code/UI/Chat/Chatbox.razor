@@ -13,7 +13,7 @@
         }
     </div>
     <div class="input_canvas">
-        <TextEntry @ref="InputBox" placeholder="Press ENTER/Y to chat..." onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
+        <TextEntry @ref="InputBox" placeholder="#chat.placeholder" onsubmit=@ChatFinished AllowEmojiReplace=@(true) />
     </div>
 </root>
 
@@ -35,7 +35,10 @@
         Panel.AcceptsFocus = false;
 
         if (Input.Pressed("Chat"))
+        {
             InputBox.Focus();
+            Sound.Play("select");
+        }
 
         if (Entries.Count > 200)
         {
@@ -82,6 +85,7 @@
         }
 
         Entries.Add(new Entry(steamId, name, message, styles, 0));
+        Sound.PlayFile(SoundFile.Load("sounds/ui/talk.wav"), 10);
         StateHasChanged();
     }
 
@@ -90,6 +94,7 @@
         if (string.IsNullOrWhiteSpace(message)) return;
 
         Entries.Add(new Entry(0, sender, message, styles, 0));
+        Sound.PlayFile(SoundFile.Load("sounds/ui/talk.wav"), 10);
         StateHasChanged();
     }
 }

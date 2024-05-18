@@ -6,23 +6,22 @@ HEADER
 FEATURES
 {
 	#include "common/features.hlsl"
+
+	Feature( F_ENABLE_CURVE, 0..1 );
+	Feature( F_ENABLE_OVERSCAN, 0..1 );
+	Feature( F_ENABLE_BLOOM, 0..1 );
+	Feature( F_ENABLE_BLUR, 0..1 );
+	Feature( F_ENABLE_GRAYSCALE, 0..1 );
+	Feature( F_ENABLE_BLACKLEVEL, 0..1 );
+	Feature( F_ENABLE_REFRESHLINE, 0..1 );
+	Feature( F_ENABLE_SCANLINES, 0..1 );
+	Feature( F_ENABLE_TINT, 0..1 );
+	Feature( F_ENABLE_GRAIN, 0..1 );
 }
 
 COMMON
 {
 	#include "common/shared.hlsl"
-	
-	// Shader Options
-	#define ENABLE_CURVE            1
-	#define ENABLE_OVERSCAN         0
-	#define ENABLE_BLOOM            1
-	#define ENABLE_BLUR             1
-	#define ENABLE_GRAYSCALE        0
-	#define ENABLE_BLACKLEVEL       1
-	#define ENABLE_REFRESHLINE      1
-	#define ENABLE_SCANLINES        1
-	#define ENABLE_TINT             0
-	#define ENABLE_GRAIN            1
 	
 	// Settings - Curve
 	#define CURVE_INTENSITY         1
@@ -68,7 +67,7 @@ COMMON
 	// If you have Bloom enabled, it doesn't play well
 	// with the way Gleam and Luma calculate grayscale
 	// so fall back to Luminance
-	#if ENABLE_BLOOM && (GRAYSCALE_GLEAM || GRAYSCALE_LUMA)
+	#if S_ENABLE_BLOOM && (GRAYSCALE_GLEAM || GRAYSCALE_LUMA)
 	#undef GRAYSCALE_INTENSITY
 	#undef GRAYSCALE_GLEAM
 	#undef GRAYSCALE_LUMINANCE
@@ -77,7 +76,7 @@ COMMON
 	#endif
 	
 	// Provide a reasonable Blacklevel even if Tint isn't enabled
-	#if ENABLE_BLACKLEVEL && !ENABLE_TINT
+	#if S_ENABLE_BLACKLEVEL && !S_ENABLE_TINT
 	#undef BLACKLEVEL_FLOOR
 	#define BLACKLEVEL_FLOOR float3(0.05, 0.05, 0.05)
 	#endif
@@ -107,8 +106,19 @@ VS
 PS
 {
     #include "common/pixel.hlsl"
+
+	StaticCombo( S_ENABLE_CURVE, F_ENABLE_CURVE, Sys( ALL ) );
+	StaticCombo( S_ENABLE_OVERSCAN, F_ENABLE_OVERSCAN, Sys( ALL ) );
+	StaticCombo( S_ENABLE_BLOOM, F_ENABLE_BLOOM, Sys( ALL ) );
+	StaticCombo( S_ENABLE_BLUR, F_ENABLE_BLUR, Sys( ALL ) );
+	StaticCombo( S_ENABLE_GRAYSCALE, F_ENABLE_GRAYSCALE, Sys( ALL ) );
+	StaticCombo( S_ENABLE_BLACKLEVEL, F_ENABLE_BLACKLEVEL, Sys( ALL ) );
+	StaticCombo( S_ENABLE_REFRESHLINE, F_ENABLE_REFRESHLINE, Sys( ALL ) );
+	StaticCombo( S_ENABLE_SCANLINES, F_ENABLE_SCANLINES, Sys( ALL ) );
+	StaticCombo( S_ENABLE_TINT, F_ENABLE_TINT, Sys( ALL ) );
+	StaticCombo( S_ENABLE_GRAIN, F_ENABLE_GRAIN, Sys( ALL ) );
 	
-	#if ENABLE_CURVE
+	#if S_ENABLE_CURVE
 	float2 transformCurve( float2 uv ) {
 		uv -= 0.5;				// offcenter screen
 
@@ -122,7 +132,7 @@ PS
 	}
 	#endif
 	
-	#if ENABLE_OVERSCAN
+	#if S_ENABLE_OVERSCAN
 	// Modifies uv
 	float4 overscan( float4 color, in float2 screenuv, out float2 uv )
 	{
@@ -139,7 +149,7 @@ PS
 	}
 	#endif
 	
-	#if ENABLE_BLOOM
+	#if S_ENABLE_BLOOM
 	float3 bloom( float3 color, float2 uv )
 	{
 		float3 bloom = color - g_tColor.Sample( g_sAniso, uv + float2( -BLOOM_OFFSET, 0 ) ).rgb;
@@ -149,7 +159,7 @@ PS
 	}
 	#endif
 	
-	#if ENABLE_BLUR
+	#if S_ENABLE_BLUR
 	static const float blurWeights[9] = { 0.0, 0.092, 0.081, 0.071, 0.061, 0.051, 0.041, 0.031, 0.021 };
 	
 	float3 blurH( float3 c, float2 uv )
@@ -166,7 +176,7 @@ PS
 	{
 		float3 screen = g_tColor.Sample( g_sAniso, uv ).rgb * 0.102;
 		
-		for ( int i = 1; i < 9; i++ ) screen += g_tColor.Sample( g_sAniso, uv + float2( 0,  i * BLUR_OFFSET ) ).rgb * blurWeights[i];
+		for ( int i = 1; i < 9; i++ ) screen += g_tColor.Sample( g_sAniso, uv + float2( 0, i * BLUR_OFFSET ) ).rgb * blurWeights[i];
 		for ( int i = 1; i < 9; i++ ) screen += g_tColor.Sample( g_sAniso, uv + float2( 0, -i * BLUR_OFFSET ) ).rgb * blurWeights[i];
 		
 		return screen * BLUR_MULTIPLIER;
@@ -181,7 +191,7 @@ PS
 	}
 	#endif
 	
-	#if ENABLE_GRAYSCALE
+	#if S_ENABLE_GRAYSCALE
 	// https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0029740
 	float3 rgb2intensity( float3 c )
 	{
@@ -239,7 +249,7 @@ PS
 	}
 	#endif
 	
-	#if ENABLE_BLACKLEVEL
+	#if S_ENABLE_BLACKLEVEL
 	float3 blacklevel( float3 color )
 	{
 		color.rgb -= BLACKLEVEL_FLOOR;
@@ -250,7 +260,7 @@ PS
 	}
 	#endif
 	
-	#if ENABLE_REFRESHLINE
+	#if S_ENABLE_REFRESHLINE
 	float3 refreshLines( float3 color, float2 uv )
 	{
 		float timeOver = fmod( g_flTime / 5, 1.5 ) - 0.5;
@@ -262,7 +272,7 @@ PS
 	}
 	#endif
 
-	#if ENABLE_SCANLINES
+	#if S_ENABLE_SCANLINES
 	// retro.hlsl
 	#define SCANLINE_FACTOR 0.3
 	
@@ -289,7 +299,7 @@ PS
 	// end - retro.hlsl
 	#endif
 	
-	#if ENABLE_TINT
+	#if S_ENABLE_TINT
 	float3 tint( float3 color )
 	{
 		color.rgb *= TINT_COLOR;
@@ -298,7 +308,7 @@ PS
 	}
 	#endif
 	
-	#if ENABLE_GRAIN
+	#if S_ENABLE_GRAIN
 	// Grain Lookup Table
 	#define a0  0.151015505647689
 	#define a1 -0.5303572634357367
@@ -342,30 +352,30 @@ PS
 		float4 pos = i.vPositionSs;
 		float2 uv = i.vTextureCoords;
 		
-		#if ENABLE_CURVE
+		#if S_ENABLE_CURVE
 		uv = transformCurve( uv );
 		
 		// TODO: add monitor visuals and make colors static consts
 		// Outer Box
-		if( uv.x <  -0.025 || uv.y <  -0.025 ) return float4( 0.00, 0.00, 0.00, 1.0 ); 
-		if( uv.x >   1.025 || uv.y >   1.025 ) return float4( 0.00, 0.00, 0.00, 1.0 ); 
+		if ( uv.x <  -0.025 || uv.y <  -0.025 ) return float4( 0.00, 0.00, 0.00, 1.0 ); 
+		if ( uv.x >   1.025 || uv.y >   1.025 ) return float4( 0.00, 0.00, 0.00, 1.0 ); 
 		// Bezel
-		if( uv.x <  -0.015 || uv.y <  -0.015 ) return float4( 0.03, 0.03, 0.03, 1.0 );
-		if( uv.x >   1.015 || uv.y >   1.015 ) return float4( 0.03, 0.03, 0.03, 1.0 );
+		if ( uv.x <  -0.015 || uv.y <  -0.015 ) return float4( 0.03, 0.03, 0.03, 1.0 );
+		if ( uv.x >   1.015 || uv.y >   1.015 ) return float4( 0.03, 0.03, 0.03, 1.0 );
 		// Screen Border
-		if( uv.x <  -0.001 || uv.y <  -0.001 ) return float4( 0.00, 0.00, 0.00, 1.0 );
-		if( uv.x >   1.001 || uv.y >   1.001 ) return float4( 0.00, 0.00, 0.00, 1.0 );
+		if ( uv.x <  -0.001 || uv.y <  -0.001 ) return float4( 0.00, 0.00, 0.00, 1.0 );
+		if ( uv.x >   1.001 || uv.y >   1.001 ) return float4( 0.00, 0.00, 0.00, 1.0 );
 		#endif
 		
 		// Temporary color to be substituted
-		float4 color = float4(1,0,1,-1);
+		float4 color = float4( 1, 0, 1, -1 );
 		
 		// We need to track two different uv's. The screen uv is effectively
 		// the CRT glass. We also want to track uv for when we sample from the
 		// texture.
 		float2 screenuv = uv;
 
-		#if ENABLE_OVERSCAN
+		#if S_ENABLE_OVERSCAN
 		// Modifies uv while screenuv remains the same.
 		color = overscan( color, screenuv, uv );
 		#endif
@@ -373,38 +383,38 @@ PS
 		// If no options are selected, this will just display as normal.
 		// This must come after we've adjusted the uv for OVERSCAN.
 		if ( color.a < 0 ) {
-			color = g_tColor.Sample(g_sAniso, uv);
+			color = g_tColor.Sample( g_sAniso, uv );
 		}
 		
-		#if ENABLE_BLOOM
+		#if S_ENABLE_BLOOM
 		color.rgb = bloom( color.rgb, uv );
 		#endif
 		
-		#if ENABLE_BLUR
+		#if S_ENABLE_BLUR
 		color.rgb = blur( color.rgb, uv );
 		#endif
 		
-		#if ENABLE_GRAYSCALE
+		#if S_ENABLE_GRAYSCALE
 		color.rgb = grayscale( color.rgb );
 		#endif
 		
-		#if ENABLE_BLACKLEVEL
+		#if S_ENABLE_BLACKLEVEL
 		color.rgb = blacklevel( color.rgb );
 		#endif
 		
-		#if ENABLE_REFRESHLINE
+		#if S_ENABLE_REFRESHLINE
 		color.rgb = refreshLines( color.rgb, screenuv );
 		#endif
 		
-		#if ENABLE_SCANLINES
+		#if S_ENABLE_SCANLINES
 		color.rgb = scanlines( color.rgb, pos );
 		#endif
 		
-		#if ENABLE_TINT
+		#if S_ENABLE_TINT
 		color.rgb = tint( color.rgb );
 		#endif
 		
-		#if ENABLE_GRAIN
+		#if S_ENABLE_GRAIN
 		color.rgb = grain( color.rgb, screenuv );
 		#endif
 

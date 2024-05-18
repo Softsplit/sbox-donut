@@ -3,18 +3,22 @@
 # https://git-scm.com/docs/gitignore
 
 # Auto-generated code editor files
-**/.vs
-**/.vscode
-**/.idea
-**/obj
-**/Properties
-
+.vs/*
+.vscode/*
 *.csproj
-*.sln
-
+obj
+bin
+Properties/*
+code/obj/*
+code/Properties/*
 
 # Auto-generated asset related files
 *.generated.*
 *.*_c
+!*.shader_c
 *.los
 *.vpk
+*launchSettings.json
+*.sln
+
+*idea

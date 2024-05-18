@@ -1,66 +1,20 @@
 @using System
 @using System.Text
-@using Sandbox.Services
 @inherits PanelComponent
 @namespace Donut.UI
 
 <root>
     <div class="donut-canvas">@output</div>
-    <div class="leaderboard">
-        @if (leaderboard is not null)
-        {
-            <h1>@leaderboard.DisplayName</h1>
-            <div class="entries">
-                @foreach (var entry in leaderboard.Entries)
-                {
-                    <div class="entry @IsMe(entry)">
-                        <div class="rank">@($"{entry.Rank}.")</div>
-                        <div class="name">@entry.DisplayName</div>
-                        <div class="value">@entry.FormattedValue</div>
-                    </div>
-                }
-            </div>
-        }
-    </div>
 </root>
 
 @code {
-    public static MusicPlayer MusicPlayer { get; private set; }
-    public static string[] Songs { get; set; } = new[] {
-    "addiction",
-    "point_of_departure",
-    "stardust_memories",
-    "dead_lock",
-    "space_debris",
-    "unreal_2",
-    "guitar_slinger",
-    "aryx",
-    "yuki_satellites",
-    "celestial_fantasia",
-    "funky_stars",
-    "elysium",
-    "winds_of_fjords",
-    "hyperbased",
-    "unreal_superhero_3",
-    "foregone_destruction",
-    "the_great_strategy"
-    };
-
-    private Leaderboards.Board leaderboard;
-
-    protected override void OnAwake()
-    {
-        leaderboard = Leaderboards.Get("newtime");
-        leaderboard.MaxEntries = 100;
-    }
+    public static Donut Instance { get; private set; }
 
     protected override void OnUpdate()
     {
-        UpdateLeaderboard();
-        UpdateInput();
+        Instance = this;
+
         UpdateDonut();
-        UpdateTime();
-        UpdateMusic();
     }
 
     private RealTimeUntil donutDelay;
@@ -71,70 +25,13 @@
         {
             donutDelay = 0.02f;
 
-            StateHasChanged();
-
             RenderDonut();
-
             StateHasChanged();
         }
     }
 
-    private RealTimeUntil leaderboardDelay;
-
-    private void UpdateLeaderboard()
-    {
-        if (leaderboardDelay)
-        {
-            leaderboardDelay = 30f;
-
-            StateHasChanged();
-
-            leaderboard.Refresh();
-
-            StateHasChanged();
-        }
-    }
-
-    private string IsMe(Leaderboards.Entry entry)
-    {
-        return entry.Me ? "me" : "";
-    }
-
-    private int hours;
-    private int minutes;
-    private int seconds;
-    private RealTimeUntil timeDelay;
-
-    private void UpdateTime()
-    {
-        if (timeDelay)
-        {
-            timeDelay = 1f;
-
-            StateHasChanged();
-
-            seconds++;
-            if (seconds == 60)
-            {
-                seconds = 0;
-                minutes++;
-            }
-            if (minutes == 60)
-            {
-                minutes = 0;
-                hours++;
-            }
-
-            if (Player.Local.IsValid())
-                Player.Local.Time = $"{hours}h{minutes}m{seconds}s";
-
-            Stats.Increment("time2", 1f);
-
-            StateHasChanged();
-        }
-    }
-
-    private double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02;
+    public double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02;
+    public double yay = 0;
     private double[] z = new double[1760];
     private char[] b = new char[1760];
     private StringBuilder output = new();
@@ -149,7 +46,7 @@
 
         for (double j = 0; Math.PI * 2 > j; j += 0.07)
         {
-            for (double i = 0; Math.PI * 2 > i; i += 0.02)
+            for (double i = yay; Math.PI * 2 > i; i += 0.02)
             {
                 double sini = Math.Sin(i),
                 cosj = Math.Cos(j),
@@ -182,55 +79,5 @@
             output.Append(k % 80 != 0 ? b[k] : '\n');
 
         A += DELTA_A; B += DELTA_B;
-    }
-
-    private void UpdateInput()
-    {
-        if (Input.Pressed("Increase Rotation Speed A"))
-        {
-            DELTA_A += 0.0025;
-        }
-
-        if (Input.Pressed("Decrease Rotation Speed A"))
-        {
-            DELTA_A -= 0.0025;
-        }
-
-        if (Input.Pressed("Increase Rotation Speed B"))
-        {
-            DELTA_B += 0.0025;
-        }
-
-        if (Input.Pressed("Decrease Rotation Speed B"))
-        {
-            DELTA_B -= 0.0025;
-        }
-
-        if (Input.Pressed("Reset Rotation Speed"))
-        {
-            DELTA_A = 0.04;
-            DELTA_B = 0.02;
-        }
-    }
-
-    private List<int> usedIndices = new();
-
-    private void UpdateMusic()
-    {
-        if (MusicPlayer == null)
-        {
-            int newIndex;
-
-            do { newIndex = Game.Random.Next(0, Songs.Length); } while (usedIndices.Contains(newIndex));
-
-            usedIndices.Add(newIndex);
-
-            if (usedIndices.Count == Songs.Length)
-                usedIndices.Clear();
-
-            MusicPlayer = MusicPlayer.Play(FileSystem.Mounted, $"sounds/music/{Songs[newIndex]}.mp3");
-        }
-
-        MusicPlayer.OnFinished = () => { MusicPlayer = null; };
     }
 }

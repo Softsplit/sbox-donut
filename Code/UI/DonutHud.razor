@@ -9,8 +9,30 @@
 <root>
     <div class="left">
         <div class="current-song">
-            <div>Now playing:</div>
-            <div>@Donut.MusicPlayer.Title</div>
+            <div>#hud.currentsong</div>
+            <div>@GameManager.Instance.MusicPlayer.Title</div>
+        </div>
+    </div>
+    <div class="center">
+        <div class="leaderboard">
+            @if (GameManager.Instance.Leaderboard is not null && GameManager.Instance.LeaderboardSwitching == false)
+            {
+                <section class="hellyeah">
+                    <i onclick=@(() => GameManager.Instance.SwitchLeaderboard())>chevron_left</i>
+                    <h1>@GameManager.Instance.Leaderboard.DisplayName</h1>
+                    <i onclick=@(() => GameManager.Instance.SwitchLeaderboard())>chevron_right</i>
+                </section>
+                <div class="entries">
+                    @foreach (var entry in GameManager.Instance.Leaderboard.Entries)
+                    {
+                        <div class="entry @IsMe(entry)">
+                            <div class="rank">@($"{entry.Rank}.")</div>
+                            <div class="name">@entry.DisplayName</div>
+                            <div class="value">@entry.FormattedValue</div>
+                        </div>
+                    }
+                </div>
+            }
         </div>
     </div>
     <div class="right">
@@ -20,13 +42,18 @@
                 @foreach (var ply in Game.ActiveScene.GetAllComponents<Player>())
                 {
                     <div class="player-entry">
-                        <img src=@($"avatar:{ply?.Network.OwnerConnection.SteamId}") class="avatar" />
-                        <label class="name">@($"{ply?.Network.OwnerConnection.DisplayName} \u2500 {ply?.Time}")</label>
+                        <section class="yup">
+                            <img src=@($"avatar:{ply?.Network.OwnerConnection.SteamId}") class="avatar" />
+                            <section class="info">
+                                <label class="name">@($"{ply?.Network.OwnerConnection.DisplayName}")</label>
+                                <label class="time">@(ply?.Time)</label>
+                            </section>
+                        </section>
                         <i class="voice">@(ply.Components.Get<Voice>().IsListening ? "mic" : "mic_off")</i>
                         @if (Connection.Host == ply?.Network.OwnerConnection)
                         {
                             <i class="host">verified</i>
-                        }     
+                        }
                         @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != ply.Network.OwnerConnection)
                         {
                             <i class="kick" onclick=@(() => GameManager.Kick(ply.Network.OwnerConnection.SteamId))>close</i>
@@ -69,8 +96,13 @@
 
     private void CopyDiscord()
     {
-        Clipboard.SetText("https://discord.gg/GaGFHFttAC");
+        Clipboard.SetText("https://discord.gg/rbCJdZjewf");
         Chatbox.Instance.AddLocalMessage("😊", $"Discord invite succesfully copied to clipboard!", "notification");
+    }
+
+    private string IsMe(Leaderboards.Entry entry)
+    {
+        return entry.Me ? "me" : "";
     }
 
     protected override int BuildHash() => HashCode.Combine(RealTime.GlobalNow);

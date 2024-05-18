@@ -31,33 +31,21 @@
     "InputSettings": {
       "Actions": [
         {
-          "Name": "Increase Rotation Speed A",
-          "KeyboardCode": "RIGHTARROW",
-          "GamepadCode": "DpadNorth",
+          "Name": "Increase Rotation Speed",
+          "KeyboardCode": "E",
+          "GamepadCode": "RightTrigger",
           "GroupName": ""
         },
         {
-          "Name": "Decrease Rotation Speed A",
-          "KeyboardCode": "LEFTARROW",
-          "GamepadCode": "DpadSouth",
+          "Name": "Decrease Rotation Speed",
+          "KeyboardCode": "Q",
+          "GamepadCode": "LeftTrigger",
           "GroupName": ""
         },
         {
           "Name": "Reset Rotation Speed",
-          "KeyboardCode": "E",
+          "KeyboardCode": "R",
           "GamepadCode": "X",
-          "GroupName": ""
-        },
-        {
-          "Name": "Increase Rotation Speed B",
-          "KeyboardCode": "UPARROW",
-          "GamepadCode": "DpadWest",
-          "GroupName": ""
-        },
-        {
-          "Name": "Decrease Rotation Speed B",
-          "KeyboardCode": "DOWNARROW",
-          "GamepadCode": "DpadEast",
           "GroupName": ""
         },
         {
@@ -70,6 +58,12 @@
           "Name": "Voice",
           "KeyboardCode": "V",
           "GamepadCode": "B",
+          "GroupName": ""
+        },
+        {
+          "Name": "Eat",
+          "KeyboardCode": "F",
+          "GamepadCode": "A",
           "GroupName": ""
         }
       ],

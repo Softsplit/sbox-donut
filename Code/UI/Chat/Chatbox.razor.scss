@@ -90,6 +90,14 @@ Chatbox {
     .input_canvas {
         flex-direction: row;
 
+        &:hover {
+            sound-in: "hover";
+        }
+
+        &:active {
+            sound-in: "select";
+        }
+
         textentry {
             background-color: black;
             color: white;
