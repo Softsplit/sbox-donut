@@ -112,17 +112,7 @@
             return;
         }
 
-        // thing we have to do until pointer event orders are fixed
-        // https://github.com/Facepunch/sbox-issues/issues/5462
-        Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.None);
-
         await ResourceLibrary.Get<GamePass>("data/donator.gamepass").Purchase();
-
-        // ditto
-        Game.ActiveScene.Components.Get<ScreenPanel>().GetPanel().DeletionToken.Register(() =>
-        {
-            Game.ActiveScene.Components.GetAll<PanelComponent>().ToList().ForEach(p => p.Panel.Style.PointerEvents = PointerEvents.All);
-        });
     }
 
     private void CopyDiscord()

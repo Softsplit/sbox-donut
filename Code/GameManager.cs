@@ -17,12 +17,6 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	protected override async void OnAwake()
 	{
-		var gameMixer = Mixer.FindMixerByName( "Game" );
-		gameMixer.Occlusion = 0f;
-		gameMixer.Spacializing = 0f;
-		gameMixer.AirAbsorption = 0f;
-		gameMixer.DistanceAttenuation = 0f;
-
 		LeaderboardSwitching = true;
 
 		Leaderboard = Leaderboards.Get( "newtime" );
