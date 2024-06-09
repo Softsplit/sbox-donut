@@ -8,10 +8,10 @@
     "sounds/ui/select.vsnd"
   ],
   "Occlusion": false,
-  "AirAbsorption": true,
-  "Transmission": true,
+  "AirAbsorption": false,
+  "Transmission": false,
   "OcclusionRadius": 64,
-  "DistanceAttenuation": true,
-  "__version": 0,
-  "__references": []
+  "DistanceAttenuation": false,
+  "__references": [],
+  "__version": 0
 }

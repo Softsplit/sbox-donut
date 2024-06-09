@@ -80,7 +80,7 @@
                     Music Volume 
                     <SliderControl @ref="MusicVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
                     SFX Volume
-                    <SliderControl @ref="SFXVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
+                    <SliderControl @ref="UIVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
                 </span>
             </div>
             <div class="button" onclick=@Donate>Donate?</div>
@@ -92,16 +92,16 @@
 {
     private SliderControl MasterVolume;
     private SliderControl MusicVolume;
-    private SliderControl SFXVolume;
+    private SliderControl UIVolume;
 
     protected override void OnUpdate()
     {
-        if (MasterVolume == null || MusicVolume == null || SFXVolume == null)
+        if (MasterVolume == null || MusicVolume == null || UIVolume == null)
             return;
 
         Mixer.FindMixerByName("Master").Volume = MasterVolume.Value;
         Mixer.FindMixerByName("Music").Volume = MusicVolume.Value;
-        Mixer.FindMixerByName("Game").Volume = SFXVolume.Value;
+        Mixer.FindMixerByName("UI").Volume = UIVolume.Value;
     }
 
     private async void Donate()

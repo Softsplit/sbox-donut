@@ -2,13 +2,14 @@
 using Sandbox.Audio;
 using Sandbox.Network;
 using Sandbox.Services;
+using System;
 
 namespace Donut;
 
 public sealed class GameManager : Component, Component.INetworkListener
 {
 	public static GameManager Instance { get; private set; }
-	public static string[] Songs { get; private set; } = FileSystem.Mounted.FindFile( "sounds/music", "*.mp3" ).ToArray();
+	public static List<string> Songs { get; private set; } = FileSystem.Mounted.FindFile( "sounds/music", "*.mp3" ).ToList();
 
 	public MusicPlayer MusicPlayer { get; private set; }
 	public Leaderboards.Board Leaderboard { get; private set; }
@@ -25,6 +26,11 @@ public sealed class GameManager : Component, Component.INetworkListener
 		await Leaderboard?.Refresh();
 
 		LeaderboardSwitching = false;
+
+		Mixer.Master.AirAbsorption = 0f;
+		Mixer.Master.DistanceAttenuation = 0f;
+		Mixer.Master.Occlusion = 0f;
+		Mixer.Master.Spacializing = 0f;
 	}
 
 	protected override void OnUpdate()
@@ -38,22 +44,11 @@ public sealed class GameManager : Component, Component.INetworkListener
 		UpdateDonut();
 	}
 
-	private readonly List<int> songIndices = new();
-
 	private void UpdateMusic()
 	{
 		if ( MusicPlayer == null )
 		{
-			int newIndex;
-
-			do { newIndex = Game.Random.Next( 0, Songs.Length ); } while ( songIndices.Contains( newIndex ) );
-
-			songIndices.Add( newIndex );
-
-			if ( songIndices.Count == Songs.Length )
-				songIndices.Clear();
-
-			MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, $"sounds/music/{Songs[newIndex]}" );
+			MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, $"sounds/music/{Songs.OrderBy( s => Guid.NewGuid() ).First()}" );
 			MusicPlayer.TargetMixer = Mixer.FindMixerByName( "Music" );
 		}
 
@@ -69,21 +64,21 @@ public sealed class GameManager : Component, Component.INetworkListener
 		{
 			UI.Donut.Instance.DELTA_A += 0.0025;
 			UI.Donut.Instance.DELTA_B += 0.0025;
-			Sound.PlayFile( SoundFile.Load( "sounds/increase.wav" ) );
+			Sound.PlayFile( SoundFile.Load( "sounds/increase.wav" ) ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 
 		if ( Input.Pressed( "Decrease Rotation Speed" ) )
 		{
 			UI.Donut.Instance.DELTA_A -= 0.0025;
 			UI.Donut.Instance.DELTA_B -= 0.0025;
-			Sound.PlayFile( SoundFile.Load( "sounds/decrease.wav" ) );
+			Sound.PlayFile( SoundFile.Load( "sounds/decrease.wav" ) ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 
 		if ( Input.Pressed( "Reset Rotation Speed" ) )
 		{
 			UI.Donut.Instance.DELTA_A = 0.04;
 			UI.Donut.Instance.DELTA_B = 0.02;
-			Sound.PlayFile( SoundFile.Load( "sounds/reset.wav" ) );
+			Sound.PlayFile( SoundFile.Load( "sounds/reset.wav" ) ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 	}
 
@@ -92,7 +87,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 		if ( UI.Donut.Instance.yay < 7 )
 		{
 			UI.Donut.Instance.yay += 1;
-			Sound.PlayFile( SoundFile.Load( "sounds/munch.wav" ) );
+			Sound.PlayFile( SoundFile.Load( "sounds/munch.wav" ) ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 	}
 
@@ -163,7 +158,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 		{
 			UI.Donut.Instance.yay = 0;
 			Stats.Increment( "donuts", 1 );
-			Sound.PlayFile( SoundFile.Load( "sounds/splat.ogg" ) );
+			Sound.PlayFile( SoundFile.Load( "sounds/splat.ogg" ) ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 	}
 
