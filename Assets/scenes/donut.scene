@@ -1,5 +1,5 @@
 {
-  "__guid": "d317b2f4-370a-4bdb-8919-6bdf534bab3f",
+  "__guid": "f4c13c44-f389-4a32-a13a-d2db0688f652",
   "GameObjects": [
     {
       "__guid": "784216d9-82aa-40ee-92f8-6f7994c0a990",
@@ -36,6 +36,21 @@
       ]
     },
     {
+      "__guid": "13b0470c-04a8-4d5e-a673-a5b25164febf",
+      "Flags": 0,
+      "Name": "Listener",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
+        {
+          "__type": "Sandbox.AudioListener",
+          "__guid": "bb5be3d5-3d88-4e03-8235-4cfe4f2b53be",
+          "UseCameraDirection": false
+        }
+      ]
+    },
+    {
       "__guid": "031c2cc5-bece-4fc2-ab69-354c8063d3db",
       "Flags": 0,
       "Name": "Screen",
@@ -52,16 +67,16 @@
           "ZIndex": 100
         },
         {
-          "__type": "Donut.UI.Donut",
-          "__guid": "2027ff88-73e6-46cf-acc1-116398c25ffa"
-        },
-        {
-          "__type": "Donut.UI.Chatbox",
-          "__guid": "20863dd6-64fd-441c-a8c4-0c9f0c01e623"
+          "__type": "Donut.UI.DonutCanvas",
+          "__guid": "32a11c3a-7cfc-49bd-86cb-7b0a99de3592"
         },
         {
           "__type": "Donut.UI.DonutHud",
           "__guid": "a48a4443-a4d3-4a53-9206-c85f63fe3262"
+        },
+        {
+          "__type": "Donut.UI.Chatbox",
+          "__guid": "20863dd6-64fd-441c-a8c4-0c9f0c01e623"
         }
       ]
     }
@@ -89,8 +104,8 @@
   },
   "Title": "minimal",
   "Description": "",
-  "LastSaved": "2024-05-15T18:28:16.6878902\u002B08:00",
+  "LastSaved": "2024-06-17T08:21:50.3431954\u002B08:00",
   "ResourceVersion": 1,
-  "__version": 1,
-  "__references": []
+  "__references": [],
+  "__version": 1
 }

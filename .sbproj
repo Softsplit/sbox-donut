@@ -31,20 +31,32 @@
     "InputSettings": {
       "Actions": [
         {
-          "Name": "Increase Rotation Speed",
-          "KeyboardCode": "E",
+          "Name": "Adjust Rotation Speed (\u002B)",
+          "KeyboardCode": "RIGHTARROW",
           "GamepadCode": "RightTrigger",
           "GroupName": ""
         },
         {
-          "Name": "Decrease Rotation Speed",
-          "KeyboardCode": "Q",
+          "Name": "Adjust Rotation Speed (-)",
+          "KeyboardCode": "LEFTARROW",
           "GamepadCode": "LeftTrigger",
           "GroupName": ""
         },
         {
           "Name": "Reset Rotation Speed",
           "KeyboardCode": "R",
+          "GamepadCode": "A",
+          "GroupName": ""
+        },
+        {
+          "Name": "Munch",
+          "KeyboardCode": "SPACE",
+          "GamepadCode": "B",
+          "GroupName": ""
+        },
+        {
+          "Name": "Voice",
+          "KeyboardCode": "V",
           "GamepadCode": "X",
           "GroupName": ""
         },
@@ -52,12 +64,6 @@
           "Name": "Chat",
           "KeyboardCode": "ENTER",
           "GamepadCode": "Y",
-          "GroupName": ""
-        },
-        {
-          "Name": "Voice",
-          "KeyboardCode": "V",
-          "GamepadCode": "B",
           "GroupName": ""
         }
       ],

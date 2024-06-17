@@ -8,7 +8,9 @@
 </root>
 
 @code {
-    public static Donut Instance { get; private set; }
+    public static DonutCanvas Instance { get; private set; }
+
+    public double Clicks { get; set; } = 0;
 
     protected override void OnUpdate()
     {
@@ -31,7 +33,6 @@
     }
 
     public double A = 0, B = 0, DELTA_A = 0.04, DELTA_B = 0.02;
-    public double yay = 0;
     private double[] z = new double[1760];
     private char[] b = new char[1760];
     private StringBuilder output = new();
@@ -46,7 +47,7 @@
 
         for (double j = 0; Math.PI * 2 > j; j += 0.07)
         {
-            for (double i = yay; Math.PI * 2 > i; i += 0.02)
+            for (double i = Clicks; Math.PI * 2 > i; i += 0.02)
             {
                 double sini = Math.Sin(i),
                 cosj = Math.Cos(j),

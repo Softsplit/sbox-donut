@@ -19,7 +19,7 @@
         <div class="leaderboard">
             @if (GameManager.Instance.Leaderboard is not null && GameManager.Instance.LeaderboardSwitching == false)
             {
-                <section class="hellyeah">
+                <section class="nav-bar">
                     <i onclick=@GameManager.Instance.SwitchLeaderboard>chevron_left</i>
                     <h1>@GameManager.Instance.Leaderboard.DisplayName</h1>
                     <i onclick=@GameManager.Instance.SwitchLeaderboard>chevron_right</i>
@@ -79,7 +79,7 @@
                     <SliderControl @ref="MasterVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
                     Music Volume 
                     <SliderControl @ref="MusicVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
-                    SFX Volume
+                    UI Volume
                     <SliderControl @ref="UIVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
                 </span>
             </div>
