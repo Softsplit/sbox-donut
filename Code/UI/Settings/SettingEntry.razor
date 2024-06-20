@@ -1,0 +1,53 @@
+@using Sandbox.UI
+
+@inherits Panel
+@namespace Donut.UI
+
+<root>
+    @if (Description != null)
+    {
+        <div class="column">
+            <label class="name">@Description.Title</label>
+        </div>
+        if (Description.PropertyType == typeof(bool))
+        {
+            <Checkbox Value:bind="@Value" />
+        }
+        if (Description.PropertyType == typeof(float))
+        {
+            if (Range != null)
+            {
+                <SliderControl class="devslider" Value:bind="@Value" Min="@Range.Min" Max="@Range.Max" Step="@Range.Step" ShowTextEntry="@true" />
+            }
+            else
+            {
+                <SliderControl class="devslider" Value:bind="@Value" />
+            }
+        }
+    }
+    else
+    {
+        <label class="name">???</label>
+    }
+</root>
+
+@code
+{
+    public object Target { get; set; }
+
+    public object Value
+    {
+        get
+        {
+            return Description.GetValue(Target);
+        }
+        set
+        {
+            Description.SetValue(Target, value);
+        }
+    }
+
+    public PropertyDescription Description { get; set; }
+
+    public RangeAttribute Range => Description.GetCustomAttribute<RangeAttribute>();
+}

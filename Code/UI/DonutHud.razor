@@ -44,7 +44,7 @@
                 @foreach (var ply in Game.ActiveScene.GetAllComponents<Player>())
                 {
                     <div class="player-entry">
-                        <section class="yup">
+                        <section class="info-container">
                             <img src=@($"avatar:{ply?.Network.OwnerConnection.SteamId}") class="avatar" />
                             <section class="info">
                                 <label class="name">@($"{ply?.Network.OwnerConnection.DisplayName}")</label>
@@ -74,13 +74,16 @@
             <div class="discord" onclick=@CopyDiscord />
             <div class="settings">
                 <i>settings</i>
+                <!-- Will rework this later, temporary for now -->
                 <span class="tooltip">
-                    Master Volume
+                    Main Volume
                     <SliderControl @ref="MasterVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
                     Music Volume 
                     <SliderControl @ref="MusicVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
                     UI Volume
                     <SliderControl @ref="UIVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
+                    Voice Volume
+                    <SliderControl @ref="VoiceVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
                 </span>
             </div>
             <div class="button" onclick=@Donate>Donate?</div>
@@ -90,9 +93,11 @@
 
 @code
 {
+    // Will rework this later, temporary for now
     private SliderControl MasterVolume;
     private SliderControl MusicVolume;
     private SliderControl UIVolume;
+    private SliderControl VoiceVolume;
 
     protected override void OnUpdate()
     {

@@ -2,10 +2,8 @@ Chatbox {
     position: absolute;
     z-index: 200;
     flex-direction: column;
-    justify-content: space-between;
     width: 400px;
     font-family: "Perfect DOS VGA 437 Win";
-    font-weight: 900;
     font-size: 24px;
     padding: 10px;
     max-height: 90%;
@@ -14,20 +12,18 @@ Chatbox {
     font-smooth: never;
 
     .chat_canvas {
-        flex-direction: column;
+        height: 95%;
+        position: relative;
         justify-content: flex-end;
+        flex-direction: column;
         flex-grow: 1;
-        height: 100px;
         overflow: scroll;
-
-        ChatEntry {
-            &.fade {
-                opacity: 0;
-            }
-        }
     }
 
     .input_canvas {
+        flex-grow: 1;
+        flex-shrink: 0;
+        position: relative;
         flex-direction: row;
 
         &:hover {
@@ -39,67 +35,30 @@ Chatbox {
         }
 
         textentry {
+            align-items: flex-end;
+            justify-content: flex-end;
             background-color: black;
             color: white;
             background-color: rgba(black, 0);
             flex-shrink: 0;
             flex-grow: 1;
-            white-space: pre-line;
-            width: 100%;
-            font-family: "Perfect DOS VGA 437 Win";
-        }
-    }
-
-    &.open {
-        background-color: rgba(black, 0.5);
-
-        textentry {
-            background-color: rgba(black, 0.5);
-            backdrop-filter: blur(10px);
-
-            .placeholder {
-                opacity: 0;
-            }
-        }
-
-        .chat_canvas {
-            background-color: rgba(black, 0.25);
-
-            ChatEntry {
-                &.fade {
-                    opacity: 1;
-                }
-            }
+            white-space: pre;
         }
     }
 }
 
 ChatEntry {
+    position: relative;
+    background-color: black;
     color: white;
     font-smooth: never;
-    transition: all 0.1s ease-out;
-    opacity: 1;
     flex-shrink: 0;
     gap: 10px;
     padding: 5px;
-    transform: scale(1);
     align-items: center;
-    text-shadow: 0 0 4px black;
-
-    &:intro {
-        max-height: 0px;
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-bottom: 0;
-        opacity: 0;
-        transform: scale(0);
-    }
-
-    &:outro {
-        opacity: 0;
-    }
 
     .avatar {
+        position: relative;
         height: 52px;
         min-height: 52px;
         width: 52px;
@@ -109,44 +68,45 @@ ChatEntry {
     }
 
     .message-content {
+        position: relative;
+
         .name {
             position: absolute;
             color: #ccf45a;
         }
 
         .message {
+            position: relative;
             white-space: pre;
         }
     }
 
     &.rainbow {
-        .name {
-            animation-name: rainbowcycle;
-            animation-duration: 4s;
-            animation-iteration-count: infinite;
-            animation-timing-function: linear;
-        }
-    }
-
-    &.is-lobby {
-        .name {
-            color: #ff80f5;
+        .message-content {
+            .name {
+                animation-name: rainbowcycle;
+                animation-duration: 4s;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+            }
         }
     }
 
     &.notification {
-        .name {
-            position: relative;
-            padding-left: 4px;
-            padding-right: 5px;
-            flex-shrink: 0;
-            align-self: center;
-            color: #CCF45A;
-        }
+        .message-content {
+            .name {
+                position: relative;
+                padding-left: 4px;
+                padding-right: 5px;
+                flex-shrink: 0;
+                align-self: center;
+                color: #CCF45A;
+            }
 
-        .message {
-            color: #f5fa3c;
-            white-space: normal;
+            .message {
+                color: #f5fa3c;
+                white-space: normal;
+            }
         }
     }
 }
