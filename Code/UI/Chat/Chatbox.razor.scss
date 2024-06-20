@@ -18,6 +18,12 @@ Chatbox {
         flex-direction: column;
         flex-grow: 1;
         overflow: scroll;
+
+        ChatEntry {
+            &.fade {
+                opacity: 0;
+            }
+        }
     }
 
     .input_canvas {
@@ -43,6 +49,22 @@ Chatbox {
             flex-shrink: 0;
             flex-grow: 1;
             white-space: pre;
+        }
+    }
+
+    &.open {
+        textentry {
+            .placeholder {
+                opacity: 0;
+            }
+        }
+
+        .chat_canvas {
+            ChatEntry {
+                &.fade {
+                    opacity: 1;
+                }
+            }
         }
     }
 }
