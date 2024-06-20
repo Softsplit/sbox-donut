@@ -6,9 +6,7 @@
 <root>
     @if (Description != null)
     {
-        <div class="column">
-            <label class="name">@Description.Title</label>
-        </div>
+        <label class="name">@Description.Title</label>
         if (Description.PropertyType == typeof(bool))
         {
             <Checkbox Value:bind="@Value" />
@@ -17,7 +15,7 @@
         {
             if (Range != null)
             {
-                <SliderControl class="devslider" Value:bind="@Value" Min="@Range.Min" Max="@Range.Max" Step="@Range.Step" ShowTextEntry="@true" />
+                <SliderControl class="devslider" Value:bind="@Value" Min="@Range.Min" Max="@Range.Max" Step="@Range.Step" />
             }
             else
             {

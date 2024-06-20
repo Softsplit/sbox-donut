@@ -128,6 +128,60 @@ DonutHud {
             right: 20px;
             align-items: center;
 
+            SettingEntry {
+                position: relative;
+                flex-direction: column;
+                margin-bottom: -10px;
+            }
+
+            .slidercontrol {
+                gap: 0px;
+                margin-top: 5px;
+                margin-right: 5px;
+
+                .inner {
+                    .track {
+                        margin: 0px;
+                        position: relative;
+                        border-radius: 0px;
+
+                        .track-active {
+                            border-radius: 0px;
+                        }
+
+                        .thumb {
+                            background-color: blue;
+                            border-color: white;
+                            position: relative;
+                            border-width: 2px;
+                            border-radius: 0px;
+                        }
+                    }
+                }
+            }
+
+            button {
+                background-color: blue;
+                border-width: 2px;
+                padding: 8px;
+                border-radius: 8px;
+                cursor: pointer;
+                flex-direction: column;
+                transition: all 0.2s ease-out;
+                text-align: center;
+                justify-content: center;
+                width: 200px;
+
+                &:hover {
+                    sound-in: "hover";
+                    background-color: #333;
+                }
+
+                &:active {
+                    sound-in: "select";
+                }
+            }
+
             > .IconPanel, i {
                 position: relative;
                 cursor: pointer;
@@ -147,22 +201,41 @@ DonutHud {
             }
 
             .tooltip {
+                justify-content: space-between;
                 border-width: 2px;
                 border-color: white;
                 flex-direction: column;
                 font-size: 24px;
-                width: 120px;
                 background-color: #555;
                 color: #fff;
                 position: absolute;
-                bottom: 125%;
+                bottom: 100%;
                 opacity: 0;
                 left: 50%;
-                margin-left: -60px;
+                margin-left: -63px;
                 transition: opacity 0.3s;
+                box-shadow: 10px 10px 10px rgb( black, 0.75 );
+
+                > .tail {
+                    border-right: 2px;
+                    border-bottom: 2px;
+                    border-color: white;
+                    transform: rotateZ(45 deg);
+                    top: 99%;
+                    left: 50%;
+                    position: absolute;
+                    background-color: #555;
+                    width: 10px;
+                    height: 10px;
+                    overflow: hidden;
+                }
             }
 
             .settings {
+                button {
+                    width: 150px;
+                }
+
                 position: relative;
                 z-index: 200;
 
@@ -179,6 +252,15 @@ DonutHud {
             .color-picker {
                 position: relative;
                 z-index: 200;
+
+                .tooltip {
+                    width: 300px;
+                    left: -100%;
+
+                    .tail {
+                        top: 92.5%;
+                    }
+                }
 
                 &:hover .tooltip {
                     opacity: 1;
@@ -205,28 +287,6 @@ DonutHud {
                 &:hover {
                     sound-in: "hover";
                     opacity: 0.5;
-                }
-
-                &:active {
-                    sound-in: "select";
-                }
-            }
-
-            > .button {
-                background-color: blue;
-                border-width: 2px;
-                padding: 8px;
-                border-radius: 8px;
-                cursor: pointer;
-                width: 200px;
-                flex-direction: column;
-                transition: all 0.2s ease-out;
-                text-align: center;
-                justify-content: center;
-
-                &:hover {
-                    sound-in: "hover";
-                    background-color: #333;
                 }
 
                 &:active {

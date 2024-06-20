@@ -69,46 +69,32 @@
                 <i>palette</i>
                 <span class="tooltip">
                     Coming soon...
+                    <div class="tail" />
                 </span>
             </div>
             <div class="discord" onclick=@CopyDiscord />
             <div class="settings">
                 <i>settings</i>
-                <!-- Will rework this later, temporary for now -->
                 <span class="tooltip">
-                    Main Volume
-                    <SliderControl @ref="MasterVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
-                    Music Volume 
-                    <SliderControl @ref="MusicVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
-                    UI Volume
-                    <SliderControl @ref="UIVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
-                    Voice Volume
-                    <SliderControl @ref="VoiceVolume" @Min=@(0f) @Max=@(1f) @Step=@(0.01f) @Value=@(1f) />
+
+                    @foreach (IGrouping<string, PropertyDescription> grouping in from x in TypeLibrary.GetPropertyDescriptions(GameSettingsSystem.Current) group x by x.Group)
+                    {
+                        foreach (PropertyDescription property in grouping)
+                        {
+                            <SettingEntry Target="@GameSettingsSystem.Current" Description="@property" />
+                        }
+                    }
+                    <button onclick=@GameSettingsSystem.Save>Save</button>
+                    <div class="tail" />
                 </span>
             </div>
-            <div class="button" onclick=@Donate>Donate?</div>
+            <button onclick=@Donate>Donate?</button>
         </div>
     </div>
 </root>
 
 @code
 {
-    // Will rework this later, temporary for now
-    private SliderControl MasterVolume;
-    private SliderControl MusicVolume;
-    private SliderControl UIVolume;
-    private SliderControl VoiceVolume;
-
-    protected override void OnUpdate()
-    {
-        if (MasterVolume == null || MusicVolume == null || UIVolume == null)
-            return;
-
-        Mixer.FindMixerByName("Master").Volume = MasterVolume.Value;
-        Mixer.FindMixerByName("Music").Volume = MusicVolume.Value;
-        Mixer.FindMixerByName("UI").Volume = UIVolume.Value;
-    }
-
     private async void Donate()
     {
         if (ResourceLibrary.Get<GamePass>("data/donator.gamepass").Has())
