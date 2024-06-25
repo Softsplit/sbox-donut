@@ -9,6 +9,7 @@ DonutHud {
     pointer-events: all;
 
     > .left {
+        position: relative;
         flex-direction: row;
         align-items: flex-end;
         flex-shrink: 0;
@@ -24,6 +25,7 @@ DonutHud {
     }
 
     > .center {
+        position: relative;
         flex-direction: column;
         justify-content: center;
         flex-shrink: 0;
@@ -112,6 +114,7 @@ DonutHud {
     }
 
     > .right {
+        position: relative;
         flex-direction: column;
         flex-shrink: 0;
         width: 400px;
@@ -221,7 +224,7 @@ DonutHud {
                     border-bottom: 2px;
                     border-color: white;
                     transform: rotateZ(45 deg);
-                    top: 99%;
+                    top: 98.9%;
                     left: 50%;
                     position: absolute;
                     background-color: #555;
