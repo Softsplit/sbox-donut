@@ -44,10 +44,17 @@ public sealed class GameManager : Component, Component.INetworkListener
 		if ( MusicPlayer == null )
 		{
 			MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, $"sounds/music/{Songs.OrderBy( s => Guid.NewGuid() ).First()}" );
+
 			MusicPlayer.TargetMixer = Mixer.FindMixerByName( "Music" );
+			MusicPlayer.TargetMixer.DistanceAttenuation = 0f;
+			MusicPlayer.TargetMixer.Spacializing = 0f;
 		}
 
-		MusicPlayer.OnFinished = () => { MusicPlayer = null; };
+		MusicPlayer.OnFinished = () =>
+		{
+			MusicPlayer.Dispose();
+			MusicPlayer = null;
+		};
 	}
 
 	private void UpdateInput()

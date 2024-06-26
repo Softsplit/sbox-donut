@@ -41,11 +41,11 @@
             Sound.Play("select").TargetMixer = Mixer.FindMixerByName("UI");
         }
 
-        if (Entries.Count > 50)
+        // todo: figure out a better way to prune entries 
+        //       and not tank performance, perhaps as a setting?
+        if (Entries.Count > 25)
         {
             Entries.RemoveAt(0);
-
-            StateHasChanged();
         }
 
         SetClass("open", InputBox.HasFocus);
