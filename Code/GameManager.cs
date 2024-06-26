@@ -52,7 +52,6 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 		MusicPlayer.OnFinished = () =>
 		{
-			MusicPlayer.Dispose();
 			MusicPlayer = null;
 		};
 	}
