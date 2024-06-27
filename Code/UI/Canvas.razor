@@ -8,9 +8,7 @@
 </root>
 
 @code {
-    public static DonutCanvas Instance { get; private set; }
-
-    public double Clicks { get; set; } = 0;
+    public static Canvas Instance { get; private set; }
 
     protected override void OnUpdate()
     {
@@ -47,7 +45,7 @@
 
         for (double j = 0; Math.PI * 2 > j; j += 0.07)
         {
-            for (double i = Clicks; Math.PI * 2 > i; i += 0.02)
+            for (double i = GameManager.Instance.Clicks; Math.PI * 2 > i; i += 0.02)
             {
                 double sini = Math.Sin(i),
                 cosj = Math.Cos(j),

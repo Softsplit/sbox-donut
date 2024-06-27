@@ -9,9 +9,7 @@ namespace Donut;
 public sealed class GameManager : Component, Component.INetworkListener
 {
 	public static GameManager Instance { get; private set; }
-	public static List<string> Songs { get; private set; } = FileSystem.Mounted.FindFile( "sounds/music", "*.mp3" ).ToList();
 
-	public MusicPlayer MusicPlayer { get; private set; }
 	public Leaderboards.Board Leaderboard { get; private set; }
 
 	public bool LeaderboardSwitching { get; private set; } = false;
@@ -39,46 +37,46 @@ public sealed class GameManager : Component, Component.INetworkListener
 		UpdateDonut();
 	}
 
+	public MusicPlayer MusicPlayer { get; private set; }
+
+	public static List<string> Songs => FileSystem.Mounted.FindFile( "sounds/music", "*.mp3" ).ToList();
+
 	private void UpdateMusic()
 	{
 		if ( MusicPlayer == null )
 		{
 			MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, $"sounds/music/{Songs.OrderBy( s => Guid.NewGuid() ).First()}" );
-
 			MusicPlayer.TargetMixer = Mixer.FindMixerByName( "Music" );
 			MusicPlayer.TargetMixer.DistanceAttenuation = 0f;
 			MusicPlayer.TargetMixer.Spacializing = 0f;
 		}
 
-		MusicPlayer.OnFinished = () =>
-		{
-			MusicPlayer = null;
-		};
+		MusicPlayer.OnFinished = () => { MusicPlayer = null; };
 	}
 
 	private void UpdateInput()
 	{
-		if ( DonutCanvas.Instance == null )
+		if ( !Canvas.Instance.IsValid() )
 			return;
 
 		if ( Input.Pressed( "Adjust Rotation Speed (+)" ) )
 		{
-			DonutCanvas.Instance.DELTA_A += 0.0025;
-			DonutCanvas.Instance.DELTA_B += 0.0025;
+			Canvas.Instance.DELTA_A += 0.0025;
+			Canvas.Instance.DELTA_B += 0.0025;
 			Sound.Play( "increase" ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 
 		if ( Input.Pressed( "Adjust Rotation Speed (-)" ) )
 		{
-			DonutCanvas.Instance.DELTA_A -= 0.0025;
-			DonutCanvas.Instance.DELTA_B -= 0.0025;
+			Canvas.Instance.DELTA_A -= 0.0025;
+			Canvas.Instance.DELTA_B -= 0.0025;
 			Sound.Play( "decrease" ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 
 		if ( Input.Pressed( "Reset Rotation Speed" ) )
 		{
-			DonutCanvas.Instance.DELTA_A = 0.04;
-			DonutCanvas.Instance.DELTA_B = 0.02;
+			Canvas.Instance.DELTA_A = 0.04;
+			Canvas.Instance.DELTA_B = 0.02;
 			Sound.Play( "reset" ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 
@@ -88,11 +86,23 @@ public sealed class GameManager : Component, Component.INetworkListener
 		}
 	}
 
+	public double Clicks { get; private set; } = 0;
+
+	private void UpdateDonut()
+	{
+		if ( Clicks >= 7 )
+		{
+			Clicks = 0;
+			Stats.Increment( "donuts", 1 );
+			Sound.Play( "splat" ).TargetMixer = Mixer.FindMixerByName( "UI" );
+		}
+	}
+
 	public void Munch()
 	{
-		if ( DonutCanvas.Instance.Clicks < 7 )
+		if ( Clicks < 7 )
 		{
-			DonutCanvas.Instance.Clicks += 1;
+			Clicks += 1;
 			Sound.Play( "munch" ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 	}
@@ -152,19 +162,6 @@ public sealed class GameManager : Component, Component.INetworkListener
 				Player.Local.Time = $"{hours}h{minutes}m{seconds}s";
 
 			Stats.Increment( "time2", 1f );
-		}
-	}
-
-	private void UpdateDonut()
-	{
-		if ( DonutCanvas.Instance == null )
-			return;
-
-		if ( DonutCanvas.Instance.Clicks >= 7 )
-		{
-			DonutCanvas.Instance.Clicks = 0;
-			Stats.Increment( "donuts", 1 );
-			Sound.Play( "splat" ).TargetMixer = Mixer.FindMixerByName( "UI" );
 		}
 	}
 

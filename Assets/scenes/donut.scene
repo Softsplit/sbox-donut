@@ -67,12 +67,12 @@
           "ZIndex": 100
         },
         {
-          "__type": "Donut.UI.DonutCanvas",
-          "__guid": "32a11c3a-7cfc-49bd-86cb-7b0a99de3592"
+          "__type": "Donut.UI.Canvas",
+          "__guid": "c7fd14b7-a89f-4a33-91c0-6a812f07d627"
         },
         {
-          "__type": "Donut.UI.DonutHud",
-          "__guid": "a48a4443-a4d3-4a53-9206-c85f63fe3262"
+          "__type": "Donut.UI.Hud",
+          "__guid": "4e9d5c7d-c286-4c03-bfaf-c53cd574a69c"
         },
         {
           "__type": "Donut.UI.Chatbox",
@@ -102,9 +102,9 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "minimal",
+  "Title": "donut",
   "Description": "",
-  "LastSaved": "2024-06-17T08:21:50.3431954\u002B08:00",
+  "LastSaved": "2024-06-28T01:05:59.9490515\u002B08:00",
   "ResourceVersion": 1,
   "__references": [],
   "__version": 1
