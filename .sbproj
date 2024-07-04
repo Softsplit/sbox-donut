@@ -5,6 +5,7 @@
   "Ident": "donut",
   "Tags": "2d ui donut multiplayer lobby",
   "Schema": 1,
+  "IncludeSourceFiles": false,
   "Resources": "*",
   "PackageReferences": [],
   "EditorReferences": null,

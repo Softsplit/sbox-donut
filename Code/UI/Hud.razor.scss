@@ -143,6 +143,8 @@ Hud {
             .slidercontrol {
                 .inner {
                     .track {
+                        margin: 0px;
+                        margin-top: 5px;
                         border-radius: 0px;
 
                         .track-active {
@@ -200,27 +202,27 @@ Hud {
             }
 
             .tooltip {
-                justify-content: space-between;
+                position: absolute;
+                justify-content: space-evenly;
+                gap: 7.5px;
                 border-width: 2px;
                 border-color: white;
                 flex-direction: column;
                 font-size: 24px;
                 background-color: #555;
                 color: #fff;
-                position: absolute;
                 bottom: 100%;
                 opacity: 0;
-                left: 50%;
-                margin-left: -63px;
                 transition: opacity 0.3s;
                 box-shadow: 10px 10px 10px rgb( black, 0.75 );
 
                 > .tail {
+                    color: transparent;
                     border-right: 2px;
                     border-bottom: 2px;
                     border-color: white;
                     transform: rotateZ(45 deg);
-                    top: 98.5%;
+                    top: 98.75%;
                     left: 50%;
                     position: absolute;
                     background-color: #555;
@@ -231,16 +233,16 @@ Hud {
             }
 
             .settings {
+                position: relative;
+                z-index: 200;
+
                 button {
                     width: 150px;
                 }
 
-                position: relative;
-                z-index: 200;
-
                 .tooltip {
                     width: 300px;
-                    left: -100%;
+                    left: -206.5%;
                 }
 
                 &:hover .tooltip {
@@ -255,10 +257,10 @@ Hud {
                 .tooltip {
                     align-items: center;
                     width: 150px;
-                    left: 20%;
+                    left: -83.25%;
 
                     .tail {
-                        top: 95%;
+                        top: 94.5%;
                     }
                 }
 
