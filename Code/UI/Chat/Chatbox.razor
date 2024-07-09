@@ -46,6 +46,7 @@
         if (Entries.Count > 25)
         {
             Entries.RemoveAt(0);
+            StateHasChanged();
         }
 
         SetClass("open", InputBox.HasFocus);

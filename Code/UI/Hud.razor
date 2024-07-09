@@ -11,7 +11,10 @@
     <div class="left">
         <div class="current-song">
             <div>#hud.currentsong</div>
-            <div>@GameManager.Instance.MusicPlayer?.Title</div>
+            @if (GameManager.Instance.MusicPlayer is not null)
+            {
+                <div>@GameManager.Instance.MusicPlayer.Title</div>
+            }
         </div>
     </div>
     <div class="center">

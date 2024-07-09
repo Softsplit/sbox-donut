@@ -2,7 +2,6 @@
 using Sandbox.Audio;
 using Sandbox.Network;
 using Sandbox.Services;
-using System;
 
 namespace Donut;
 
@@ -16,6 +15,8 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	protected override async void OnAwake()
 	{
+		PlaySong();
+
 		LeaderboardSwitching = true;
 
 		Leaderboard = Leaderboards.Get( "newtime" );
@@ -30,20 +31,20 @@ public sealed class GameManager : Component, Component.INetworkListener
 	{
 		Instance = this;
 
-		UpdateMusic();
 		UpdateInput();
 		UpdateLeaderboard();
 		UpdateTime();
 		UpdateDonut();
 	}
 
+	public MusicPlayer MusicPlayer { get; private set; }
+
 	// this is hardcoded, but it works so who cares
-	public static List<string> Songs => new() {
+	private readonly string[] songs = new string[] {
+		"https://cdn.sbox.game/asset/sounds/music/addiction.mp3.80831eebf5abc30b",
 		"https://cdn.sbox.game/asset/sounds/music/aquarium.mp3.efd8e8fd5261ec86",
-		"https://cdn.sbox.game/asset/sounds/music/addiction.mp3.c749cc006ba3d2b4",
 		"https://cdn.sbox.game/asset/sounds/music/eek.mp3.a0ac0192b999f9ab",
 		"https://cdn.sbox.game/asset/sounds/music/dead_lock.mp3.a3aee6aba5e27b9f",
-		"https://cdn.sbox.game/asset/sounds/music/da_jungle_is_wicked.mp3.845a3efa764820ca",
 		"https://cdn.sbox.game/asset/sounds/music/empty.mp3.b900a9b179afdc18",
 		"https://cdn.sbox.game/asset/sounds/music/elysium.mp3.9575b0c58bed46d6",
 		"https://cdn.sbox.game/asset/sounds/music/celestial_fantasia.mp3.384b309b00f42a02",
@@ -68,19 +69,24 @@ public sealed class GameManager : Component, Component.INetworkListener
 		"https://cdn.sbox.game/asset/sounds/music/yuki_satellites.mp3.ec2036f5bb16c60f"
 	};
 
-	public MusicPlayer MusicPlayer { get; private set; }
+	private int currentSongIndex;
 
-	private void UpdateMusic()
+	private void PlaySong()
 	{
-		if ( MusicPlayer == null )
-		{
-			MusicPlayer = MusicPlayer.PlayUrl( Songs.OrderBy( s => Guid.NewGuid() ).First() );
-			MusicPlayer.TargetMixer = Mixer.FindMixerByName( "Music" );
-			MusicPlayer.TargetMixer.DistanceAttenuation = 0f;
-			MusicPlayer.TargetMixer.Spacializing = 0f;
-		}
+		MusicPlayer?.Stop();
+		MusicPlayer?.Dispose();
 
-		MusicPlayer.OnFinished = () => { MusicPlayer = null; };
+		if ( currentSongIndex >= songs.Length )
+			currentSongIndex = 0;
+
+		string songToPlay = songs[currentSongIndex];
+		currentSongIndex++;
+
+		MusicPlayer = MusicPlayer.PlayUrl( songToPlay );
+		MusicPlayer.TargetMixer = Mixer.FindMixerByName( "Music" );
+		MusicPlayer.TargetMixer.DistanceAttenuation = 0f;
+		MusicPlayer.TargetMixer.Spacializing = 0f;
+		MusicPlayer.OnFinished += PlaySong;
 	}
 
 	private void UpdateInput()
