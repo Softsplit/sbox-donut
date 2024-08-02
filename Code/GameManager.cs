@@ -39,35 +39,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	public MusicPlayer MusicPlayer { get; private set; }
 
-	// this is hardcoded, but it works so who cares
-	private readonly string[] songs = new string[] {
-		"https://cdn.sbox.game/asset/sounds/music/addiction.mp3.80831eebf5abc30b",
-		"https://cdn.sbox.game/asset/sounds/music/aquarium.mp3.efd8e8fd5261ec86",
-		"https://cdn.sbox.game/asset/sounds/music/eek.mp3.a0ac0192b999f9ab",
-		"https://cdn.sbox.game/asset/sounds/music/dead_lock.mp3.a3aee6aba5e27b9f",
-		"https://cdn.sbox.game/asset/sounds/music/empty.mp3.b900a9b179afdc18",
-		"https://cdn.sbox.game/asset/sounds/music/elysium.mp3.9575b0c58bed46d6",
-		"https://cdn.sbox.game/asset/sounds/music/celestial_fantasia.mp3.384b309b00f42a02",
-		"https://cdn.sbox.game/asset/sounds/music/funky_stars.mp3.35b64c6021fc43da",
-		"https://cdn.sbox.game/asset/sounds/music/foregone_destruction.mp3.584685f34a9026c7",
-		"https://cdn.sbox.game/asset/sounds/music/aryx.mp3.fc6157a873f29626",
-		"https://cdn.sbox.game/asset/sounds/music/guitar_slinger.mp3.8ba13fc39b2ac60e",
-		"https://cdn.sbox.game/asset/sounds/music/keygen_8.mp3.f953266131ebb0a3",
-		"https://cdn.sbox.game/asset/sounds/music/ledstorm.mp3.bc681bf3969fa6f3",
-		"https://cdn.sbox.game/asset/sounds/music/nine_one_one.mp3.f5508182d66d46a4",
-		"https://cdn.sbox.game/asset/sounds/music/point_of_departure.mp3.ab956b2158316732",
-		"https://cdn.sbox.game/asset/sounds/music/hyperbased.mp3.9273149c23d93eff",
-		"https://cdn.sbox.game/asset/sounds/music/jungle_love.mp3.dacfd0c1e2d2adc7",
-		"https://cdn.sbox.game/asset/sounds/music/in_my_life_my_mind.mp3.365e1375cfbc8da8",
-		"https://cdn.sbox.game/asset/sounds/music/rolling_down_the_street.mp3.2716ecdf3a31dbf2",
-		"https://cdn.sbox.game/asset/sounds/music/space_debris.mp3.c40d68dedc3a4198",
-		"https://cdn.sbox.game/asset/sounds/music/stardust_memories.mp3.d845fc9f324afd9a",
-		"https://cdn.sbox.game/asset/sounds/music/unreal_superhero_3.mp3.6ac5cee6d904a666",
-		"https://cdn.sbox.game/asset/sounds/music/unreal_2.mp3.e81399ae13431a1f",
-		"https://cdn.sbox.game/asset/sounds/music/the_great_strategy.mp3.493e41d987c5de02",
-		"https://cdn.sbox.game/asset/sounds/music/winds_of_fjords.mp3.b3a64344d9c0a3d3",
-		"https://cdn.sbox.game/asset/sounds/music/yuki_satellites.mp3.ec2036f5bb16c60f"
-	};
+	public static string[] Songs => FileSystem.Mounted.FindFile( "sounds/music", "*.mp3" ).ToArray();
 
 	private int currentSongIndex;
 
@@ -76,13 +48,13 @@ public sealed class GameManager : Component, Component.INetworkListener
 		MusicPlayer?.Stop();
 		MusicPlayer?.Dispose();
 
-		if ( currentSongIndex >= songs.Length )
+		if ( currentSongIndex >= Songs.Length )
 			currentSongIndex = 0;
 
-		string songToPlay = songs[currentSongIndex];
+		string songToPlay = $"sounds/music/{Songs[currentSongIndex]}";
 		currentSongIndex++;
 
-		MusicPlayer = MusicPlayer.PlayUrl( songToPlay );
+		MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, songToPlay );
 		MusicPlayer.TargetMixer = Mixer.FindMixerByName( "Music" );
 		MusicPlayer.TargetMixer.DistanceAttenuation = 0f;
 		MusicPlayer.TargetMixer.Spacializing = 0f;
