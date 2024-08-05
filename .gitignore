@@ -22,3 +22,6 @@ code/Properties/*
 *.sln
 
 *idea
+
+# Exported / standalone games
+Exports/
