@@ -15,6 +15,8 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	protected override async void OnAwake()
 	{
+		Instance = this;
+
 		PlaySong();
 
 		LeaderboardSwitching = true;
@@ -29,8 +31,6 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	protected override void OnUpdate()
 	{
-		Instance = this;
-
 		UpdateInput();
 		UpdateLeaderboard();
 		UpdateTime();
