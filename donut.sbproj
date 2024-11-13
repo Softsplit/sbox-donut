@@ -29,47 +29,6 @@
       "VR": true,
       "Gamepad": true
     },
-    "InputSettings": {
-      "Actions": [
-        {
-          "Name": "Adjust Rotation Speed (\u002B)",
-          "KeyboardCode": "RIGHTARROW",
-          "GamepadCode": "RightTrigger",
-          "GroupName": ""
-        },
-        {
-          "Name": "Adjust Rotation Speed (-)",
-          "KeyboardCode": "LEFTARROW",
-          "GamepadCode": "LeftTrigger",
-          "GroupName": ""
-        },
-        {
-          "Name": "Reset Rotation Speed",
-          "KeyboardCode": "R",
-          "GamepadCode": "A",
-          "GroupName": ""
-        },
-        {
-          "Name": "Munch",
-          "KeyboardCode": "SPACE",
-          "GamepadCode": "B",
-          "GroupName": ""
-        },
-        {
-          "Name": "Voice",
-          "KeyboardCode": "V",
-          "GamepadCode": "X",
-          "GroupName": ""
-        },
-        {
-          "Name": "Chat",
-          "KeyboardCode": "ENTER",
-          "GamepadCode": "Y",
-          "GroupName": ""
-        }
-      ],
-      "__guid": "9e316ac8-550e-4eed-9323-826cb193cc8b"
-    },
     "Compiler": {
       "RootNamespace": "Donut",
       "DefineConstants": "SANDBOX;ADDON;DEBUG",
@@ -80,6 +39,7 @@
       "DistinctAssemblyReferences": []
     },
     "MapStartupScene": null,
-    "LaunchMode": "QuickPlay"
+    "LaunchMode": "QuickPlay",
+    "DedicatedServerStartupScene": "scenes/donut.scene"
   }
 }

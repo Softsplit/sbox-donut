@@ -42,26 +42,26 @@
     </div>
     <div class="right">
         <div class="player-list">
-            @if (GameNetworkSystem.IsActive)
+            @if (Networking.IsActive)
             {
                 @foreach (var ply in Game.ActiveScene.GetAllComponents<Player>())
                 {
                     <div class="player-entry">
                         <section class="info-container">
-                            <img src=@($"avatar:{ply?.Network.OwnerConnection.SteamId}") class="avatar" />
+                            <img src=@($"avatar:{ply?.Network.Owner.SteamId}") class="avatar" />
                             <section class="info">
-                                <label class="name">@($"{ply?.Network.OwnerConnection.DisplayName}")</label>
+                                <label class="name">@($"{ply?.Network.Owner.DisplayName}")</label>
                                 <label class="time">@(ply?.Time)</label>
                             </section>
                         </section>
                         <i class="voice">@(ply.Components.Get<Voice>().IsListening ? "mic" : "mic_off")</i>
-                        @if (Connection.Host == ply?.Network.OwnerConnection)
+                        @if (Connection.Host == ply?.Network.Owner)
                         {
                             <i class="host">verified</i>
                         }
-                        @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != ply.Network.OwnerConnection)
+                        @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != ply.Network.Owner)
                         {
-                            <i class="kick" onclick=@(() => GameManager.Kick(ply.Network.OwnerConnection.SteamId))>close</i>
+                            <i class="kick" onclick=@(() => GameManager.Kick(ply.Network.Owner.SteamId))>close</i>
                         }
                     </div>
                 }

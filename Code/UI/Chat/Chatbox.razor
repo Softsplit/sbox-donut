@@ -27,10 +27,13 @@
     private TextEntry InputBox;
     private List<Entry> Entries = new();
 
-    protected override void OnUpdate()
+    protected override void OnAwake()
     {
         Instance = this;
+    }
 
+    protected override void OnUpdate()
+    {
         if (InputBox is null) return;
 
         Panel.AcceptsFocus = false;

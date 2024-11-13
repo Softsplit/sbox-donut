@@ -1,6 +1,5 @@
 ﻿using Donut.UI;
 using Sandbox.Audio;
-using Sandbox.Network;
 using Sandbox.Services;
 
 namespace Donut;
@@ -27,6 +26,18 @@ public sealed class GameManager : Component, Component.INetworkListener
 		await Leaderboard?.Refresh();
 
 		LeaderboardSwitching = false;
+	}
+
+	protected override void OnStart()
+	{
+		Chatbox.Instance?.AddLocalMessage(
+			"👋",
+			"Welcome to S&box Donut! " +
+			"Press the right and left arrow keys to adjust the rotation speed and R to reset. " +
+			"You can press V to use the voice chat or ENTER to open up the chatbox. " +
+			"Finally, click on the donut or press SPACEBAR to munch on it, have fun!",
+			"notification"
+		);
 	}
 
 	protected override void OnUpdate()
@@ -56,8 +67,6 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 		MusicPlayer = MusicPlayer.Play( FileSystem.Mounted, songToPlay );
 		MusicPlayer.TargetMixer = Mixer.FindMixerByName( "Music" );
-		MusicPlayer.TargetMixer.DistanceAttenuation = 0f;
-		MusicPlayer.TargetMixer.Spacializing = 0f;
 		MusicPlayer.OnFinished += PlaySong;
 	}
 
@@ -180,7 +189,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 	public void OnDisconnected( Connection conn )
 	{
 		foreach ( var ply in Game.ActiveScene.GetAllComponents<Player>() )
-			if ( ply.Network.OwnerConnection == conn ) ply.GameObject.Destroy();
+			if ( ply.Network.Owner == conn ) ply.GameObject.Destroy();
 
 		Chatbox.Instance?.AddLocalMessage( "👋", $"{conn.DisplayName} has snapped back to reality!", "notification" );
 	}
@@ -188,7 +197,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 	public void OnBecameHost( Connection conn )
 	{
 		foreach ( var ply in Game.ActiveScene.GetAllComponents<Player>() )
-			if ( ply.Network.OwnerConnection == conn ) ply.GameObject.Destroy();
+			if ( ply.Network.Owner == conn ) ply.GameObject.Destroy();
 	}
 
 	[Broadcast]
@@ -196,14 +205,14 @@ public sealed class GameManager : Component, Component.INetworkListener
 	{
 		if ( steamId != Connection.Local.SteamId ) return;
 
-		GameNetworkSystem.Disconnect();
+		Networking.Disconnect();
 		Chatbox.Instance?.AddLocalMessage( "🔌", "You have been kicked from the server. Maybe you did something wrong?", "notification" );
 	}
 
 	[Broadcast]
 	public static void KickAll()
 	{
-		GameNetworkSystem.Disconnect();
+		Networking.Disconnect();
 		Chatbox.Instance?.AddLocalMessage( "🔌", "You have been disconnected due to a server shutdown. To reconnect, simply restart the game.", "notification" );
 	}
 
