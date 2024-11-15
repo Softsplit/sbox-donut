@@ -3,8 +3,10 @@
 @using Sandbox.Services
 @using Sandbox.Audio
 @using System
+
 @inherits PanelComponent
 @implements Component.INetworkListener
+
 @namespace Donut.UI
 
 <root>
@@ -61,7 +63,7 @@
                         }
                         @if (Connection.Local.SteamId == 76561198842119514 && Connection.Local != ply.Network.Owner)
                         {
-                            <i class="kick" onclick=@(() => GameManager.Kick(ply.Network.Owner.SteamId))>close</i>
+                            <i class="kick" onclick=@(() => GameManager.Kick(ply.Network.Owner))>close</i>
                         }
                     </div>
                 }
@@ -72,7 +74,7 @@
                 <i>palette</i>
                 <span class="tooltip">
                     Coming soon...?
-                    <div class="tail" />
+                    <span class="tail" />
                 </span>
             </div>
             <div class="discord" onclick=@CopyDiscord />
@@ -88,7 +90,7 @@
                         }
                     }
                     <button onclick=@GameSettingsSystem.Save>Save</button>
-                    <div class="tail" />
+                    <span class="tail" />
                 </span>
             </div>
             <button onclick=@Donate>Donate?</button>

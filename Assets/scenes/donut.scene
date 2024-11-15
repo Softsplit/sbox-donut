@@ -2,12 +2,25 @@
   "__guid": "f4c13c44-f389-4a32-a13a-d2db0688f652",
   "GameObjects": [
     {
+      "__guid": "b16abd60-275a-4205-a46e-da90f0ffcae8",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "ae8edf25-4779-4266-acdc-7578e4b8bf15",
+          "Description": "",
+          "SceneTags": "",
+          "Title": "donut"
+        }
+      ]
+    },
+    {
       "__guid": "784216d9-82aa-40ee-92f8-6f7994c0a990",
       "Flags": 0,
       "Name": "Network Helper",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.NetworkHelper",
@@ -26,8 +39,6 @@
       "Flags": 0,
       "Name": "Game Manager",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Donut.GameManager",
@@ -40,8 +51,6 @@
       "Flags": 0,
       "Name": "Listener",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.AudioListener",
@@ -56,7 +65,6 @@
       "Name": "Screen",
       "Enabled": true,
       "NetworkMode": 1,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.ScreenPanel",
@@ -64,6 +72,7 @@
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
+          "ScaleStrategy": "FollowDesktopScaling",
           "ZIndex": 100
         },
         {
@@ -86,9 +95,13 @@
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
     "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "donut"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -102,10 +115,9 @@
       "IncludedBodies": ""
     }
   },
+  "ResourceVersion": 2,
   "Title": "donut",
-  "Description": "",
-  "LastSaved": "2024-06-28T01:05:59.9490515\u002B08:00",
-  "ResourceVersion": 1,
+  "Description": null,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }

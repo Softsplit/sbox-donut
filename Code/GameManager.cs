@@ -191,29 +191,13 @@ public sealed class GameManager : Component, Component.INetworkListener
 		foreach ( var ply in Game.ActiveScene.GetAllComponents<Player>() )
 			if ( ply.Network.Owner == conn ) ply.GameObject.Destroy();
 
-		Chatbox.Instance?.AddLocalMessage( "👋", $"{conn.DisplayName} has snapped back to reality!", "notification" );
+		Chatbox.Instance?.AddMessage( "👋", $"{conn.DisplayName} has snapped back to reality!", "notification" );
 	}
 
-	public void OnBecameHost( Connection conn )
+	public static void Kick( Connection conn )
 	{
-		foreach ( var ply in Game.ActiveScene.GetAllComponents<Player>() )
-			if ( ply.Network.Owner == conn ) ply.GameObject.Destroy();
-	}
-
-	[Broadcast]
-	public static void Kick( ulong steamId )
-	{
-		if ( steamId != Connection.Local.SteamId ) return;
-
-		Networking.Disconnect();
-		Chatbox.Instance?.AddLocalMessage( "🔌", "You have been kicked from the server. Maybe you did something wrong?", "notification" );
-	}
-
-	[Broadcast]
-	public static void KickAll()
-	{
-		Networking.Disconnect();
-		Chatbox.Instance?.AddLocalMessage( "🔌", "You have been disconnected due to a server shutdown. To reconnect, simply restart the game.", "notification" );
+		Chatbox.Instance?.AddMessage( "🔌", $"{conn.DisplayName} has been kicked from the server. Good riddance!", "notification" );
+		conn.Kick( "You have been kicked from the server. Sorry, not sorry!" );
 	}
 
 	[ConCmd( "killserver" )]
@@ -225,6 +209,9 @@ public sealed class GameManager : Component, Component.INetworkListener
 			return;
 		}
 
-		KickAll();
+		foreach ( var conn in Connection.All )
+		{
+			Kick( conn );
+		}
 	}
 }
