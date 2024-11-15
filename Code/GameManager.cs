@@ -196,6 +196,15 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	public static void Kick( Connection conn )
 	{
+		// For some reason, it doesn't work on hosts. Will make do with this check for now
+		if ( conn == Connection.Local )
+		{
+			Networking.Disconnect();
+			Chatbox.Instance?.AddLocalMessage( "🔌", "Looks like you've been kicked. To reconnect, simply restart the game.", "notification" );
+
+			return;
+		}
+
 		Chatbox.Instance?.AddMessage( "🔌", $"{conn.DisplayName} has been kicked from the server. Good riddance!", "notification" );
 		conn.Kick( "You have been kicked from the server. Sorry, not sorry!" );
 	}
