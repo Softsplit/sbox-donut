@@ -50,7 +50,7 @@ public sealed class GameManager : Component, Component.INetworkListener
 
 	public MusicPlayer MusicPlayer { get; private set; }
 
-	public static string[] Songs => FileSystem.Mounted.FindFile( "sounds/music", "*.vsnd_c" ).ToArray();
+	public static string[] Songs => FileSystem.Mounted.FindFile( "sounds/music", "*.mp3" ).ToArray();
 
 	private int currentSongIndex;
 
