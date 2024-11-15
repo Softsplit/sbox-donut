@@ -5,7 +5,7 @@
   "Ident": "donut",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "*",
+  "Resources": "/fonts/*\n/ui/*",
   "PackageReferences": [],
   "EditorReferences": null,
   "IsWhitelistDisabled": false,
